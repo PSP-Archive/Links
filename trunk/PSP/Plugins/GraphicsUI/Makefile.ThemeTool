@@ -1,0 +1,19 @@
+CC=gcc
+PNAME=ThemeTool
+
+LIBS=-lSDL -lSDLmain -lstdc++ ./SharedLibLinux/Logging.o ./SharedLibLinux/iniparser.o
+INC=-I. -I./SharedLibLinux
+
+CFLAGS=$(INC) -O1 -Wall -g -DLINUX
+
+OBJS = GraphicsUITheme.o ThemeTool.o
+
+all: $(OBJS)
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(PNAME)
+
+.cpp.o:
+	$(CC) $(CFLAGS) -c $*.cpp
+
+clean:
+	rm -f $(OBJS)
+	rm -f $(PNAME)

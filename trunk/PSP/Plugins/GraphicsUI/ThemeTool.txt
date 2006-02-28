@@ -1,0 +1,35 @@
+PSPRadio ThemeTool
+
+This tool is used for debuging theme files without having to load them onto 
+the PSP. It allows you to test all your buttons, string placement and screen placement.
+
+usage:
+ThemeTool.exe [ThemeFileName]
+
+eg: 
+ThemeTool.exe THEME/PSPRAdio.theme
+
+If no theme file is specifed it uses "./THEME/PSPRadio_AllStates.theme" as the default.
+
+Once the ThemeTool is launched you will have a blank screen.
+
+Keystrokes to test theme:
+
+F1 - Display Main Screen
+F2 - Display Shoutcast Screen
+F3 - Display Settings Screen
+
+1 - Toggles Play Graphic
+2 - Toggles Pause Graphic
+3 - Toggles Stop Graphic
+4 - Toggles Load Graphic
+5 - Toggles Sound Graphic
+6 - Toggles Volume Graphic
+7 - Toggles Buffer Graphic
+8 - Toggles Stream Graphic
+9 - Toggles Network Graphic
+
+a - Displays Sample Meta Data Text
+b - Displays Sample Playlist Text
+c - Displays Sample Playlist item Text
+d - Displays Sample Settings Text
