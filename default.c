@@ -1560,6 +1560,7 @@ struct option links_options[] = {
 	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.videos, "download_directory_videos", NULL},
 	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.images, "download_directory_images", NULL},
 	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.other,  "download_directory_other",  NULL},
+	{1, gen_cmd, num_rd, num_wr, 1, 2, &g_PSPConfig_BB_TO_FB_FACTOR,  "psp_bb_to_fb_factor",  NULL},
 #endif
 	{0, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL},
 };

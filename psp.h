@@ -1,6 +1,8 @@
 #ifndef psp_h
 	#define psp_h
 
+	#include <unistd.h>
+
 	#ifndef tBoolean
 	#define tBoolean int
 	#define truE 1
@@ -18,7 +20,9 @@
 	extern volatile tBoolean g_PSPEnableRendering;
 	extern volatile tBoolean g_PSPEnableInput;
 
-	#include <unistd.h>
+	/* PSP Specific config items */
+	extern tBoolean g_PSPConfig_BB_TO_FB_FACTOR;
+
 
 	typedef struct _extension_download_dirs 
 	{
