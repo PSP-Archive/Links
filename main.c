@@ -267,6 +267,7 @@ void init(void)
 		retval = RET_SYNTAX;
 		goto ttt;
 	}
+	
 	if (ggr_drv[0] || ggr_mode[0]) ggr = 1;
 	if (dmp) ggr = 0;
 	if (!ggr && !no_connect && (uh = bind_to_af_unix()) != -1) {
@@ -278,19 +279,29 @@ void init(void)
 			goto ttt;
 		}
 		initialize_all_subsystems_2();
+		
 		handle_trm(get_input_handle(), get_output_handle(), uh, uh, get_ctl_handle(), info, len);
 		handle_basic_signals(NULL);	/* OK, this is race condition, but it must be so; GPM installs it's own buggy TSTP handler */
 		mem_free(info);
 		return;
 	}
 	if ((dds.assume_cp = get_cp_index("ISO-8859-1")) == -1) dds.assume_cp = 0;
+	
+	app_init_progress("load config");
 	load_config();
 	init_b = 1;
+	app_init_progress("init_bookmarks");
 	init_bookmarks();
+	
+	app_init_progress("create_initial_extensions");
 	create_initial_extensions();
+	app_init_progress("load url history");
 	load_url_history();
+	app_init_progress("init cookies");
 	init_cookies();
+	app_init_progress("parse options");
 	u = parse_options(g_argc - 1, g_argv + 1);
+	
 	if (!u) {
 		ttt:
 		initialize_all_subsystems_2();
@@ -302,13 +313,16 @@ void init(void)
 		if (ggr) {
 #ifdef G
 			unsigned char *r;
+			app_init_progress("init graphics");
 			if ((r = init_graphics(ggr_drv, ggr_mode, ggr_display))) {
 				fprintf(stderr, "%s", r);
 				mem_free(r);
 				retval = RET_SYNTAX;
 				goto ttt;
 			}
+			app_init_progress("handle basic signals");
 			handle_basic_signals(NULL);
+			app_init_progress("init dither");
 			init_dither(drv->depth);
 			F = 1;
 #else
@@ -317,13 +331,16 @@ void init(void)
 			goto ttt;
 #endif
 		}
+		app_init_progress("init all subsystems 2");
 		initialize_all_subsystems_2();
+		app_init_progress("create session info");
 		if (!((info = create_session_info(base_session, u, default_target, &len)) && gf_val(attach_terminal(get_input_handle(), get_output_handle(), get_ctl_handle(), info, len), attach_g_terminal(info, len)) != -1)) {
 			retval = RET_FATAL;
 			terminate_loop = 1;
 		}
 	} else {
 		unsigned char *uu, *wd;
+		app_init_progress("init all subsystems 2");
 		initialize_all_subsystems_2();
 		close(terminal_pipe[0]);
 		close(terminal_pipe[1]);
@@ -333,6 +350,7 @@ void init(void)
 			goto tttt;
 		}
 		if (!(uu = translate_url(u, wd = get_cwd()))) uu = stracpy(u);
+		app_init_progress("request object");
 		request_object(NULL, uu, NULL, PRI_MAIN, NC_RELOAD, end_dump, NULL, &dump_obj);
 		mem_free(uu);
 		if (wd) mem_free(wd);
@@ -398,7 +416,11 @@ void terminate_all_subsystems(void)
 	if (clipboard) mem_free(clipboard);
 }
 
+#ifdef PSP
+int main_loop(int argc, const char** argv)
+#else
 int main(int argc, char *argv[])
+#endif
 {
 	path_to_exe = argv[0];
 	g_argc = argc;

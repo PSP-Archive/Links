@@ -293,17 +293,109 @@ void send_cookies(unsigned char **s, int *l, unsigned char *url)
 	mem_free(server);
 }
 
-void init_cookies(void)
-{
-	/* !!! FIXME: read cookies */
-}
+/* Load/Save cookies code from http://72.14.207.104/search?hs=A11&hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=cache%3Ahttp%3A%2F%2Fcvs.pld.org.pl%2FSOURCES%2Flinks2-cookies-save.patch%3Frev%3D1.2&btnG=Search */
+void init_cookies(void) 
+{ 
+	/* Read cookies */
+	unsigned char in_buffer[MAX_STR_LEN]; 
+	unsigned char *cookfile, *p, *q; 
+	FILE *fp; 
+	
+	/* must be called after init_home */ 
+	if (! links_home) return; 
+	
+	cookfile = stracpy(links_home); 
 
-void cleanup_cookies(void)
-{
-	struct cookie *c;
-	free_list(c_domains);
-	/* !!! FIXME: save cookies */
-	foreach (c, cookies) free_cookie(c);
-	free_list(cookies);
+	if (! cookfile) return; 
+	add_to_strn(&cookfile, "cookies"); 
+	
+	fp = fopen(cookfile, "r"); 
+
+	mem_free(cookfile); 
+
+	if (fp == NULL) return; 
+	
+	while (fgets(in_buffer, MAX_STR_LEN, fp)) 
+	{ 
+		struct cookie *cookie; 
+		
+		if (!(cookie = mem_alloc(sizeof(struct cookie)))) return; 
+
+		memset(cookie, 0, sizeof(struct cookie)); 
+		
+		q = in_buffer; p = strchr(in_buffer, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->name = stracpy(q); 
+		
+		q = p; p = strchr(p, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->value = stracpy(q); 
+		
+		q = p; p = strchr(p, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->server = stracpy(q); 
+		
+		q = p; p = strchr(p, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->path = stracpy(q); 
+		
+		q = p; p = strchr(p, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->domain = stracpy(q); 
+		
+		q = p; p = strchr(p, ' '); 
+		if (p == NULL) goto inv; 
+		*p+= '\0'; 
+		cookie->expires = atoi(q); 
+		
+		cookie->secure = atoi(p); 
+		
+		cookie->id = cookie_id++; 
+		
+		accept_cookie(cookie); 
+		
+		continue; 
+		
+inv: 
+		free_cookie(cookie); 
+		free(cookie); 
+	}
+ 
+	fclose(fp); 
+} 
+
+void cleanup_cookies(void) 
+{ 
+	struct cookie *c; 
+	unsigned char *cookfile;
+	FILE *fp; 
+	free_list(c_domains); 
+
+	/* save cookies */ 
+	cookfile = stracpy(links_home); 
+	if (! cookfile) return; 
+	add_to_strn(&cookfile, "cookies"); 
+	
+	fp = fopen(cookfile, "w"); 
+	mem_free(cookfile); 
+	if (fp == NULL) return; 
+	
+	foreach (c, cookies) 
+	{ 
+		if (c->expires && ! cookie_expired(c)) 
+			fprintf(fp, "%s %s %s %s %s %d %d\n", c->name, c->value, 
+					c->server?c->server:(unsigned char *)"", c->path?c->path:(unsigned char *)"", 
+					c->domain?c->domain:(unsigned char *)"", c->expires, c->secure); 
+		
+		free_cookie(c); 
+	} 
+
+	fclose(fp); 
+	free_list(cookies); 
 }
 

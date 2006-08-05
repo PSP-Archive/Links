@@ -692,7 +692,9 @@ void download_data(struct status *stat, struct download *down)
 			} else if (down->remotetime && download_utime) {
 				struct utimbuf foo;
 				foo.actime = foo.modtime = down->remotetime;
+#ifndef PSP
 				utime(down->file, &foo);
+#endif
 			}
 		}
 		abort_download(down);

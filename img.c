@@ -661,7 +661,9 @@ buffer_to_bitmap");
 		if (ix!=ox||iy!=oy){
 			/* We must really scale */
 			tmp1=tmp;
-			scale_color(tmp1,ix,iy,&tmp,ox,oy);
+			//scale_color(tmp1,ix,iy,&tmp,ox,oy);
+			ox = ix;
+			oy = iy;
 		}
 	}
 	if (cimg->bmp.user) drv->unregister_bitmap(&cimg->bmp);

@@ -34,6 +34,12 @@ extern struct graphics_driver atheos_driver;
 #ifdef GRDRV_SDL
 extern struct graphics_driver sdl_driver;
 #endif
+#ifdef GRDRV_PSPSDL
+extern struct graphics_driver pspsdl_driver;
+#endif
+#ifdef GRDRV_PSPGU
+extern struct graphics_driver pspgu_driver;
+#endif
 
 struct graphics_driver *graphics_drivers[] = {
 #ifdef GRDRV_PMSHELL
@@ -56,6 +62,12 @@ struct graphics_driver *graphics_drivers[] = {
 #endif
 #ifdef GRDRV_SDL
 	&sdl_driver,
+#endif
+#ifdef GRDRV_PSPSDL
+	&pspsdl_driver,
+#endif
+#ifdef GRDRV_PSPGU
+	&pspgu_driver,
 #endif
 	NULL
 };
@@ -166,7 +178,7 @@ void update_driver_param(void)
 	}
 }
 
-#if defined(GRDRV_SVGALIB)|defined(GRDRV_FB)
+#if defined(GRDRV_SVGALIB)|defined(GRDRV_FB)|defined(GRDRV_PSPGU)
 
 struct graphics_driver *virtual_device_driver;
 struct graphics_device **virtual_devices;

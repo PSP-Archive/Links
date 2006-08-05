@@ -918,9 +918,11 @@ void destroy_terminal(struct terminal *term)
 			unhandle_terminal_signals(term);
 			free_all_itrms();
 #ifndef NO_FORK_ON_EXIT
+#ifndef PSP
 			if (!list_empty(terminals)) {
 				if (fork() > 0) _exit(0);
 			}
+#endif
 #endif
 		}
 #ifdef G

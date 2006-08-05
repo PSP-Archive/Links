@@ -304,9 +304,20 @@ int write_to_config_file(unsigned char *name, unsigned char *c)
 unsigned char *get_home(int *n)
 {
 	struct stat st;
-	unsigned char *home = stracpy(getenv("HOME"));
 	unsigned char *home_links;
+#ifdef PSP
+	char strCWD[MAXPATHLEN+1];
+	getcwd(strCWD, MAXPATHLEN);
+	if (strcmp(strCWD, "host0:/") == 0)
+	{
+		sprintf(strCWD, "ms0:/PSP/GAME/__SCE__PSPRadio/");
+	}
+	unsigned char *home = stracpy(strCWD);
+	unsigned char *config_dir = stracpy("APP_Links2");
+#else
+	unsigned char *home = stracpy(getenv("HOME"));
 	unsigned char *config_dir = stracpy(getenv("CONFIG_DIR"));
+#endif
 
 	if (n) *n = 1;
 	if (!home) {
@@ -1542,6 +1553,14 @@ struct option links_options[] = {
 	{1, NULL, prog_rd, prog_wr, 0, 0, &mms_prog, "mms", NULL},
 	{1, NULL, block_rd, block_wr, 0, 0, NULL, "imageblock", NULL},
 	{1, NULL, dp_rd, dp_wr, 0, 0, NULL, "video_driver", NULL},
+#ifdef PSP
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.music,  "download_directory_music",  NULL},
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.mp4,    "download_directory_mp4",    NULL},
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.avcmp4,    "download_directory_avc_mp4", NULL},
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.videos, "download_directory_videos", NULL},
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.images, "download_directory_images", NULL},
+	{1, gen_cmd, str_rd, str_wr, 0, MAXPATHLEN, ext_dl_dir.other,  "download_directory_other",  NULL},
+#endif
 	{0, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL},
 };
 

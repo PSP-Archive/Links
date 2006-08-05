@@ -118,10 +118,12 @@ int get_pasv_socket(struct connection *c, int cc, int *sock, unsigned char *port
 #ifdef HAVE_SSL
 void ssl_want_read(struct connection *c)
 {
+	int sslerror;
 	struct conn_info *b = c->buffer;
 
 	if (c->no_tsl) c->ssl->options |= SSL_OP_NO_TLSv1;
-	switch (SSL_get_error(c->ssl, SSL_connect(c->ssl))) {
+	sslerror = SSL_get_error(c->ssl, SSL_connect(c->ssl));
+	switch (sslerror) {
 		case SSL_ERROR_NONE:
 			c->buffer = NULL;
 			b->func(c);
@@ -129,6 +131,10 @@ void ssl_want_read(struct connection *c)
 		case SSL_ERROR_WANT_READ:
 			break;
 		default:
+#ifdef PSP
+			pspDebugScreenPrintf("ssl_want_read: SSL Error = %d", sslerror);
+			wait_for_triangle("SSL Error");
+#endif
 			c->no_tsl++;
 			setcstate(c, S_SSL_ERROR);
 			retry_connection(c);
@@ -167,10 +173,12 @@ void dns_found(struct connection *c, int state)
 	} else {
 #ifdef HAVE_SSL
 		if(c->ssl) {
+			int sslerror;
 			c->ssl = getSSL();
 			SSL_set_fd(c->ssl,s);
 			if (c->no_tsl) c->ssl->options |= SSL_OP_NO_TLSv1;
-			switch (SSL_get_error(c->ssl, SSL_connect(c->ssl))) {
+			sslerror = SSL_get_error(c->ssl, SSL_connect(c->ssl));
+			switch (sslerror) {
 				case SSL_ERROR_WANT_READ:
 					setcstate(c, S_SSL_NEG);
 					set_handlers(s, (void(*)(void *))ssl_want_read, NULL, (void(*)(void *))exception, c);
@@ -178,6 +186,10 @@ void dns_found(struct connection *c, int state)
 				case SSL_ERROR_NONE:
 					break;
 				default:
+#ifdef PSP
+					pspDebugScreenPrintf("dns_found: SSL Error = %d", sslerror);
+					wait_for_triangle("SSL Error");
+#endif
 					c->no_tsl++;
 					setcstate(c, S_SSL_ERROR);
 					retry_connection(c);
@@ -215,10 +227,12 @@ void connected(struct connection *c)
 	else {
 #ifdef HAVE_SSL
 		if(c->ssl) {
+			int sslerror;
 			c->ssl = getSSL();
 			SSL_set_fd(c->ssl, *b->sock);
 			if (c->no_tsl) c->ssl->options |= SSL_OP_NO_TLSv1;
-			switch (SSL_get_error(c->ssl, SSL_connect(c->ssl))) {
+			sslerror = SSL_get_error(c->ssl, SSL_connect(c->ssl));
+			switch (sslerror) {
 				case SSL_ERROR_WANT_READ:
 					setcstate(c, S_SSL_NEG);
 					set_handlers(*b->sock, (void(*)(void *))ssl_want_read, NULL, (void(*)(void *))exception, c);
@@ -226,6 +240,10 @@ void connected(struct connection *c)
 				case SSL_ERROR_NONE:
 					break;
 				default:
+#ifdef PSP
+					pspDebugScreenPrintf("connected: SSL Error = %d", sslerror);
+					wait_for_triangle("SSL Error");
+#endif
 					c->no_tsl++;
 					setcstate(c, S_SSL_ERROR);
 					retry_connection(c);
@@ -267,6 +285,10 @@ void write_select(struct connection *c)
 		if ((wr = SSL_write(c->ssl, wb->data + wb->pos, wb->len - wb->pos)) <= 0) {
 			int err;
 			if ((err = SSL_get_error(c->ssl, wr)) != SSL_ERROR_WANT_WRITE) {
+#ifdef PSP
+				pspDebugScreenPrintf("write_select: SSL Error = %d", err);
+				wait_for_triangle("SSL Error");
+#endif
 				setcstate(c, wr ? (err == SSL_ERROR_SYSCALL ? -errno : S_SSL_ERROR) : S_CANT_WRITE);
 				if (!wr || err == SSL_ERROR_SYSCALL) retry_connection(c);
 				else abort_connection(c);

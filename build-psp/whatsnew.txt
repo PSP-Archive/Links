@@ -1,0 +1,100 @@
+ What's New for Links2 PSP Port
+================================
+
+links-2.1pre22 PSP rxxxx (2006-07-xx)
+NEW FEATURES
+(raf) Cookie save/restore patch from cvs.pld.org.pl/SOURCES/links2-cookies-save.patch?rev=1.2 applied.
+BUG FIXES
+(raf) Reverted UP/DOWN behavior (user requested). (R+UP/DOWN still does page up/down, though).
+
+links-2.1pre22 PSP r1214 (2006-07-08)
+NEW FEATURES
+(raf) Updates to pspgu driver: 
+	-Default resolution is now 960x544 (Its scaled down to the PSP's 480x272)
+	-Links scaling is now disabled (as it used too much memory, and was one of the main culprits of memory errors)
+	-Font size changed from 12 to 24, so it is readable without zoom (at 960x544)
+	-Zoom (along with new virtual resolution of 960x544 implemented using a kind of double buffering).
+(raf) New button mappings: 
+	UP/DOWN = scroll up/scroll down (former R+UP/DOWN)
+	R+UP/DOWN = page up/page down
+	L (held) = zoom (while L is held). Use analog stick to move around.
+	L+CROSS = toggles zoom lock. (Once locked, the analog will control the mouse. Use L+analog to move zoom window).
+BUG FIXES
+
+links-2.1pre22 PSP r1206 (2006-07-03)
+NEW FEATURES
+(raf) Moved the "None" WiFi connection to the bottom of the list.
+(raf) New driver based on the linux framebuffer driver. This new driver access video RAM directly. Most of the graphic problems with SDL seem to be gone; but theres some new problems (the menus don't clear correctly).
+(sandberg) Using direct VRAM version of Danzeff to free up the memory used by the previous SDL version.
+BUG FIXES
+
+links-2.1pre22 PSP r1195 (2006-06-13)
+NEW FEATURES
+(raf) StandAlone: New connection selection: "None" allows the user to continue initialization without having to connect.
+(raf) Plugin: Changed the plugin priority to 45, this should prevent skipping while listening to pspradio.
+(raf) Updated to links-2.1pre22:
+	Details of links-2.1pre22 (from Changelog):
+		-sponsored by Alex Poylisher <sher@komkon.org>
+		Use 8-bit gamma correction on machines with slow FPU (or with FPU
+		emulation) --- this significantly reduces startup time
+		-Optional scrollbars in frames
+		-Implemented porn mode (bare image autoscaling aka fullscreen).
+		-Fixed ignorance of aspect ratio for images where only one dimension
+		is specified.
+		-Fixed crash when deleting item at the top of the window in bookmarks
+		or associations or extensions
+		-Ignore space at the end of url
+		-Fixed memory leak on image with no src attribute and usemap attribute
+		-Support 4th and 6th mouse button on svgalib
+(raf) Now when adding a bookmark, bookmarks are saved automatically.
+BUG FIXES
+(raf) Cosmetic changes when taking screenshots, and reconnecting. (Wait for the user, redrawing).
+
+links-2.1pre21 PSP r1142 (2006-05-16)
+NEW FEATURES
+(danzel) StandAlone: Wifi "Connect to" dialog.
+(raf) Changed thread priorities.
+BUG FIXES
+(raf) Renamed screenshots to PSPLinks2_ScreenXXX.png
+
+links-2.1pre21 PSP r1136 (2006-05-14)
+NEW FEATURES
+(raf) Now L+UP/DOWN = PgUp/PgDown
+(raf) Now R+UP/DOWN/LEFT/RIGHT = Scroll
+BUG FIXES
+(raf) Added rename() to newlib, now saving configuration files/bookmarks should work again
+
+links-2.1pre21 PSP r1129 (2006-05-10)
+NEW FEATURES
+(raf) Links2: Now it won't load network modules if f/w version is 2.0+ (hope this allows it to work via eLoader).
+(raf) Links2: Added download directory configuration for AVC MP4 files. Added support for 'other' download directory.
+(raf) openssl/Links2: OpenSSL ported to the PSP. Links now links against it to provide SSL support.
+(raf) Links2: Updated to version 2.1-pre21
+(raf) Links2: L+ UP/DOWN/LEFT/RIGHT now scrolls the screen in those directions.
+BUG FIXES
+
+links-2.1pre20 PSP r1105 (2006-05-08)
+NEW FEATURES
+(raf) Core/(Links2): Updated/enhanced pthreads implementation.
+(raf) Added configuration options for default directories for downloads of files based on their extension.
+(raf) Also, reverted font_include.c to include japanese font.
+(raf) Also added an exception handler that will exit the application if there is a crash.
+(raf) Added fakeuseragent, so links reports itself as the 2.0 PSP webbrowser
+(raf) Replaced all threads with pthreads now. Tweaked thread priorities and stacks.
+(raf) Rearranged code with the hope that it will be eLoader compatible now.
+(raf) Compiled with compiler optiimizations turned on (-O2) 
+BUG FIXES
+
+links-2.1pre20 PSP r1090 (2006-05-04) FIRST RELEASE
+(raf) Browser ported to PSP. PSPRadio plugin created. Using version 2.1pre20 with utf8 patch. Using SDL SW Surfaces for graphics.
+(raf) Updated code to take advantage of changes to newlib (for pipes/file descriptors/sockets)
+(raf) dithertable is now saved to file, if file is found (now provided), the its loaded instead of generated. (This speeds up startup from over 1min to seconds)
+(raf) danzeff SDL library used for OSK. Thanks, Danzel.
+(raf) Screenshot can be taken pressing SELECT. Use File->Switch to PSPRadio to go back to PSPRadio. Then select the plugin again to get back to Links2.
+(raf) SMB support is completely removed to free more memory.
+(raf) Removed support for all languages except english to free more memory.
+(raf) Removed japanese font to free more memory.
+(danzel) Use lite danzeff OSK now (no transparencies) to free memory.
+(raf) Version reported includes the subversion revision now.
+(raf) Plugin: When exiting, the plugin is turned off correctly
+

@@ -149,14 +149,14 @@ make_page(int index)
  sprintf(string,"%s%d.html",basename_,index);
  f=fopen(string,"w");
 
- fprintf(f,"<html><head><title>%s</title></head><body bgcolor=\"#000000\" text=\"#00ff00\" link=\"#ffff00\" vlink=\"#00ffff\"
+ fprintf(f,"<html><head><title>%s</title></head><body bgcolor=\"#000000\" text=\"#00ff00\" link=\"#ffff00\" vlink=\"#00ffff\"\
 alink=\"#ffff00\">\n",titlestring);
  fprintf(f,"<h1>%s, Page %d</h1>\n",titlestring,index+pageoffset);
  fprintf(f,"<p><table border=0 cellspacing=0 cellpadding=2><tr>");
  fprintf(f,"<td valign=\"top\"><table border=0 cellpadding=0 cellspacing=0><tr><td>");
  if (index)
  {
-  fprintf(f,"<a href=\"%s%d.html\"><img src=\"left.png\" border=0
+  fprintf(f,"<a href=\"%s%d.html\"><img src=\"left.png\" border=0\
 ></a>\n",basename_,index-1);
  }
  else
@@ -166,17 +166,17 @@ alink=\"#ffff00\">\n",titlestring);
  fprintf(f,"</td><td>");
  if (index<filenumber-1)
  {
-  fprintf(f,"<a href=\"%s%d.html\">
+  fprintf(f,"<a href=\"%s%d.html\">\
 <img src=\"right.png\" border=0></a>\n",basename_,index+1);
  }
  else
  {
   fprintf(f,"<img src=\"right.png\" border=0>\n");
  }
- fprintf(f,"</td></tr><tr><td colspan=2><a href=\"index.html\">
+ fprintf(f,"</td></tr><tr><td colspan=2><a href=\"index.html\">\
 <img src=\"idx.png\" border=0 ></a></td>");
  fprintf(f,"</tr></table>");
- fprintf(f,"</td><td><img src=\"%s%d.png\" border=\"0\"
+ fprintf(f,"</td><td><img src=\"%s%d.png\" border=\"0\"\
 ></td>\n</tr></table>",basename_,index);
  fprintf(f,"</body></html>");
  fclose(f);
@@ -426,7 +426,7 @@ main(int argc, char **argv)
         int a,z;
  
         if (argc<7){
-                fprintf(stderr,"Usage: pbm2png <hundred_dpi> <basename_> <titlestring>
+                fprintf(stderr,"Usage: pbm2png <hundred_dpi> <basename_> <titlestring>\
 <bottom_html_code> <pageoffset> <ifname> [starting_filenumber]\n");
         return 0;
         }

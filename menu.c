@@ -1535,9 +1535,17 @@ void cache_opt(struct terminal *term, void *xxx, void *yyy)
 
 void menu_shell(struct terminal *term, void *xxx, void *yyy)
 {
+#ifndef STAND_ALONE_APP
+#ifdef PSP /** Switch to PSPRadio */
+	g_PSPEnableInput = falsE;
+	g_PSPEnableRendering = falsE;
+	PSPRadioExport_GiveUpExclusiveAccess();
+#else
 	unsigned char *sh;
 	if (!(sh = GETSHELL)) sh = DEFAULT_SHELL;
 	exec_on_terminal(term, sh, "", 1);
+#endif
+#endif
 }
 
 void menu_kill_background_connections(struct terminal *term, void *xxx, void *yyy)
@@ -2487,6 +2495,59 @@ void query_file(struct session *ses, unsigned char *url, void (*std)(struct sess
 
 	get_filename_from_url(url, &file, &l);
 	def = init_str();
+#ifdef PSP
+	/** Set download directories based on file extension */
+	if (strlen(file) > 3 && strrchr(file, '.') != NULL)
+	{
+		char *ext = strrchr(file, '.') + 1;
+		if (strlen(ext) >= 3)
+		{
+			if (0 == strncasecmp(ext, "mp4", 3))
+			{
+				if (0 == strncasecmp(file, "maq", 3))
+				{
+					strcpy(download_dir, ext_dl_dir.avcmp4);
+				}
+				else 
+				{
+					strcpy(download_dir, ext_dl_dir.mp4);
+				}
+			}
+			else if (0 == strncasecmp(ext, "mp", 2))
+			{
+				strcpy(download_dir, ext_dl_dir.music);
+			}
+			else if (0 == strncasecmp(ext, "ogg", 3))
+			{
+				strcpy(download_dir, ext_dl_dir.music);
+			}
+			else if (0 == strncasecmp(ext, "jpg", 3))
+			{
+				strcpy(download_dir, ext_dl_dir.images);
+			}
+			else if (0 == strncasecmp(ext, "jpeg", 4))
+			{
+				strcpy(download_dir, ext_dl_dir.images);
+			}
+			else if (0 == strncasecmp(ext, "png", 3))
+			{
+				strcpy(download_dir, ext_dl_dir.images);
+			}
+			else if (0 == strncasecmp(ext, "mpg", 3))
+			{
+				strcpy(download_dir, ext_dl_dir.videos);
+			}
+			else if (0 == strncasecmp(ext, "avi", 3))
+			{
+				strcpy(download_dir, ext_dl_dir.videos);
+			}
+			else
+			{
+				strcpy(download_dir, ext_dl_dir.other);
+			}
+		}
+	}
+#endif
 	add_to_str(&def, &dfl, download_dir);
 	if (*def && !dir_sep(def[strlen(def) - 1])) add_chr_to_str(&def, &dfl, '/');
 	add_bytes_to_str(&def, &dfl, file, l);

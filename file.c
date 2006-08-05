@@ -112,6 +112,7 @@ char last_group[64];
 
 void stat_user(unsigned char **p, int *l, struct stat *stp, int g)
 {
+#ifndef PSP
 #ifdef FS_UNIX_USERS
 	struct passwd *pwd;
 	struct group *grp;
@@ -139,6 +140,7 @@ void stat_user(unsigned char **p, int *l, struct stat *stp, int g)
 	add_to_str(p, l, pp);
 	for (i = strlen(pp); i < 8; i++) add_chr_to_str(p, l, ' ');
 	add_chr_to_str(p, l, ' ');
+#endif
 #endif
 }
 
@@ -292,8 +294,12 @@ void file_func(struct connection *c)
 			l = 0;
 			n = stracpy(name);
 			add_to_strn(&n, de->d_name);
+#ifndef PSP
 #ifdef FS_UNIX_SOFTLINKS
 			if (lstat(n, &stt))
+#else
+			if (stat(n, &stt))
+#endif
 #else
 			if (stat(n, &stt))
 #endif
@@ -311,6 +317,7 @@ void file_func(struct connection *c)
 		if (dirl) qsort(dir, dirl, sizeof(struct dirs), (int(*)(const void *, const void *))comp_de);
 		for (i = 0; i < dirl; i++) {
 			unsigned char *lnk = NULL;
+#ifndef PSP
 #ifdef FS_UNIX_SOFTLINKS
 			if (dir[i].s[0] == 'l') {
 				unsigned char *buf = NULL;
@@ -334,6 +341,7 @@ void file_func(struct connection *c)
 				xxx:
 				mem_free(n);
 			}
+#endif
 #endif
 			/*add_to_str(&file, &fl, "   ");*/
 			add_to_str(&file, &fl, dir[i].s);
