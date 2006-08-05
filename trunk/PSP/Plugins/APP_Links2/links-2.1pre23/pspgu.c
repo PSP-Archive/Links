@@ -26,7 +26,6 @@
 
 #include <pspdisplay.h>
 #define printf pspDebugScreenPrintf
-#define BB_TO_FB_FACTOR 2
 #define PSP_MOUSE_ACCEL_CONST 30 /* default 30 */
 static volatile int sf_danzeffOn = 0;
 static volatile int s_BbRowOffset = 0, s_BbColOffset = 0;
@@ -684,10 +683,10 @@ void pspInputThread()
 
 					if (s_BbRowOffset < 0) s_BbRowOffset = 0;
 					if (s_BbColOffset < 0) s_BbColOffset = 0;
-					if (s_BbColOffset > (BB_TO_FB_FACTOR*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH))  
-						s_BbColOffset = (BB_TO_FB_FACTOR*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH);
-					if (s_BbRowOffset > (BB_TO_FB_FACTOR*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT)) 
-						s_BbRowOffset = (BB_TO_FB_FACTOR*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT);
+					if (s_BbColOffset > (g_PSPConfig_BB_TO_FB_FACTOR*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH))  
+						s_BbColOffset = (g_PSPConfig_BB_TO_FB_FACTOR*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH);
+					if (s_BbRowOffset > (g_PSPConfig_BB_TO_FB_FACTOR*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT)) 
+						s_BbRowOffset = (g_PSPConfig_BB_TO_FB_FACTOR*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT);
 
 					s_bbDirty = truE;
 				}
@@ -885,7 +884,7 @@ void render_thread()
 	SceCtrlData pad;
 	int fbRow, fbCol;
 	int bbRow, bbCol;
-	int bbLineSize = PSP_SCREEN_WIDTH*BB_TO_FB_FACTOR;
+	int bbLineSize = PSP_SCREEN_WIDTH*g_PSPConfig_BB_TO_FB_FACTOR;
 	int fbLineSize = PSP_LINE_SIZE;
 	int fbMult, bbMult;
 	int bb_to_fb_factor = 1;
@@ -908,7 +907,7 @@ void render_thread()
 			else
 			{
 				/** Display the whole backbuffer (shrinking if necessary..) */
-				bb_to_fb_factor = BB_TO_FB_FACTOR;
+				bb_to_fb_factor = g_PSPConfig_BB_TO_FB_FACTOR;
 				bb_row_offset = 0;
 				bb_col_offset = 0;
 			}
@@ -957,8 +956,8 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 
 	pspgu_console = st.st_rdev & 0xff;
 
-	pspgu_xsize=PSP_SCREEN_WIDTH*BB_TO_FB_FACTOR;
-	pspgu_ysize=PSP_SCREEN_HEIGHT*BB_TO_FB_FACTOR;
+	pspgu_xsize=PSP_SCREEN_WIDTH*g_PSPConfig_BB_TO_FB_FACTOR;
+	pspgu_ysize=PSP_SCREEN_HEIGHT*g_PSPConfig_BB_TO_FB_FACTOR;
 
 #if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
 	pspgu_bits_pp=32;
@@ -971,7 +970,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	pspgu_driver.y=pspgu_ysize;
 	pspgu_colors=1<<pspgu_bits_pp;
 
-	pspgu_linesize=PSP_SCREEN_WIDTH*pspgu_pixelsize*BB_TO_FB_FACTOR;
+	pspgu_linesize=PSP_SCREEN_WIDTH*pspgu_pixelsize*g_PSPConfig_BB_TO_FB_FACTOR;
 	pspgu_mem_size=pspgu_linesize * pspgu_ysize;
 
 	if (init_virtual_devices(&pspgu_driver, NUMBER_OF_DEVICES))

@@ -11,6 +11,9 @@
 volatile tBoolean g_PSPEnableRendering = truE;
 volatile tBoolean g_PSPEnableInput = truE;
 
+/* PSP Specific config items */
+tBoolean g_PSPConfig_BB_TO_FB_FACTOR = 1;
+
 extension_download_dirs ext_dl_dir;
 
 int env_termsize(int *x, int *y)
