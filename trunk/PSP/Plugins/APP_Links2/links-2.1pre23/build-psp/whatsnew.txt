@@ -1,11 +1,12 @@
  What's New for Links2 PSP Port
 ================================
 
-links-2.1pre23 PSP rxxxx (2006-07-xx)
+links-2.1pre23 PSP r1222 (2006-08-04)
 NEW FEATURES
 (raf) Cookie save/restore patch from cvs.pld.org.pl/SOURCES/links2-cookies-save.patch?rev=1.2 applied.
 (raf) Merged to 2.1pre23 See Changelog.orig
 (raf) Made psp_bb_to_fb_factor a configurable parameter in links.cfg (default=1, set to 2 to enable zoom mode)
+(raf) Also changed default font to 12 from 24. (Change to 24 in html.cfg if want to use zoom mode)
 BUG FIXES
 (raf) Reverted UP/DOWN behavior (user requested). (R+UP/DOWN still does page up/down, though).
 
