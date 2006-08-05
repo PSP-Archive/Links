@@ -1,0 +1,25 @@
+#!/bin/sh
+export SHAREDLIB_DIR="../../../../SharedLib"
+rm Makefile config.cache config.h config.log config.status  stamp-h 
+cp `find $PSPDEV/ -name "pspiofilemgr_dirent.h"` .
+export psp=yes
+export INCL="-I$SHAREDLIB_DIR/Tools"
+export CC="psp-gcc -I$SHAREDLIB_DIR/libpthread -I$PSPDEV/psp/include/ -I$PSPDEV/psp/sdk/include/ -I$PSPDEV/psp/include/machine/" 
+export CFLAGS="-I$PSPDEV/psp/sdk/include/ -I$PSPDEV/psp/include/machine/ $INCL" 
+export LDFLAGS="-L$(psp-config --pspsdk-path)/lib -L$(psp-config --pspsdk-path)/sdk/lib -L$SHAREDLIB_DIR/lib" 
+export LIBS="-lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel" 
+
+echo "Building internal configure dependencies..."
+cd $SHAREDLIB_DIR/libpthread && pwd && make all || (echo "Error building libpthread"; exit 0);
+cd -
+
+echo "Creating dummy dl library so configure can finish..."
+touch $SHAREDLIB_DIR/lib/libdl.a
+
+echo "Calling configure..."
+../configure --prefix=$(psp-config --psp-prefix) --srcdir=../ --target=psp --includedir=$PSPDEV/psp/sdk/include/ --enable-javascript --enable-graphics --without-svgalib --without-x --without-fb --without-directfb --without-pmshell --without-atheos --without-sdl --without-pspsdl --with-pspgu --with-ssl || (echo "Error configuring links2" ; exit 0);
+
+echo "include Makefile.psp" >> Makefile
+echo "Done."
+
+

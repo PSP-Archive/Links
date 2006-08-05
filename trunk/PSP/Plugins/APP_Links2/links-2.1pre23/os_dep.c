@@ -124,6 +124,9 @@ void unhandle_terminal_resize(int fd)
 
 int get_terminal_size(int fd, int *x, int *y)
 {
+#ifdef PSP
+	return env_termsize(x, y);
+#else
 	struct winsize ws;
 	if (!x || !y) return -1;
 	if (ioctl(1, TIOCGWINSZ, &ws) != -1) {
@@ -135,6 +138,7 @@ int get_terminal_size(int fd, int *x, int *y)
 		if (!(*y = get_e("LINES"))) *y = 24;
 	}
 	return 0;
+#endif
 }
 
 #elif defined(OS2)
@@ -307,7 +311,7 @@ int is_xterm(void)
 	return xt;
 }
 
-#elif defined(BEOS) || defined(ATHEOS)
+#elif defined(BEOS) || defined(ATHEOS) || defined(PSP)
 
 int is_xterm(void)
 {

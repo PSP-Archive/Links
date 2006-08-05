@@ -401,6 +401,8 @@ AC_ARG_WITH(directfb, [  --without-directfb      compile without DirectFB graphi
 dnl AC_ARG_WITH(sdl, [  --without-sdl           compile without SDL graphics driver],[if test "$withval" = no; then disable_sdl=yes; else disable_sdl=no; fi])
 AC_ARG_WITH(pmshell, [  --without-pmshell       compile without PMShell graphics driver],[if test "$withval" = no; then disable_pmshell=yes; else disable_pmshell=no; fi])
 AC_ARG_WITH(atheos, [  --without-atheos        compile without Atheos graphics driver],[if test "$withval" = no; then disable_atheos=yes; else disable_atheos; fi])
+AC_ARG_WITH(pspsdl, [  --without-pspsdl        compile without PSP SDL graphics support],[if test "$withval" = no; then disable_pspsdl=yes; else disable_pspsdl; fi])
+AC_ARG_WITH(pspgu,  [  --without-pspgu         compile without PSP GU graphics support],[if test "$withval" = no; then disable_pspgu=yes; else disable_gu; fi])
 
 	drivers=""
 
@@ -488,6 +490,41 @@ dnl 			AC_MSG_RESULT(no)
 dnl 		fi
 dnl 	fi
 dnl fi
+
+if test "$disable_pspsdl" != yes ; then
+	if test "$target" == "psp"; then
+		AC_PATH_PROG(SDL_CONFIG, sdl-config, no)
+		if test "$SDL_CONFIG" != "no"; then
+				AC_MSG_CHECKING(for SDL >= 1.2.0)
+				sdl_version="`$SDL_CONFIG --version`"
+			if expr "$sdl_version" \>= 1.2.0 >/dev/null; then
+				AC_MSG_RESULT(yes)
+				PSPSDL_CFLAGS="-DPSP -I/usr/local/pspdev/psp/include/ `$SDL_CONFIG --cflags`"
+				PSPSDL_LIBS="`$SDL_CONFIG --libs`"
+					AC_DEFINE(GRDRV_PSPSDL)
+					drivers="$drivers PSPSDL"
+				CPPFLAGS="$CPPFLAGS $PSPSDL_CFLAGS"
+				AC_CHECK_LIB(Xext, XextAddDisplay)
+				LIBS="$PSPSDL_LIBS $LIBS"
+			else
+				AC_MSG_RESULT(no)
+			fi
+		fi
+	fi
+fi
+
+if test "$disable_pspgu" != yes ; then
+	if test "$target" == "psp"; then
+		AC_MSG_RESULT(yes)
+		PSPGU_CFLAGS="-DPSP"
+		PSPGU_LIBS=""
+		AC_DEFINE(GRDRV_PSPGU)
+		drivers="$drivers PSPGU"
+		CPPFLAGS="$CPPFLAGS $PSPGU_CFLAGS"
+		AC_CHECK_LIB(Xext, XextAddDisplay)
+		LIBS="$PSPGU_LIBS $LIBS"
+	fi
+fi
 
 if test "$disable_pmshell" != yes ; then
 	AC_CACHE_CHECK([for pmshell], ac_cv_have_pmshell,

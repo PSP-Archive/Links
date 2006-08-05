@@ -104,6 +104,12 @@
 #undef GRDRV_SDL
 
 /* */
+#undef GRDRV_PSPSDL
+
+/* */
+#undef GRDRV_PSPGU
+
+/* */
 #undef GRDRV_ATHEOS
 
 /* */

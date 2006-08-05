@@ -1,3 +1,4 @@
+# Generated automatically from Makefile.in by configure.
 # Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
@@ -15,44 +16,44 @@
 #          Martin 'PerM' Pergel
 
 
-SHELL = @SHELL@
+SHELL = /bin/sh
 
-srcdir = @srcdir@
-top_srcdir = @top_srcdir@
-VPATH = @srcdir@
-prefix = @prefix@
-exec_prefix = @exec_prefix@
+srcdir = ..
+top_srcdir = ..
+VPATH = ..
+prefix = /usr/local/pspdev/psp
+exec_prefix = ${prefix}
 
-bindir = @bindir@
-sbindir = @sbindir@
-libexecdir = @libexecdir@
-sysconfdir = @sysconfdir@
-sharedstatedir = @sharedstatedir@
-localstatedir = @localstatedir@
-libdir = @libdir@
-infodir = @infodir@
-mandir = @mandir@
-includedir = @includedir@
+bindir = ${exec_prefix}/bin
+sbindir = ${exec_prefix}/sbin
+libexecdir = ${exec_prefix}/libexec
+sysconfdir = ${prefix}/etc
+sharedstatedir = ${prefix}/com
+localstatedir = ${prefix}/var
+libdir = ${exec_prefix}/lib
+infodir = ${prefix}/info
+mandir = ${prefix}/man
+includedir = /usr/local/pspdev/psp/sdk/include/
 oldincludedir = /usr/include
 
 DESTDIR =
 
-pkgdatadir = $(datadir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkgincludedir = $(includedir)/@PACKAGE@
+pkgdatadir = $(datadir)/links
+pkglibdir = $(libdir)/links
+pkgincludedir = $(includedir)/links
 
 top_builddir = .
 
-ACLOCAL = @ACLOCAL@
-AUTOCONF = @AUTOCONF@
-AUTOMAKE = @AUTOMAKE@
-AUTOHEADER = @AUTOHEADER@
+ACLOCAL = ./missing aclocal
+AUTOCONF = ./missing autoconf
+AUTOMAKE = ./missing automake
+AUTOHEADER = ./missing autoheader
 
-INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_SCRIPT = @INSTALL_SCRIPT@
-transform = @program_transform_name@
+INSTALL = /usr/bin/install -c
+INSTALL_PROGRAM = ${INSTALL} $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = ${INSTALL} -m 644
+INSTALL_SCRIPT = ${INSTALL_PROGRAM}
+transform = s,x,x,
 
 NORMAL_INSTALL = :
 PRE_INSTALL = :
@@ -60,14 +61,14 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-CC = @CC@
-CXX = @CXX@
-DIRECTFB_CONFIG = @DIRECTFB_CONFIG@
-MAKEINFO = @MAKEINFO@
-PACKAGE = @PACKAGE@
-PKG_CONFIG = @PKG_CONFIG@
-SDL_CONFIG = @SDL_CONFIG@
-VERSION = @VERSION@
+CC = psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/
+CXX = 
+DIRECTFB_CONFIG = 
+MAKEINFO = makeinfo
+PACKAGE = links
+PKG_CONFIG = /usr/bin/pkg-config
+SDL_CONFIG = 
+VERSION = 2.1pre23
 
 man_MANS = links.1
 
@@ -75,14 +76,14 @@ EXTRA_DIST = atheos.cpp $(man_MANS) BRAILLE_HOWTO KEYS BUGS TODO SITES PATCH-gpm
 
 bin_PROGRAMS = links
 
-@ATHEOS_GR_TRUE@links_LDADD = atheos.o
+#links_LDADD = atheos.o
 
 links_SOURCES = af_unix.c auth.c beos.c bfu.c block.c bookmarks.c builtin.c cache.c charsets.c connect.c context.c cookies.c default.c dip.c directfb.c directfb_cursors.h dither.c dns.c drivers.c error.c file.c finger.c font_include.c framebuffer.c ftp.c gif.c html.c html_gr.c html_r.c html_tbl.c http.c https.c img.c imgcache.c ipret.c javascr.c javascript.c jpeg.c jsint.c kbd.c language.c links_icon.c listedit.c lru.c mailto.c main.c md5.c md5hl.c menu.c memory.c ns.c objreq.c os_dep.c pmshell.c png.c pomocny.c regexp.c sched.c select.c session.c smb.c svgalib.c terminal.c tiff.c types.c url.c view.c view_gr.c win32.c x.c xbm.c links.h cfg.h os_dep.h os_depx.h setup.h codepage.h language.h codepage.inc entity.inc uni_7b.inc language.inc upcase.inc arrow.inc md5.h ns.h struct.h tree.h typy.h ipret.h javascript.h builtin.h builtin_keys.h bits.h psp.c plugin_main.c pspsdl.c pspgu.c
 
-CXXFLAGS = @CXXFLAGS@
+CXXFLAGS = 
 
 datadir = $(prefix)/@DATADIRNAME@
-LIBS = @LIBS@
+LIBS = -ljpeg -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
@@ -90,9 +91,9 @@ CONFIG_CLEAN_FILES =
 PROGRAMS =  $(bin_PROGRAMS)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I.
-CPPFLAGS = @CPPFLAGS@
-LDFLAGS = @LDFLAGS@
+DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I.
+CPPFLAGS =      -DPSP -I/usr/include/libpng12  
+LDFLAGS = -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib
 links_OBJECTS =  af_unix.o auth.o beos.o bfu.o block.o bookmarks.o \
 builtin.o cache.o charsets.o connect.o context.o cookies.o default.o \
 dip.o directfb.o dither.o dns.o drivers.o error.o file.o finger.o \
@@ -103,9 +104,9 @@ lru.o mailto.o main.o md5.o md5hl.o menu.o memory.o ns.o objreq.o \
 os_dep.o pmshell.o png.o pomocny.o regexp.o sched.o select.o session.o \
 smb.o svgalib.o terminal.o tiff.o types.o url.o view.o view_gr.o \
 win32.o x.o xbm.o psp.o plugin_main.o pspsdl.o pspgu.o
-@ATHEOS_GR_TRUE@links_DEPENDENCIES =  atheos.o
+#links_DEPENDENCIES =  atheos.o
 links_LDFLAGS = 
-CFLAGS = @CFLAGS@
+CFLAGS = -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
@@ -498,3 +499,4 @@ atheos.o: atheos.cpp
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+include Makefile.psp

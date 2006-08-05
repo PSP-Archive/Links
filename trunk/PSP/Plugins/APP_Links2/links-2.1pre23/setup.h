@@ -6,7 +6,12 @@
 #if 0
 #define VERSION_STRING			VERSION " ["__DATE__ " " __TIME__"]"
 #else
-#define VERSION_STRING			VERSION
+#ifdef PSP
+	#include "svn_version.h"
+	#define VERSION_STRING	VERSION " PSP SVN r" SVN_VERSION
+#else
+	#define VERSION_STRING			VERSION
+#endif
 #endif
 
 /* DEBUG LEVEL:
@@ -30,12 +35,16 @@
 #define LEAK_DEBUG
 #endif
 
-#define LINKS_MANUAL_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
-					"http://links.twibright.com/user.html":\
-					"http://links.sourceforge.net/docs/manual-0.90-en/")
+#ifdef PSP
+#define LINKS_HOMEPAGE_URL	"http://pspradio.sf.net/Links2/APP_Links2.html"
+#else
 #define LINKS_HOMEPAGE_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
 					"http://links.twibright.com/index_cz.php":\
 					"http://links.twibright.com/")
+#endif
+#define LINKS_MANUAL_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
+					"http://links.twibright.com/user.html":\
+					"http://links.sourceforge.net/docs/manual-0.90-en/")
 #define LINKS_CALIBRATION_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
 					"http://links.twibright.com/kalibrace.html":\
 					"http://links.twibright.com/calibration.html")

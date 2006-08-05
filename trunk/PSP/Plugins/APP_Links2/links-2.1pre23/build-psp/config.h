@@ -1,511 +1,512 @@
+/* config.h.  Generated automatically by configure.  */
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 /* Define to empty if the keyword does not work.  */
-#undef const
+/* #undef const */
 
 /* Define to one of _getb67, GETB67, getb67 for Cray-2 and Cray-YMP systems.
    This function is required for alloca.c support on those systems.  */
-#undef CRAY_STACKSEG_END
+/* #undef CRAY_STACKSEG_END */
 
 /* Define to the type of elements in the array set by `getgroups'.
    Usually this is either `int' or `gid_t'.  */
-#undef GETGROUPS_T
+/* #undef GETGROUPS_T */
 
 /* Define if the `getloadavg' function needs to be run setuid or setgid.  */
-#undef GETLOADAVG_PRIVILEGED
+/* #undef GETLOADAVG_PRIVILEGED */
 
 /* Define if the `getpgrp' function takes no argument.  */
-#undef GETPGRP_VOID
+/* #undef GETPGRP_VOID */
 
 /* Define if you don't have vprintf but do have _doprnt.  */
-#undef HAVE_DOPRNT
+/* #undef HAVE_DOPRNT */
 
 /* Define if you have the strftime function.  */
-#undef HAVE_STRFTIME
+#define HAVE_STRFTIME 1
 
 /* Define if you have <sys/wait.h> that is POSIX.1 compatible.  */
-#undef HAVE_SYS_WAIT_H
+#define HAVE_SYS_WAIT_H 1
 
 /* Define if you have the vprintf function.  */
-#undef HAVE_VPRINTF
+#define HAVE_VPRINTF 1
 
 /* Define as __inline if that's what the C compiler calls it.  */
-#undef inline
+/* #undef inline */
 
 /* Define as the return type of signal handlers (int or void).  */
-#undef RETSIGTYPE
+#define RETSIGTYPE void
 
 /* Define to `unsigned' if <sys/types.h> doesn't define.  */
-#undef size_t
+/* #undef size_t */
 
 /* Define if you have the ANSI C header files.  */
-#undef STDC_HEADERS
+/* #undef STDC_HEADERS */
 
 /* Define if you can safely include both <sys/time.h> and <time.h>.  */
-#undef TIME_WITH_SYS_TIME
+#define TIME_WITH_SYS_TIME 1
 
 /* Define if your <sys/time.h> declares struct tm.  */
-#undef TM_IN_SYS_TIME
+#define TM_IN_SYS_TIME 1
 
 /* The number of bytes in a int.  */
-#undef SIZEOF_INT
+#define SIZEOF_INT 0
 
 /* The number of bytes in a long.  */
-#undef SIZEOF_LONG
+#define SIZEOF_LONG 0
 
 /* The number of bytes in a short.  */
-#undef SIZEOF_SHORT
+#define SIZEOF_SHORT 0
 
 /* The number of bytes in a unsigned.  */
-#undef SIZEOF_UNSIGNED
+#define SIZEOF_UNSIGNED 0
 
 /* The number of bytes in a unsigned long.  */
-#undef SIZEOF_UNSIGNED_LONG
+#define SIZEOF_UNSIGNED_LONG 0
 
 /* The number of bytes in a unsigned short.  */
-#undef SIZEOF_UNSIGNED_SHORT
+#define SIZEOF_UNSIGNED_SHORT 0
 
 /* Define if you have the MD5Data function.  */
-#undef HAVE_MD5DATA
+/* #undef HAVE_MD5DATA */
 
 /* Define if you have the MD5Init function.  */
-#undef HAVE_MD5INIT
+/* #undef HAVE_MD5INIT */
 
 /* Define if you have the calloc function.  */
-#undef HAVE_CALLOC
+#define HAVE_CALLOC 1
 
 /* Define if you have the chmod function.  */
-#undef HAVE_CHMOD
+/* #undef HAVE_CHMOD */
 
 /* Define if you have the cygwin_conv_to_full_win32_path function.  */
-#undef HAVE_CYGWIN_CONV_TO_FULL_WIN32_PATH
+/* #undef HAVE_CYGWIN_CONV_TO_FULL_WIN32_PATH */
 
 /* Define if you have the getpagesize function.  */
-#undef HAVE_GETPAGESIZE
+/* #undef HAVE_GETPAGESIZE */
 
 /* Define if you have the getpid function.  */
-#undef HAVE_GETPID
+#define HAVE_GETPID 1
 
 /* Define if you have the gettimeofday function.  */
-#undef HAVE_GETTIMEOFDAY
+#define HAVE_GETTIMEOFDAY 1
 
 /* Define if you have the memmove function.  */
-#undef HAVE_MEMMOVE
+#define HAVE_MEMMOVE 1
 
 /* Define if you have the mkdir function.  */
-#undef HAVE_MKDIR
+#define HAVE_MKDIR 1
 
 /* Define if you have the nl_langinfo function.  */
-#undef HAVE_NL_LANGINFO
+#define HAVE_NL_LANGINFO 1
 
 /* Define if you have the png_get_bit_depth function.  */
-#undef HAVE_PNG_GET_BIT_DEPTH
+#define HAVE_PNG_GET_BIT_DEPTH 1
 
 /* Define if you have the png_get_color_type function.  */
-#undef HAVE_PNG_GET_COLOR_TYPE
+#define HAVE_PNG_GET_COLOR_TYPE 1
 
 /* Define if you have the png_get_gAMA function.  */
-#undef HAVE_PNG_GET_GAMA
+#define HAVE_PNG_GET_GAMA 1
 
 /* Define if you have the png_get_image_height function.  */
-#undef HAVE_PNG_GET_IMAGE_HEIGHT
+#define HAVE_PNG_GET_IMAGE_HEIGHT 1
 
 /* Define if you have the png_get_image_width function.  */
-#undef HAVE_PNG_GET_IMAGE_WIDTH
+#define HAVE_PNG_GET_IMAGE_WIDTH 1
 
 /* Define if you have the png_get_sRGB function.  */
-#undef HAVE_PNG_GET_SRGB
+#define HAVE_PNG_GET_SRGB 1
 
 /* Define if you have the png_get_valid function.  */
-#undef HAVE_PNG_GET_VALID
+#define HAVE_PNG_GET_VALID 1
 
 /* Define if you have the png_set_rgb_to_gray function.  */
-#undef HAVE_PNG_SET_RGB_TO_GRAY
+#define HAVE_PNG_SET_RGB_TO_GRAY 1
 
 /* Define if you have the png_set_strip_alpha function.  */
-#undef HAVE_PNG_SET_STRIP_ALPHA
+#define HAVE_PNG_SET_STRIP_ALPHA 1
 
 /* Define if you have the popen function.  */
-#undef HAVE_POPEN
+/* #undef HAVE_POPEN */
 
 /* Define if you have the raise function.  */
-#undef HAVE_RAISE
+#define HAVE_RAISE 1
 
 /* Define if you have the regcomp function.  */
-#undef HAVE_REGCOMP
+/* #undef HAVE_REGCOMP */
 
 /* Define if you have the resume_thread function.  */
-#undef HAVE_RESUME_THREAD
+/* #undef HAVE_RESUME_THREAD */
 
 /* Define if you have the select function.  */
-#undef HAVE_SELECT
+#define HAVE_SELECT 1
 
 /* Define if you have the setlocale function.  */
-#undef HAVE_SETLOCALE
+#define HAVE_SETLOCALE 1
 
 /* Define if you have the setpgid function.  */
-#undef HAVE_SETPGID
+/* #undef HAVE_SETPGID */
 
 /* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
+#define HAVE_SNPRINTF 1
 
 /* Define if you have the spawn_thread function.  */
-#undef HAVE_SPAWN_THREAD
+/* #undef HAVE_SPAWN_THREAD */
 
 /* Define if you have the strcspn function.  */
-#undef HAVE_STRCSPN
+#define HAVE_STRCSPN 1
 
 /* Define if you have the strerror function.  */
-#undef HAVE_STRERROR
+#define HAVE_STRERROR 1
 
 /* Define if you have the strptime function.  */
-#undef HAVE_STRPTIME
+#define HAVE_STRPTIME 1
 
 /* Define if you have the strstr function.  */
-#undef HAVE_STRSTR
+#define HAVE_STRSTR 1
 
 /* Define if you have the strtol function.  */
-#undef HAVE_STRTOL
+#define HAVE_STRTOL 1
 
 /* Define if you have the strtoll function.  */
-#undef HAVE_STRTOLL
+#define HAVE_STRTOLL 1
 
 /* Define if you have the strtoq function.  */
-#undef HAVE_STRTOQ
+/* #undef HAVE_STRTOQ */
 
 /* Define if you have the strtoul function.  */
-#undef HAVE_STRTOUL
+#define HAVE_STRTOUL 1
 
 /* Define if you have the uname function.  */
-#undef HAVE_UNAME
+/* #undef HAVE_UNAME */
 
 /* Define if you have the <X11/X.h> header file.  */
-#undef HAVE_X11_X_H
+/* #undef HAVE_X11_X_H */
 
 /* Define if you have the <X11/Xlib.h> header file.  */
-#undef HAVE_X11_XLIB_H
+/* #undef HAVE_X11_XLIB_H */
 
 /* Define if you have the <X11/Xlocale.h> header file.  */
-#undef HAVE_X11_XLOCALE_H
+/* #undef HAVE_X11_XLOCALE_H */
 
 /* Define if you have the <X11/Xutil.h> header file.  */
-#undef HAVE_X11_XUTIL_H
+/* #undef HAVE_X11_XUTIL_H */
 
 /* Define if you have the <atheos/threads.h> header file.  */
-#undef HAVE_ATHEOS_THREADS_H
+/* #undef HAVE_ATHEOS_THREADS_H */
 
 /* Define if you have the <dirent.h> header file.  */
-#undef HAVE_DIRENT_H
+#define HAVE_DIRENT_H 1
 
 /* Define if you have the <endian.h> header file.  */
-#undef HAVE_ENDIAN_H
+#define HAVE_ENDIAN_H 1
 
 /* Define if you have the <fcntl.h> header file.  */
-#undef HAVE_FCNTL_H
+#define HAVE_FCNTL_H 1
 
 /* Define if you have the <gpm.h> header file.  */
-#undef HAVE_GPM_H
+/* #undef HAVE_GPM_H */
 
 /* Define if you have the <gui/bitmap.h> header file.  */
-#undef HAVE_GUI_BITMAP_H
+/* #undef HAVE_GUI_BITMAP_H */
 
 /* Define if you have the <gui/desktop.h> header file.  */
-#undef HAVE_GUI_DESKTOP_H
+/* #undef HAVE_GUI_DESKTOP_H */
 
 /* Define if you have the <gui/view.h> header file.  */
-#undef HAVE_GUI_VIEW_H
+/* #undef HAVE_GUI_VIEW_H */
 
 /* Define if you have the <gui/window.h> header file.  */
-#undef HAVE_GUI_WINDOW_H
+/* #undef HAVE_GUI_WINDOW_H */
 
 /* Define if you have the <ieee.h> header file.  */
-#undef HAVE_IEEE_H
+/* #undef HAVE_IEEE_H */
 
 /* Define if you have the <io.h> header file.  */
-#undef HAVE_IO_H
+/* #undef HAVE_IO_H */
 
 /* Define if you have the <jpeglib.h> header file.  */
-#undef HAVE_JPEGLIB_H
+#define HAVE_JPEGLIB_H 1
 
 /* Define if you have the <langinfo.h> header file.  */
-#undef HAVE_LANGINFO_H
+#define HAVE_LANGINFO_H 1
 
 /* Define if you have the <libpng/png.h> header file.  */
-#undef HAVE_LIBPNG_PNG_H
+/* #undef HAVE_LIBPNG_PNG_H */
 
 /* Define if you have the <limits.h> header file.  */
-#undef HAVE_LIMITS_H
+#define HAVE_LIMITS_H 1
 
 /* Define if you have the <linux/fb.h> header file.  */
-#undef HAVE_LINUX_FB_H
+/* #undef HAVE_LINUX_FB_H */
 
 /* Define if you have the <linux/kd.h> header file.  */
-#undef HAVE_LINUX_KD_H
+/* #undef HAVE_LINUX_KD_H */
 
 /* Define if you have the <linux/vt.h> header file.  */
-#undef HAVE_LINUX_VT_H
+/* #undef HAVE_LINUX_VT_H */
 
 /* Define if you have the <math.h> header file.  */
-#undef HAVE_MATH_H
+#define HAVE_MATH_H 1
 
 /* Define if you have the <md5.h> header file.  */
-#undef HAVE_MD5_H
+/* #undef HAVE_MD5_H */
 
 /* Define if you have the <ndir.h> header file.  */
-#undef HAVE_NDIR_H
+/* #undef HAVE_NDIR_H */
 
 /* Define if you have the <netinet/dhcp.h> header file.  */
-#undef HAVE_NETINET_DHCP_H
+/* #undef HAVE_NETINET_DHCP_H */
 
 /* Define if you have the <netinet/in_system.h> header file.  */
-#undef HAVE_NETINET_IN_SYSTEM_H
+/* #undef HAVE_NETINET_IN_SYSTEM_H */
 
 /* Define if you have the <netinet/in_systm.h> header file.  */
-#undef HAVE_NETINET_IN_SYSTM_H
+/* #undef HAVE_NETINET_IN_SYSTM_H */
 
 /* Define if you have the <netinet/ip.h> header file.  */
-#undef HAVE_NETINET_IP_H
+/* #undef HAVE_NETINET_IP_H */
 
 /* Define if you have the <pcre.h> header file.  */
-#undef HAVE_PCRE_H
+/* #undef HAVE_PCRE_H */
 
 /* Define if you have the <png.h> header file.  */
-#undef HAVE_PNG_H
+#define HAVE_PNG_H 1
 
 /* Define if you have the <regex.h> header file.  */
-#undef HAVE_REGEX_H
+/* #undef HAVE_REGEX_H */
 
 /* Define if you have the <setjmp.h> header file.  */
-#undef HAVE_SETJMP_H
+#define HAVE_SETJMP_H 1
 
 /* Define if you have the <sigaction.h> header file.  */
-#undef HAVE_SIGACTION_H
+/* #undef HAVE_SIGACTION_H */
 
 /* Define if you have the <sys/cygwin.h> header file.  */
-#undef HAVE_SYS_CYGWIN_H
+/* #undef HAVE_SYS_CYGWIN_H */
 
 /* Define if you have the <sys/dir.h> header file.  */
-#undef HAVE_SYS_DIR_H
+/* #undef HAVE_SYS_DIR_H */
 
 /* Define if you have the <sys/fmutex.h> header file.  */
-#undef HAVE_SYS_FMUTEX_H
+/* #undef HAVE_SYS_FMUTEX_H */
 
 /* Define if you have the <sys/ioctl.h> header file.  */
-#undef HAVE_SYS_IOCTL_H
+#define HAVE_SYS_IOCTL_H 1
 
 /* Define if you have the <sys/mman.h> header file.  */
-#undef HAVE_SYS_MMAN_H
+/* #undef HAVE_SYS_MMAN_H */
 
 /* Define if you have the <sys/ndir.h> header file.  */
-#undef HAVE_SYS_NDIR_H
+/* #undef HAVE_SYS_NDIR_H */
 
 /* Define if you have the <sys/resource.h> header file.  */
-#undef HAVE_SYS_RESOURCE_H
+#define HAVE_SYS_RESOURCE_H 1
 
 /* Define if you have the <sys/select.h> header file.  */
-#undef HAVE_SYS_SELECT_H
+#define HAVE_SYS_SELECT_H 1
 
 /* Define if you have the <sys/time.h> header file.  */
-#undef HAVE_SYS_TIME_H
+#define HAVE_SYS_TIME_H 1
 
 /* Define if you have the <sys/un.h> header file.  */
-#undef HAVE_SYS_UN_H
+/* #undef HAVE_SYS_UN_H */
 
 /* Define if you have the <sys/utsname.h> header file.  */
-#undef HAVE_SYS_UTSNAME_H
+/* #undef HAVE_SYS_UTSNAME_H */
 
 /* Define if you have the <tiffio.h> header file.  */
-#undef HAVE_TIFFIO_H
+/* #undef HAVE_TIFFIO_H */
 
 /* Define if you have the <time.h> header file.  */
-#undef HAVE_TIME_H
+#define HAVE_TIME_H 1
 
 /* Define if you have the <unistd.h> header file.  */
-#undef HAVE_UNISTD_H
+#define HAVE_UNISTD_H 1
 
 /* Define if you have the <util/application.h> header file.  */
-#undef HAVE_UTIL_APPLICATION_H
+/* #undef HAVE_UTIL_APPLICATION_H */
 
 /* Define if you have the <util/locker.h> header file.  */
-#undef HAVE_UTIL_LOCKER_H
+/* #undef HAVE_UTIL_LOCKER_H */
 
 /* Define if you have the <values.h> header file.  */
-#undef HAVE_VALUES_H
+/* #undef HAVE_VALUES_H */
 
 /* Define if you have the X11 library (-lX11).  */
-#undef HAVE_LIBX11
+/* #undef HAVE_LIBX11 */
 
 /* Define if you have the atheos library (-latheos).  */
-#undef HAVE_LIBATHEOS
+/* #undef HAVE_LIBATHEOS */
 
 /* Define if you have the dl library (-ldl).  */
-#undef HAVE_LIBDL
+/* #undef HAVE_LIBDL */
 
 /* Define if you have the gpm library (-lgpm).  */
-#undef HAVE_LIBGPM
+/* #undef HAVE_LIBGPM */
 
 /* Define if you have the jpeg library (-ljpeg).  */
-#undef HAVE_LIBJPEG
+#define HAVE_LIBJPEG 1
 
 /* Define if you have the m library (-lm).  */
-#undef HAVE_LIBM
+#define HAVE_LIBM 1
 
 /* Define if you have the md library (-lmd).  */
-#undef HAVE_LIBMD
+/* #undef HAVE_LIBMD */
 
 /* Define if you have the nsl library (-lnsl).  */
-#undef HAVE_LIBNSL
+/* #undef HAVE_LIBNSL */
 
 /* Define if you have the pcre library (-lpcre).  */
-#undef HAVE_LIBPCRE
+/* #undef HAVE_LIBPCRE */
 
 /* Define if you have the png library (-lpng).  */
-#undef HAVE_LIBPNG
+#define HAVE_LIBPNG 1
 
 /* Define if you have the socket library (-lsocket).  */
-#undef HAVE_LIBSOCKET
+/* #undef HAVE_LIBSOCKET */
 
 /* Define if you have the stdc++ library (-lstdc++).  */
-#undef HAVE_LIBSTDC__
+/* #undef HAVE_LIBSTDC__ */
 
 /* Define if you have the tiff library (-ltiff).  */
-#undef HAVE_LIBTIFF
+/* #undef HAVE_LIBTIFF */
 
 /* Define if you have the z library (-lz).  */
-#undef HAVE_LIBZ
+#define HAVE_LIBZ 1
 
 /* Name of package */
-#undef PACKAGE
+#define PACKAGE "links"
 
 /* Version number of package */
-#undef VERSION
+#define VERSION "2.1pre23"
 
 
 /* Define to 1 if NLS is requested.  */
-#undef ENABLE_NLS
+/* #undef ENABLE_NLS */
 
 /* Define as 1 if you have catgets and don't want to use GNU gettext.  */
-#undef HAVE_CATGETS
+/* #undef HAVE_CATGETS */
 
 /* Define as 1 if you have gettext and don't want to use GNU gettext.  */
-#undef HAVE_GETTEXT
+/* #undef HAVE_GETTEXT */
 
 /* Define if your locale.h file contains LC_MESSAGES.  */
-#undef HAVE_LC_MESSAGES
+/* #undef HAVE_LC_MESSAGES */
 
 /* Define to 1 if you have the stpcpy function.  */
-#undef HAVE_STPCPY
+/* #undef HAVE_STPCPY */
 
 /* */
-#undef HAVE_TYPEOF
+#define HAVE_TYPEOF 1
 
 /* */
-#undef HAVE_LONG_LONG
+#define HAVE_LONG_LONG 1
 
 /* */
-#undef HAVE_SIGSETJMP
+/* #undef HAVE_SIGSETJMP */
 
 /* */
-#undef HAVE_CHMOD
+/* #undef HAVE_CHMOD */
 
 /* */
-#undef HAVE_ALARM
+/* #undef HAVE_ALARM */
 
 /* */
-#undef HAVE_CFMAKERAW
+/* #undef HAVE_CFMAKERAW */
 
 /* */
-#undef HAVE_GETHOSTBYADDR
+#define HAVE_GETHOSTBYADDR 1
 
 /* */
-#undef HAVE_DHCP_OPTION
+/* #undef HAVE_DHCP_OPTION */
 
 /* */
-#undef HAVE_HERROR
+/* #undef HAVE_HERROR */
 
 /* */
-#undef HAVE_BEGINTHREAD
+/* #undef HAVE_BEGINTHREAD */
 
 /* */
-#undef HAVE_MOUOPEN
+/* #undef HAVE_MOUOPEN */
 
 /* */
-#undef HAVE_READ_KBD
+/* #undef HAVE_READ_KBD */
 
 /* */
-#undef HAVE_CLONE
+/* #undef HAVE_CLONE */
 
 /* */
-#undef HAVE_PTHREADS
+/* #undef HAVE_PTHREADS */
 
 /* */
-#undef HAVE_SSL
+#define HAVE_SSL 1
 
 /* */
-#undef X2
+/* #undef X2 */
 
 /* */
-#undef DEBUGLEVEL
+#define DEBUGLEVEL 2
 
 /* */
-#undef JS
+#define JS 1
 
 /* */
-#undef HAVE_PCRE
+/* #undef HAVE_PCRE */
 
 /* */
-#undef HAVE_REGEX
+/* #undef HAVE_REGEX */
 
 /* */
-#undef CHCEME_FLEXI_LIBU
+#define CHCEME_FLEXI_LIBU 1
 
 /* By PerM's ideological comittee */
-#undef VERSION
+#define VERSION "2.1pre23"
 
 /* */
-#undef G
+#define G 1
 
 /* */
-#undef GRDRV_SVGALIB
+/* #undef GRDRV_SVGALIB */
 
 /* */
-#undef GRDRV_FB
+/* #undef GRDRV_FB */
 
 /* */
-#undef GRDRV_DIRECTFB
+/* #undef GRDRV_DIRECTFB */
 
 /* */
-#undef GRDRV_PMSHELL
+/* #undef GRDRV_PMSHELL */
 
 /* */
-#undef GRDRV_X
+/* #undef GRDRV_X */
 
 /* */
-#undef GRDRV_SDL
+/* #undef GRDRV_SDL */
 
 /* */
-#undef GRDRV_PSPSDL
+/* #undef GRDRV_PSPSDL */
 
 /* */
-#undef GRDRV_PSPGU
+#define GRDRV_PSPGU 1
 
 /* */
-#undef GRDRV_ATHEOS
+/* #undef GRDRV_ATHEOS */
 
 /* */
-#undef DONT_INCLUDE_SETJMP
+#define DONT_INCLUDE_SETJMP 1
 
 /* Tiff by Brain */
-#undef HAVE_TIFF
+/* #undef HAVE_TIFF */
 
 /* Jpeg by Clock */
-#undef HAVE_JPEG
+#define HAVE_JPEG 1
 
 /* */
-#undef C_BIG_ENDIAN
+/* #undef C_BIG_ENDIAN */
 
 /* */
-#undef C_LITTLE_ENDIAN
+/* #undef C_LITTLE_ENDIAN */
 
 /* */
-#undef RENAME_OVER_EXISTING_FILES
+/* #undef RENAME_OVER_EXISTING_FILES */

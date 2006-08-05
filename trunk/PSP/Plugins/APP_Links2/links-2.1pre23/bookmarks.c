@@ -594,6 +594,9 @@ void add_bookmark(unsigned char *title, unsigned char *url, int depth)
 	if (p->depth<b->depth)b->fotr=p;   /* directory b belongs into */
 	else b->fotr=p->fotr;
 	mem_free(dop);
+#ifdef PSP
+	save_bookmarks();
+#endif
 }
 
 /* Created pre-cooked bookmarks */

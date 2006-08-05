@@ -21,7 +21,9 @@ struct {
 		{"proxy", 3128, proxy_func, NULL, 0, 1, 1, 1},
 		{"ftp", 21, ftp_func, NULL, 0, 1, 1, 0},
 		{"finger", 79, finger_func, NULL, 0, 1, 1, 0},
+#ifndef PSP
 		{"smb", 139, smb_func, NULL, 0, 1, 1, 0},
+#endif
 		{"mailto", 0, NULL, mailto_func, 0, 0, 0, 0},
 		{"telnet", 0, NULL, telnet_func, 0, 0, 0, 0},
 		{"tn3270", 0, NULL, tn3270_func, 0, 0, 0, 0},
@@ -290,6 +292,9 @@ void insert_wd(unsigned char **up, unsigned char *cwd)
 #endif
 #ifdef SPAD
 	if (_is_absolute(url + 7) != _ABS_NO) return;
+#endif
+#ifdef PSP
+	if (upcase(url[7]) == 'M' && upcase(url[8]) == 'S' && url[9] == '0' && url[10] == ':' && dir_sep(url[11])) return;
 #endif
 	url = mem_alloc(strlen(*up) + strlen(cwd) + 2);
 	memcpy(url, *up, 7);

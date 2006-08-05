@@ -6,6 +6,10 @@
 
 #include "links.h"
 
+#ifdef PSP
+	#define printf pspDebugScreenPrintf
+#endif
+
 /*
 #define DEBUG_CALLS
 */
@@ -295,6 +299,7 @@ void install_signal_handler(int sig, void (*fn)(void *), void *data, int critica
 	}
 	if (!fn) sa.sa_handler = SIG_IGN;
 	else sa.sa_handler = got_signal;
+#ifndef PSP 
 	sigfillset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	if (!fn) sigaction(sig, &sa, NULL);
@@ -302,6 +307,7 @@ void install_signal_handler(int sig, void (*fn)(void *), void *data, int critica
 	signal_handlers[sig].data = data;
 	signal_handlers[sig].critical = critical;
 	if (fn) sigaction(sig, &sa, NULL);
+#endif
 }
 
 void interruptible_signal(int sig, int in)
@@ -313,9 +319,11 @@ void interruptible_signal(int sig, int in)
 	}
 	if (!signal_handlers[sig].fn) return;
 	sa.sa_handler = got_signal;
+#ifndef PSP 
 	sigfillset(&sa.sa_mask);
 	if (!in) sa.sa_flags = SA_RESTART;
 	sigaction(sig, &sa, NULL);
+#endif
 }
 
 int check_signals(void)
@@ -344,7 +352,9 @@ void sigchld(void *p)
 #ifndef WNOHANG
 	wait(NULL);
 #else
+#ifndef PSP
 	while (waitpid(-1, NULL, WNOHANG) > 0) ;
+#endif
 #endif
 }
 
@@ -358,7 +368,9 @@ int terminate_loop = 0;
 void select_loop(void (*init)(void))
 {
 	struct stat st;
+#ifndef PSP
 	if (stat(".", &st) && getenv("HOME")) chdir(getenv("HOME"));
+#endif
 	memset(&sa_zero, 0, sizeof sa_zero);
 	memset(signal_mask, 0, sizeof signal_mask);
 	memset(signal_handlers, 0, sizeof signal_handlers);
@@ -376,6 +388,7 @@ void select_loop(void (*init)(void))
 	fcntl(signal_pipe[0], F_SETFL, O_NONBLOCK);
 	fcntl(signal_pipe[1], F_SETFL, O_NONBLOCK);
 	set_handlers(signal_pipe[0], signal_break, NULL, NULL, NULL);
+	
 	init();
 	CHK_BH;
 	while (!terminate_loop) {
@@ -420,12 +433,22 @@ void select_loop(void (*init)(void))
 #ifdef DEBUG_CALLS
 		fprintf(stderr, "select\n");
 #endif
+#ifdef PSP
+		tv.tv_sec = 0;
+		tv.tv_usec = 1*1000;
+		tm = &tv;
+		pspInputThread();
+#endif
 		if ((n = loop_select(w_max, &x_read, &x_write, &x_error, tm)) < 0) {
 #ifdef DEBUG_CALLS
 			fprintf(stderr, "select intr\n");
 #endif
+#ifdef PSP
+			printf("select returns -1 -- errno=%d!\n", errno);
+#else
 			if (errno != EINTR) error("ERROR: select failed: %d", errno);
 			continue;
+#endif
 		}
 #ifdef DEBUG_CALLS
 		fprintf(stderr, "select done\n");
@@ -435,6 +458,7 @@ void select_loop(void (*init)(void))
 		check_timers();
 		i = -1;
 		while (n > 0 && ++i < w_max) {
+			//printf("After select. n>0 returns %d", n);
 			int k = 0;
 			/*printf("C %d : %d,%d,%d\n",i,FD_ISSET(i, &w_read),FD_ISSET(i, &w_write),FD_ISSET(i, &w_error));
 			printf("A %d : %d,%d,%d\n",i,FD_ISSET(i, &x_read),FD_ISSET(i, &x_write),FD_ISSET(i, &x_error));*/

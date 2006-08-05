@@ -1,0 +1,977 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:595: checking for a BSD compatible install
+configure:648: checking whether build environment is sane
+configure:705: checking whether make sets ${MAKE}
+configure:751: checking for working aclocal
+configure:764: checking for working autoconf
+configure:777: checking for working automake
+configure:790: checking for working autoheader
+configure:803: checking for working makeinfo
+configure:830: checking for gcc
+configure:943: checking whether the C compiler (psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib) works
+configure:959: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:985: checking whether the C compiler (psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib) is a cross-compiler
+configure:990: checking whether we are using GNU C
+configure:999: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E conftest.c
+configure:1018: checking whether psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ accepts -g
+configure:1061: checking how to run the C preprocessor
+configure:1082: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1141: checking for ANSI C header files
+configure:1154: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1246: checking whether psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ needs -traditional
+configure:1253:19: error: sgtty.h: No such file or directory
+configure:1271:20: error: termio.h: No such file or directory
+configure:1295: checking for EMX
+configure:1309: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure: In function 'main':
+configure:1304: error: 'kill' undeclared (first use in this function)
+configure:1304: error: (Each undeclared identifier is reported only once
+configure:1304: error: for each function it appears in.)
+configure:1304: error: syntax error before 'me'
+configure: failed program was:
+#line 1300 "configure"
+#include "confdefs.h"
+
+int main() {
+#ifndef __EMX__
+	kill me!
+	#endif 
+; return 0; }
+configure:1326: checking for typeof
+configure:1339: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:1359: checking for long long
+configure:1371: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:1395: checking for dirent.h that defines DIR
+configure:1408: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:1433: checking for opendir in -ldir
+configure:1452: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -ldir  -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/bin/ld: cannot find -ldir
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1441 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char opendir();
+
+int main() {
+opendir()
+; return 0; }
+configure:1516: checking for sys/wait.h that is POSIX.1 compatible
+configure:1537: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:1561: checking for fcntl.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for limits.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for sys/ioctl.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for sys/time.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for time.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for unistd.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for math.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1561: checking for ieee.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1567:18: error: ieee.h: No such file or directory
+configure: failed program was:
+#line 1566 "configure"
+#include "confdefs.h"
+#include <ieee.h>
+configure:1561: checking for endian.h
+configure:1571: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1601: checking for values.h
+configure:1611: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1607:20: error: values.h: No such file or directory
+configure: failed program was:
+#line 1606 "configure"
+#include "confdefs.h"
+#include <values.h>
+configure:1641: checking for sigaction.h
+configure:1651: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1647:23: error: sigaction.h: No such file or directory
+configure: failed program was:
+#line 1646 "configure"
+#include "confdefs.h"
+#include <sigaction.h>
+configure:1681: checking for netinet/in_systm.h
+configure:1691: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1687:30: error: netinet/in_systm.h: No such file or directory
+configure: failed program was:
+#line 1686 "configure"
+#include "confdefs.h"
+#include <netinet/in_systm.h>
+configure:1721: checking for netinet/in_system.h
+configure:1731: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1727:31: error: netinet/in_system.h: No such file or directory
+configure: failed program was:
+#line 1726 "configure"
+#include "confdefs.h"
+#include <netinet/in_system.h>
+configure:1761: checking for netinet/ip.h
+configure:1771: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1767:24: error: netinet/ip.h: No such file or directory
+configure: failed program was:
+#line 1766 "configure"
+#include "confdefs.h"
+#include <netinet/ip.h>
+configure:1801: checking for netinet/dhcp.h
+configure:1811: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1807:26: error: netinet/dhcp.h: No such file or directory
+configure: failed program was:
+#line 1806 "configure"
+#include "confdefs.h"
+#include <netinet/dhcp.h>
+configure:1841: checking for sys/select.h
+configure:1851: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1881: checking for sys/resource.h
+configure:1891: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1921: checking for sys/utsname.h
+configure:1931: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1927:25: error: sys/utsname.h: No such file or directory
+configure: failed program was:
+#line 1926 "configure"
+#include "confdefs.h"
+#include <sys/utsname.h>
+configure:1961: checking for sys/un.h
+configure:1971: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:1967:20: error: sys/un.h: No such file or directory
+configure: failed program was:
+#line 1966 "configure"
+#include "confdefs.h"
+#include <sys/un.h>
+configure:2001: checking for sys/fmutex.h
+configure:2011: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2007:24: error: sys/fmutex.h: No such file or directory
+configure: failed program was:
+#line 2006 "configure"
+#include "confdefs.h"
+#include <sys/fmutex.h>
+configure:2041: checking for sys/cygwin.h
+configure:2051: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2047:24: error: sys/cygwin.h: No such file or directory
+configure: failed program was:
+#line 2046 "configure"
+#include "confdefs.h"
+#include <sys/cygwin.h>
+configure:2081: checking for io.h
+configure:2091: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2087:16: error: io.h: No such file or directory
+configure: failed program was:
+#line 2086 "configure"
+#include "confdefs.h"
+#include <io.h>
+configure:2121: checking for setjmp.h
+configure:2131: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2161: checking for langinfo.h
+configure:2171: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2201: checking for md5.h
+configure:2211: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E  conftest.c >/dev/null 2>conftest.out
+configure:2207:17: error: md5.h: No such file or directory
+configure: failed program was:
+#line 2206 "configure"
+#include "confdefs.h"
+#include <md5.h>
+configure:2239: checking for working const
+configure:2293: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:2314: checking for inline
+configure:2328: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:2354: checking for size_t
+configure:2387: checking whether time.h and sys/time.h may both be included
+configure:2401: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:2422: checking whether struct tm is in sys/time.h or time.h
+configure:2435: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure: In function 'main':
+configure:2431: error: dereferencing pointer to incomplete type
+configure: failed program was:
+#line 2427 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <time.h>
+int main() {
+struct tm *tp; tp->tm_sec;
+; return 0; }
+configure:2465: checking size of short
+configure:2504: checking size of unsigned short
+configure:2543: checking size of int
+configure:2582: checking size of unsigned
+configure:2621: checking size of long
+configure:2660: checking size of unsigned long
+configure:2699: checking for big endian
+configure:2736: checking for little endian
+configure:2787: checking if rename can replace existing files
+configure:2839: checking for 8-bit clean memcmp
+configure:2875: checking return type of signal handlers
+configure:2897: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  conftest.c 1>&5
+configure:2916: checking for strftime
+configure:2944: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:2928: warning: conflicting types for built-in function 'strftime'
+configure:3012: checking for vprintf
+configure:3040: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3024: warning: conflicting types for built-in function 'vprintf'
+configure:3119: checking for calloc
+configure:3147: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3131: warning: conflicting types for built-in function 'calloc'
+configure:3174: checking for snprintf
+configure:3202: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3186: warning: conflicting types for built-in function 'snprintf'
+configure:3229: checking for memmove
+configure:3257: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3241: warning: conflicting types for built-in function 'memmove'
+configure:3284: checking for raise
+configure:3312: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for gettimeofday
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for mkdir
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for select
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for strcspn
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3351: warning: conflicting types for built-in function 'strcspn'
+configure:3339: checking for strerror
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for strstr
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3351: warning: conflicting types for built-in function 'strstr'
+configure:3339: checking for strtol
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for strtoul
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for strtoq
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccqcM27a.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `strtoq'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3344 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char strtoq(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char strtoq();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_strtoq) || defined (__stub___strtoq)
+choke me
+#else
+strtoq();
+#endif
+
+; return 0; }
+configure:3339: checking for strtoll
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3339: checking for chmod
+configure:3367: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccOcUJed.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `chmod'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3344 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char chmod(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char chmod();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_chmod) || defined (__stub___chmod)
+choke me
+#else
+chmod();
+#endif
+
+; return 0; }
+configure:3394: checking for getpid
+configure:3422: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3394: checking for setpgid
+configure:3422: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccUW2Riz.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `setpgid'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3399 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char setpgid(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char setpgid();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_setpgid) || defined (__stub___setpgid)
+choke me
+#else
+setpgid();
+#endif
+
+; return 0; }
+configure:3449: checking for popen
+configure:3477: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/cc0evUSe.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `popen'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3454 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char popen(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char popen();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_popen) || defined (__stub___popen)
+choke me
+#else
+popen();
+#endif
+
+; return 0; }
+configure:3504: checking for uname
+configure:3532: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccsR5xHk.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `uname'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3509 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char uname(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char uname();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_uname) || defined (__stub___uname)
+choke me
+#else
+uname();
+#endif
+
+; return 0; }
+configure:3559: checking for getpagesize
+configure:3587: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccqr6RY0.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `getpagesize'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3564 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getpagesize(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpagesize();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getpagesize) || defined (__stub___getpagesize)
+choke me
+#else
+getpagesize();
+#endif
+
+; return 0; }
+configure:3614: checking for strptime
+configure:3642: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3669: checking for setlocale
+configure:3697: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3724: checking for nl_langinfo
+configure:3752: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3778: checking for sigsetjmp/siglongjmp
+configure:3790: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+In file included from configure:3784:
+/usr/local/pspdev/psp/include/machine/setjmp.h:212: error: syntax error before 'typedef'
+configure:3785: error: syntax error before 'int'
+configure: In function 'main':
+configure:3786: error: 'sigjmp_buf' undeclared (first use in this function)
+configure:3786: error: (Each undeclared identifier is reported only once
+configure:3786: error: for each function it appears in.)
+configure:3786: error: syntax error before 'env'
+configure:3786: error: 'env' undeclared (first use in this function)
+configure: failed program was:
+#line 3783 "configure"
+#include "confdefs.h"
+#include <setjmp.h>
+int main() {
+sigjmp_buf env;sigsetjmp(env, 1);siglongjmp(env, 2);
+; return 0; }
+configure:3819: checking for atan in -lm
+configure:3838: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm  -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:3831: warning: conflicting types for built-in function 'atan'
+configure:3867: checking for MD5Data in -lmd
+configure:3886: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lmd  -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/bin/ld: cannot find -lmd
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3875 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char MD5Data();
+
+int main() {
+MD5Data()
+; return 0; }
+configure:3916: checking for MD5Init
+configure:3944: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccCZQbki.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `MD5Init'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3921 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char MD5Init(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char MD5Init();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_MD5Init) || defined (__stub___MD5Init)
+choke me
+#else
+MD5Init();
+#endif
+
+; return 0; }
+configure:3916: checking for MD5Data
+configure:3944: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/cc8pFMwm.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `MD5Data'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3921 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char MD5Data(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char MD5Data();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_MD5Data) || defined (__stub___MD5Data)
+choke me
+#else
+MD5Data();
+#endif
+
+; return 0; }
+configure:3970: checking for socket
+configure:3998: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:4071: checking for setsockopt
+configure:4099: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:4173: checking for gethostbyname
+configure:4201: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:4323: checking for gethostbyaddr
+configure:4351: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:4374: checking for dhcp_option
+configure:4402: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccCbEUep.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `dhcp_option'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4379 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char dhcp_option(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dhcp_option();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_dhcp_option) || defined (__stub___dhcp_option)
+choke me
+#else
+dhcp_option();
+#endif
+
+; return 0; }
+configure:4426: checking for herror
+configure:4454: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/cc8gc4LZ.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `herror'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4431 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char herror(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char herror();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_herror) || defined (__stub___herror)
+choke me
+#else
+herror();
+#endif
+
+; return 0; }
+configure:4477: checking for cfmakeraw
+configure:4505: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccs87CDE.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `cfmakeraw'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4482 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char cfmakeraw(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char cfmakeraw();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_cfmakeraw) || defined (__stub___cfmakeraw)
+choke me
+#else
+cfmakeraw();
+#endif
+
+; return 0; }
+configure:4531: checking for cygwin_conv_to_full_win32_path
+configure:4559: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools  -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/cceaWhno.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `cygwin_conv_to_full_win32_path'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4536 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char cygwin_conv_to_full_win32_path(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char cygwin_conv_to_full_win32_path();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_cygwin_conv_to_full_win32_path) || defined (__stub___cygwin_conv_to_full_win32_path)
+choke me
+#else
+cygwin_conv_to_full_win32_path();
+#endif
+
+; return 0; }
+configure:4585: checking for requested debug level
+configure:4606: checking if you want to enable javascript
+configure:4621: checking if you want to link with system libfl
+configure:4647: checking for pkg-config
+configure:4691: checking for libpcre
+configure:4698: checking LIBPCRE_CFLAGS
+configure:4703: checking LIBPCRE_LIBS
+configure:4734: checking for pcre_compile in -lpcre
+configure:4753: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre  -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccS9AEC3.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `pcre_compile'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4742 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pcre_compile();
+
+int main() {
+pcre_compile()
+; return 0; }
+configure:4784: checking for pcre.h
+configure:4794: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E    conftest.c >/dev/null 2>conftest.out
+configure:4790:18: error: pcre.h: No such file or directory
+configure: failed program was:
+#line 4789 "configure"
+#include "confdefs.h"
+#include <pcre.h>
+configure:4830: checking for regcomp
+configure:4858: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccKekXDY.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `regcomp'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4835 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char regcomp(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char regcomp();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_regcomp) || defined (__stub___regcomp)
+choke me
+#else
+regcomp();
+#endif
+
+; return 0; }
+configure:4886: checking for regex.h
+configure:4896: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E    conftest.c >/dev/null 2>conftest.out
+configure:4892:19: error: regex.h: No such file or directory
+configure: failed program was:
+#line 4891 "configure"
+#include "confdefs.h"
+#include <regex.h>
+configure:4934: checking if you want to use graphics
+configure:4952: checking for Gpm_Open in -lgpm
+configure:4971: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lgpm  -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/bin/ld: cannot find -lgpm
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 4960 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char Gpm_Open();
+
+int main() {
+Gpm_Open()
+; return 0; }
+configure:5003: checking for gpm.h
+configure:5013: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E    conftest.c >/dev/null 2>conftest.out
+configure:5009:17: error: gpm.h: No such file or directory
+configure: failed program was:
+#line 5008 "configure"
+#include "confdefs.h"
+#include <gpm.h>
+configure:5046: checking for OS/2 threads
+configure:5060: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools -Zmt    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+psp-gcc: unrecognized option '-Zmt'
+configure: In function 'main':
+configure:5056: error: 'NULL' undeclared (first use in this function)
+configure:5056: error: (Each undeclared identifier is reported only once
+configure:5056: error: for each function it appears in.)
+configure: failed program was:
+#line 5053 "configure"
+#include "confdefs.h"
+#include <stdlib.h>
+int main() {
+_beginthread(NULL, NULL, 0, NULL)
+; return 0; }
+configure:5095: checking for atheos/threads.h
+configure:5105: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E    conftest.c >/dev/null 2>conftest.out
+configure:5101:28: error: atheos/threads.h: No such file or directory
+configure: failed program was:
+#line 5100 "configure"
+#include "confdefs.h"
+#include <atheos/threads.h>
+configure:5134: checking for spawn_thread
+configure:5162: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccyVwUmA.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `spawn_thread'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5139 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char spawn_thread(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char spawn_thread();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_spawn_thread) || defined (__stub___spawn_thread)
+choke me
+#else
+spawn_thread();
+#endif
+
+; return 0; }
+configure:5189: checking for resume_thread
+configure:5217: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccCIkduh.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `resume_thread'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5194 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char resume_thread(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char resume_thread();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_resume_thread) || defined (__stub___resume_thread)
+choke me
+#else
+resume_thread();
+#endif
+
+; return 0; }
+configure:5243: checking for MouOpen
+configure:5271: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccWgVwyq.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `MouOpen'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5248 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char MouOpen(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char MouOpen();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_MouOpen) || defined (__stub___MouOpen)
+choke me
+#else
+MouOpen();
+#endif
+
+; return 0; }
+configure:5294: checking for _read_kbd
+configure:5322: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccGhIWh5.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `_read_kbd'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5299 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char _read_kbd(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char _read_kbd();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub__read_kbd) || defined (__stub____read_kbd)
+choke me
+#else
+_read_kbd();
+#endif
+
+; return 0; }
+configure:5346: checking for XFree for OS/2
+configure:5412: checking for dlopen in -ldl
+configure:5431: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools    -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -ldl  -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/tmp/ccaFJoDj.o: In function `main':
+conftest.c:(.text+0x10): undefined reference to `dlopen'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5420 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char dlopen();
+
+int main() {
+dlopen()
+; return 0; }
+configure:5521: checking for openssl
+configure:5528: checking OPENSSL_CFLAGS
+configure:5533: checking OPENSSL_LIBS
+configure:5561: checking for OpenSSL
+configure:5572: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:6469: checking for XextAddDisplay in -lXext
+configure:6488: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lXext  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/bin/ld: cannot find -lXext
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 6477 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char XextAddDisplay();
+
+int main() {
+XextAddDisplay()
+; return 0; }
+configure:7055: checking for inflate in -lz
+configure:7074: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lz   -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7152: checking for libpng >= 1.0.0
+configure:7159: checking LIBPNG_CFLAGS
+configure:7164: checking LIBPNG_LIBS
+configure:7292: checking for png.h
+configure:7302: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E      -DPSP -I/usr/include/libpng12   conftest.c >/dev/null 2>conftest.out
+configure:7292: checking for libpng/png.h
+configure:7302: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E      -DPSP -I/usr/include/libpng12   conftest.c >/dev/null 2>conftest.out
+configure:7298:24: error: libpng/png.h: No such file or directory
+configure: failed program was:
+#line 7297 "configure"
+#include "confdefs.h"
+#include <libpng/png.h>
+configure:7329: checking for png_create_info_struct in -lpng
+configure:7348: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng  -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7382: checking for png_set_rgb_to_gray
+configure:7410: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_image_width
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_image_height
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_gAMA
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_color_type
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_bit_depth
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_set_strip_alpha
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_valid
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7437: checking for png_get_sRGB
+configure:7465: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7502: checking if you can include both setjmp.h and png.h
+configure:7515: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -c -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   conftest.c 1>&5
+In file included from configure:7508:
+/usr/local/pspdev/psp/include/machine/setjmp.h:212: error: syntax error before 'typedef'
+In file included from /usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/include/zlib.h:34,
+                 from /usr/include/libpng12/png.h:374,
+                 from configure:7509:
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/include/zconf.h:255: error: syntax error before 'typedef'
+In file included from /usr/include/libpng12/pngconf.h:330,
+                 from /usr/include/libpng12/png.h:378,
+                 from configure:7509:
+/usr/local/pspdev/psp/include/machine/setjmp.h:212: error: redefinition of typedef 'jmp_buf'
+/usr/local/pspdev/psp/include/machine/setjmp.h:212: error: previous declaration of 'jmp_buf' was here
+In file included from configure:7509:
+/usr/include/libpng12/png.h:1494: warning: 'struct tm' declared inside parameter list
+/usr/include/libpng12/png.h:1494: warning: its scope is only this definition or declaration, which is probably not what you want
+configure: failed program was:
+#line 7507 "configure"
+#include "confdefs.h"
+#include <setjmp.h>
+		#include <png.h>
+int main() {
+jmp_buf bla;
+; return 0; }
+configure:7549: checking for jpeglib.h
+configure:7559: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E      -DPSP -I/usr/include/libpng12   conftest.c >/dev/null 2>conftest.out
+configure:7586: checking for jpeg_destroy_decompress in -ljpeg
+configure:7605: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -ljpeg  -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+configure:7654: checking for tiffio.h
+configure:7664: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -E      -DPSP -I/usr/include/libpng12   conftest.c >/dev/null 2>conftest.out
+configure:7660:20: error: tiffio.h: No such file or directory
+configure: failed program was:
+#line 7659 "configure"
+#include "confdefs.h"
+#include <tiffio.h>
+configure:7691: checking for TIFFClientOpen in -ltiff
+configure:7710: psp-gcc -I../../../../SharedLib/libpthread -I/usr/local/pspdev/psp/include/ -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -o conftest -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools      -DPSP -I/usr/include/libpng12   -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/sdk/sdk/lib -L../../../../SharedLib/lib conftest.c -ltiff  -ljpeg -lpng -lpng12   -lz  -lssl -lcrypto -ldl   -lpcre   -lm -lpspdebug -lpspdisplay -lpspge -lpspctrl -lpspsdk -lc -lpspnet -lpspnet_inet -lpspnet_apctl -lpspnet_resolver -lpsputility -lpspuser -liberty -lpspsdk -lpspnet -lpspaudio -lpspgu -lpspge -lpsphprm -lpspkernel 1>&5
+/usr/local/pspdev/lib/gcc/psp/4.0.2/../../../../psp/bin/ld: cannot find -ltiff
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 7699 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char TIFFClientOpen();
+
+int main() {
+TIFFClientOpen()
+; return 0; }

@@ -59,6 +59,37 @@
 #endif
 #include <sys/types.h>
 
+#ifdef PSP
+	#include <psp.h>
+	#define HAVE_PTHREADS
+
+	//#include <libc/time.h>
+	#undef HAVE_ENDIAN_H
+	#define C_LITTLE_ENDIAN
+	//#undef TIME_WITH_SYS_TIME
+	//#undef HAVE_SYS_TIME
+
+	#define PSP_SCREEN_WIDTH 480
+	#define PSP_SCREEN_HEIGHT 272
+
+	#define VMIN 0
+	#define VTIME 0
+	#define VMAX 16
+	enum 
+	{
+		OPOST,ISIG,TOSTOP,TCSANOW,IGNBRK,BRKINT,PARMRK,ISTRIP,INCLR,ICRNL,IXON,ECHO,ECHONL,ICANON,IEXTEN,
+		INLCR,IGNCR,CSIZE,PARENB,CS8
+	};
+	struct termios
+	{
+		int c_lflag;
+		int c_cflag;
+		int c_iflag;
+		int c_oflag;
+		int c_cc[VMAX];
+	};
+#endif
+
 #ifndef __USE_XOPEN
 #define U_X
 #define __USE_XOPEN
@@ -166,7 +197,9 @@ x #endif*/
 
 #define my_intptr_t long
 
+#ifndef PSP
 #include <termios.h>
+#endif
 
 #include "os_depx.h"
 
