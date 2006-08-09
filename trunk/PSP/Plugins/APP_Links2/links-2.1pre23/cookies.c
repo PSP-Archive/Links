@@ -311,6 +311,9 @@ void init_cookies(void)
 	
 	fp = fopen(cookfile, "r"); 
 
+	
+	wait_for_triangle(cookfile);
+
 	mem_free(cookfile); 
 
 	if (fp == NULL) return; 
