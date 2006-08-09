@@ -1307,7 +1307,6 @@ static void pspgu_set_clip_area(struct graphics_device *dev, struct rect *r)
 		if (dev->clip.y1<0) dev->clip.y1=0;
 		if (dev->clip.y2>pspgu_ysize) dev->clip.y2=pspgu_ysize;
 	}
-	s_bbDirty = truE;
 }
 
 static int pspgu_block(struct graphics_device *dev)
