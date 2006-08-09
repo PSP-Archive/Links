@@ -21,12 +21,13 @@
 
 #include <signal.h>
 
-#include "arrow.inc"
+#include "newarrow.inc"
 
 
 #include <pspdisplay.h>
 #define printf pspDebugScreenPrintf
-#define PSP_MOUSE_ACCEL_CONST 30 /* default 30 */
+#define PSP_MOUSE_ACCEL_CONST 45 /* default 30 */
+
 static volatile int sf_danzeffOn = 0;
 static volatile int s_BbRowOffset = 0, s_BbColOffset = 0;
 static volatile int s_bbDirty = falsE;
@@ -38,7 +39,7 @@ struct itrm *pspgu_kbd;
 
 struct graphics_device *pspgu_old_vd;
 
-char *pspgu_mem, *pspgu_vmem, *psp_fb;
+char *pspgu_mem, *pspgu_vmem, *psp_fb, *psp_fb1, *psp_fb2;
 int pspgu_mem_size,pspgu_linesize,pspgu_bits_pp,pspgu_pixelsize;
 int pspgu_xsize,pspgu_ysize;
 int border_left, border_right, border_top, border_bottom;
@@ -875,12 +876,13 @@ void pspInputThread()
 void render_thread()
 {
 #if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
-	int *pBb = pspgu_mem; /* Back buffer */
-	int *pFb = psp_fb;    /* Front/Frame buffer */
+	int *pBb; /* Back buffer */
+	int *pFb; /* Front/Frame buffer */
 #else
-	short *pBb = pspgu_mem; /* Back buffer */
-	short *pFb = psp_fb;    /* Front/Frame buffer */
+	short *pBb; /* Back buffer */
+	short *pFb;/* Front/Frame buffer */
 #endif
+	pBb = pspgu_mem; /* Back buffer */
 	SceCtrlData pad;
 	int fbRow, fbCol;
 	int bbRow, bbCol;
@@ -889,6 +891,7 @@ void render_thread()
 	int fbMult, bbMult;
 	int bb_to_fb_factor = 1;
 	int bb_row_offset = 0, bb_col_offset = 0;
+	int one = 1;
 
 	for(;;)
 	{
@@ -896,6 +899,17 @@ void render_thread()
 
 		if (g_PSPEnableRendering && s_bbDirty)
 		{
+			if (one++%2)
+			{
+				pFb = psp_fb1;    /* Front/Frame buffer */
+				psp_fb = psp_fb2;
+			}
+			else
+			{
+				pFb = psp_fb2;
+				psp_fb = psp_fb1;
+			}
+
 			sceCtrlPeekBufferPositive(&pad, 1);
 
 			if ((pad.Buttons & PSP_CTRL_LTRIGGER) || s_Zoom)
@@ -924,8 +938,14 @@ void render_thread()
 	
 			if (sf_danzeffOn)
 			{
+				/* Pass VRAM info to Danzeff */
+				danzeff_set_screen(pFb, PSP_LINE_SIZE, pspgu_ysize, pspgu_pixelsize);
 				danzeff_render();
 			}
+
+			/* flipping */
+			sceDisplaySetFrameBuf((void *) pFb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
+
 
 			s_bbDirty = falsE;
 		}
@@ -988,7 +1008,10 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	}
 
 	/* Place vram in uncached memory */
-	psp_fb = (u32 *) (0x40000000 | (u32) sceGeEdramGetAddr());
+	psp_fb1 = (u32 *) (0x40000000 | (u32) sceGeEdramGetAddr());
+	psp_fb2 = psp_fb1 + FRAMESIZE;
+	psp_fb = psp_fb1;
+
 	psp_reset_graphic_mode();
 
 	pspgu_mem = (char *) malloc(pspgu_mem_size);

@@ -17,6 +17,13 @@
 	#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_8888
 	//#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_565
 
+	#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
+	#define FRAMESIZE (4 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+	#else
+	#define FRAMESIZE (2 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+	#endif
+
+
 	extern volatile tBoolean g_PSPEnableRendering;
 	extern volatile tBoolean g_PSPEnableInput;
 
