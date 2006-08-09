@@ -26,7 +26,7 @@
 
 #include <pspdisplay.h>
 #define printf pspDebugScreenPrintf
-#define PSP_MOUSE_ACCEL_CONST 45 /* default 30 */
+#define PSP_MOUSE_ACCEL_CONST 35 /* default 30 */
 
 static volatile int sf_danzeffOn = 0;
 static volatile int s_BbRowOffset = 0, s_BbColOffset = 0;
@@ -870,6 +870,12 @@ void pspInputThread()
 		sceKernelDelayThread(1); /* yield */
 
 	}
+
+	// Restart Input Timer
+	{
+		install_timer(10, pspInputThread, NULL);
+	}
+
 }
 
 
@@ -1052,7 +1058,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	show_mouse();
 	s_bbDirty = truE;
 
-	if (1)
+	// Start Render Thread
 	{
 		pthread_t pthid;
 		pthread_attr_t pthattr;
@@ -1063,9 +1069,10 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 		pthread_attr_setschedparam(&pthattr, &shdparam);
 		pthread_create(&pthid, &pthattr, render_thread, NULL);
 	}
-	else
+
+	// Start Input Timer
 	{
-	//	install_timer(10, pspInputThread, NULL);
+		install_timer(10, pspInputThread, NULL);
 	}
 
 	return NULL;
@@ -1300,6 +1307,7 @@ static void pspgu_set_clip_area(struct graphics_device *dev, struct rect *r)
 		if (dev->clip.y1<0) dev->clip.y1=0;
 		if (dev->clip.y2>pspgu_ysize) dev->clip.y2=pspgu_ysize;
 	}
+	s_bbDirty = truE;
 }
 
 static int pspgu_block(struct graphics_device *dev)

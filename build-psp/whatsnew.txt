@@ -5,8 +5,9 @@ links-2.1pre23 PSP r1xxx (2006-08-xx)
 NEW FEATURES
 (raf) Using a new mouse cursor (Edited off of the freely available theme http://www.kde-look.org/content/show.php?content=13524)
 (raf) Implemented h/w double buffering to go along the s/w double buffering (more like triple buffering). This solves the flickering of danzeff.
+(raf) Slowed down the mouse pointer a bit. Will make this configurable later.
 BUG FIXES
-
+(raf) Cleaned up the call to the input handler. This resolved some timing issues that were causing the graphic glitches (menu screens not clearing up correctly).
 
 links-2.1pre23 PSP r1222 (2006-08-04)
 NEW FEATURES
