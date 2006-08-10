@@ -180,23 +180,7 @@ static int global_mouse_hidden;
  */
 static inline void pixel_set(unsigned char *dest, int n,void * pattern)
 {
-#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
-	unsigned char a,b,c,d;
-	int i;
-
-	a=*(char*)pattern;
-	b=((char*)pattern)[1];
-	c=((char*)pattern)[2];
-	d=((char*)pattern)[3];
-	for (i=0;i<=n-4;i+=4){
-		dest[i]=a;
-		dest[i+1]=b;
-		dest[i+2]=c;
-		dest[i+3]=d;
-	}
-#else
-	int a;
-	
+#ifdef PSP_16BPP
 	#ifdef t2c
 		short v=*(t2c *)pattern;
 		int a;
@@ -213,6 +197,20 @@ static inline void pixel_set(unsigned char *dest, int n,void * pattern)
 			dest[i+1]=b;
 		}
 	#endif
+#else /* 32bpp */
+	unsigned char a,b,c,d;
+	int i;
+
+	a=*(char*)pattern;
+	b=((char*)pattern)[1];
+	c=((char*)pattern)[2];
+	d=((char*)pattern)[3];
+	for (i=0;i<=n-4;i+=4){
+		dest[i]=a;
+		dest[i+1]=b;
+		dest[i+2]=c;
+		dest[i+3]=d;
+	}
 #endif	
 }
 
@@ -842,12 +840,12 @@ void pspInputThread()
 
 void render_thread()
 {
-#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
-	int *pBb; /* Back buffer */
-	int *pFb; /* Front/Frame buffer */
-#else
+#ifdef PSP_16BPP
 	short *pBb; /* Back buffer */
 	short *pFb;/* Front/Frame buffer */
+#else /* 32bpp */
+	int *pBb; /* Back buffer */
+	int *pFb; /* Front/Frame buffer */
 #endif
 	pBb = pspgu_mem; /* Back buffer */
 	SceCtrlData pad;
@@ -946,12 +944,12 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	pspgu_xsize=PSP_SCREEN_WIDTH*g_PSPConfig.screen_zoom_factor;
 	pspgu_ysize=PSP_SCREEN_HEIGHT*g_PSPConfig.screen_zoom_factor;
 
-#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
-	pspgu_bits_pp=32;
-	pspgu_pixelsize=4;
-#else
+#ifdef PSP_16BPP
 	pspgu_bits_pp=16;
 	pspgu_pixelsize=2;
+#else /* 32bpp */
+	pspgu_bits_pp=32;
+	pspgu_pixelsize=4;
 #endif
 	pspgu_driver.x=pspgu_xsize;
 	pspgu_driver.y=pspgu_ysize;
@@ -976,7 +974,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 
 	/* Place vram in uncached memory */
 	psp_fb1 = (u32 *) (0x40000000 | (u32) sceGeEdramGetAddr());
-	psp_fb2 = psp_fb1 + FRAMESIZE;
+	psp_fb2 = (u32 *)((char*)psp_fb1 + FRAMESIZE);
 	psp_fb = psp_fb1;
 
 	psp_reset_graphic_mode();
@@ -984,17 +982,13 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	pspgu_mem = (char *) malloc(pspgu_mem_size);
 
 	pspgu_vmem = pspgu_mem + border_left * pspgu_pixelsize + border_top * pspgu_linesize;
-	///pspgu_driver.depth=pspgu_pixelsize&7;
-	//pspgu_driver.depth|=(24/*pspgu_bits_pp*/&31)<<3;
-	///pspgu_driver.depth|=(16/*pspgu_bits_pp*/&31)<<3;
-	///if (htons (0x1234) == 0x1234) pspgu_driver.depth |= 0x100;
 
-#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
+#ifdef PSP_16BPP
+	pspgu_driver.depth = 131;
+#else /* 32bpp */
 	pspgu_driver.depth=pspgu_pixelsize&7;
 	pspgu_driver.depth|=(24/*pspgu_bits_pp*/&31)<<3;
 	if (htons (0x1234) == 0x1234) pspgu_driver.depth |= 0x100;
-#else
-	pspgu_driver.depth = 131;
 #endif
 
 	pspgu_driver.get_color=get_color_fn(pspgu_driver.depth);
@@ -1019,7 +1013,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	show_mouse();
 	s_bbDirty = truE;
 
-	// Start Render Thread
+	/* Start Render Thread */
 	{
 		pthread_t pthid;
 		pthread_attr_t pthattr;
@@ -1031,7 +1025,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 		pthread_create(&pthid, &pthattr, render_thread, NULL);
 	}
 
-	// Start Input Timer
+	/* Start Input Timer */
 	install_timer(10, pspInputThread, NULL);
 
 	return NULL;
@@ -1052,7 +1046,7 @@ static void pspgu_shutdown_driver(void)
 
 static unsigned char *pspgu_get_driver_param(void)
 {
-        return pspgu_driver_param;
+    return pspgu_driver_param;
 }
 
 
@@ -1069,26 +1063,6 @@ static int pspgu_get_empty_bitmap(struct bitmap *dest)
 	dest->flags=0;
 	return 0;
 }
-
-/* Return value:        0 alloced on heap
- *                      1 alloced in vidram
- *                      2 alloced in X server shm
- */
-/*
-static int pspgu_get_filled_bitmap(struct bitmap *dest, long color)
-{
-	int n;
-
-	if (dest->x && (unsigned)dest->x * (unsigned)dest->y / (unsigned)dest->x != (unsigned)dest->y) overalloc();
-	if ((unsigned)dest->x * (unsigned)dest->y > MAXINT / pspgu_pixelsize) overalloc();
-	n=dest->x*dest->y*pspgu_pixelsize;
-	dest->data=mem_alloc(n);
-	pixel_set(dest->data,n,&color);
-	dest->skip=dest->x*pspgu_pixelsize;
-	dest->flags=0;
-	return 0;
-}
-*/
 
 static void pspgu_register_bitmap(struct bitmap *bmp)
 {

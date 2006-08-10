@@ -7,6 +7,8 @@ NEW FEATURES
 (raf) Implemented h/w double buffering to go along the s/w double buffering (more like triple buffering). This solves the flickering of danzeff.
 (raf) Slowed down the mouse pointer a bit. Also made this a configuration item (mouse_speed_factor).
 (raf) Renamed config item psp_bb_to_fb_factor to screen_zoom_factor
+(raf) Added support for 16bpp to danzeff
+(raf) Modified links to use 16bpp; this saves a lot of memory.
 BUG FIXES
 (raf) Cleaned up the call to the input handler. This resolved some timing issues that were causing the graphic glitches (menu screens not clearing up correctly).
 

@@ -27,12 +27,6 @@
 #include <Common.h>
 #include <malloc.h>
 	
-#define PSP_SCREEN_WIDTH 480
-#define PSP_SCREEN_HEIGHT 272
-#define PSP_LINE_SIZE 512
-//#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_8888
-#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_565
-
 #include <links.h>
 
 #ifdef STAND_ALONE_APP

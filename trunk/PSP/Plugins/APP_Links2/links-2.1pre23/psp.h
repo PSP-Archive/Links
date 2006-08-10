@@ -15,16 +15,16 @@
 	#define PSP_SCREEN_HEIGHT 272
 	#define PSP_LINE_SIZE 512
 
-	/** Choose one pixel format here */
-	#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_8888
-	//#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_565
+	/** If commented out, then 32bpp are used. */
+	#define PSP_16BPP
 
-	#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
-	#define FRAMESIZE (4 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+	#ifdef PSP_16BPP
+		#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_565
+		#define FRAMESIZE (2 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
 	#else
-	#define FRAMESIZE (2 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+		#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_8888
+		#define FRAMESIZE (4 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
 	#endif
-
 
 	extern volatile tBoolean g_PSPEnableRendering;
 	extern volatile tBoolean g_PSPEnableInput;
@@ -35,13 +35,8 @@
 		tBoolean screen_zoom_factor;
 		int mouse_speed_factor;
 	} _psp_config_items;
-
 	extern _psp_config_items  g_PSPConfig;
 		
-
-
-
-
 	typedef struct _extension_download_dirs 
 	{
 		char music[MAXPATHLEN+1];
@@ -50,8 +45,7 @@
 		char videos[MAXPATHLEN+1];
 		char images[MAXPATHLEN+1];
 		char other[MAXPATHLEN+1];
-	}extension_download_dirs;
-
+	} extension_download_dirs;
 	extern extension_download_dirs ext_dl_dir;
 
 #endif

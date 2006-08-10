@@ -53,17 +53,17 @@
 
 /* We assume here int holds at least 32 bits */
 #ifdef PSP
-	#if PSP_PIXEL_FORMAT == PSP_DISPLAY_PIXEL_FORMAT_8888
+	#ifdef PSP_16BPP
+		static int dither_table[65536], dither_table2[65536], dither_table3[65536];
+		static int *red_table   = dither_table;
+		static int *green_table = dither_table2;
+		static int *blue_table  = dither_table3;
+	#else
 		/* Let's save some memory */
 		static int dither_table[65536];
 		static int *red_table   = dither_table;
 		static int *green_table = dither_table;
 		static int *blue_table  = dither_table;
-	#else
-		static int dither_table[65536], dither_table2[65536], dither_table3[65536];
-		static int *red_table   = dither_table;
-		static int *green_table = dither_table2;
-		static int *blue_table  = dither_table3;
 	#endif
 #else
 static int red_table[65536],green_table[65536],blue_table[65536];
