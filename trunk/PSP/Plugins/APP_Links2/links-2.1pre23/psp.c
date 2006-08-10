@@ -12,6 +12,11 @@ volatile tBoolean g_PSPEnableRendering = truE;
 volatile tBoolean g_PSPEnableInput = truE;
 
 /* PSP Specific config items */
+_psp_config_items  g_PSPConfig = {
+	1, 				/* screen_zoom_factor */
+	35				/* mouse_speed_factor */
+};
+
 tBoolean g_PSPConfig_BB_TO_FB_FACTOR = 1;
 
 extension_download_dirs ext_dl_dir;
