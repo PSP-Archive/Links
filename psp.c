@@ -17,8 +17,6 @@ _psp_config_items  g_PSPConfig = {
 	35				/* mouse_speed_factor */
 };
 
-tBoolean g_PSPConfig_BB_TO_FB_FACTOR = 1;
-
 extension_download_dirs ext_dl_dir;
 
 int env_termsize(int *x, int *y)
