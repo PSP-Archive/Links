@@ -1,7 +1,7 @@
  What's New for Links2 PSP Port
 ================================
 
-links-2.1pre23 PSP r1xxx (2006-08-xx)
+links-2.1pre23 PSP r1231 (2006-08-09)
 NEW FEATURES
 (raf) Using a new mouse cursor (Edited off of the freely available theme http://www.kde-look.org/content/show.php?content=13524)
 (raf) Implemented h/w double buffering to go along the s/w double buffering (more like triple buffering). This solves the flickering of danzeff.
