@@ -87,6 +87,7 @@ release_sources:
 
 release:
 	rm -Rf *.zip
+	make prepare
 	make clean
 	make release_sources
 	make release_stand_alone
