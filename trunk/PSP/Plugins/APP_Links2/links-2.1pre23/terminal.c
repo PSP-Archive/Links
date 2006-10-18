@@ -307,6 +307,7 @@ void draw_to_window(struct window *win, void (*fn)(struct terminal *term, void *
 {
 	struct terminal *term = win->term;
 	struct window *end = (void *)&term->windows;
+
 	if (!F) {
 		pr(fn(term, data)) {};
 		term = win->term;

@@ -259,6 +259,7 @@ void wait_for_triangle(char *str)
 	g_PSPEnableRendering = truE;
 
 	psp_reset_graphic_mode();
+	sceDisplayWaitVblankStart();
 }
 
 
