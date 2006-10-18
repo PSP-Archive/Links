@@ -1421,6 +1421,7 @@ void redraw_list_line(struct terminal *term, void *bla)
 		
 		restrict_clip_area(term->dev,&old_area,dlg->x+x+DIALOG_LB,y,dlg->x+DIALOG_LB+w,y+G_BFU_FONT_SIZE);
 		g_print_text(term->dev->drv,term->dev,dlg->x+x+DIALOG_LB,y,bfu_style_bw,txt,0);
+
 		x+=g_text_width(bfu_style_bw,txt);
 		term->dev->drv->fill_area(term->dev,dlg->x+DIALOG_LB+x,y,dlg->x+DIALOG_LB+w,y+G_BFU_FONT_SIZE,bg_color);
 		term->dev->drv->set_clip_area(term->dev,&old_area);
@@ -1636,7 +1637,15 @@ int list_event_handler(struct dialog_data *dlg, struct event *ev)
 		}
 		if (ev->x==KBD_UP)
 		{
-			if (ld->current_pos==ld->list)return EVENT_PROCESSED;  /* already on the top */
+			if (ld->current_pos==ld->list)
+#ifdef PSP // Wrap
+			{
+				ev->x = KBD_END;
+				return list_event_handler(dlg, ev);
+			}
+#endif
+				return EVENT_PROCESSED;  /* already on the top */
+
 			ld->current_pos=prev_in_tree(ld,ld->current_pos);
 			ld->win_pos--;
 			rd.n=+1;
@@ -1671,7 +1680,14 @@ int list_event_handler(struct dialog_data *dlg, struct event *ev)
 		}
 		if (ev->x==KBD_DOWN)
 		{
-			if (next_in_tree(ld,ld->current_pos)==ld->list)return EVENT_PROCESSED;  /* already at the bottom */
+			if (next_in_tree(ld,ld->current_pos)==ld->list)
+#ifdef PSP // Wrap
+			{
+				ev->x = KBD_HOME;
+				return list_event_handler(dlg, ev);
+			}
+#endif
+				return EVENT_PROCESSED;  /* already at the bottom */
 			ld->current_pos=next_in_tree(ld,ld->current_pos);
 			ld->win_pos++;
 			rd.n=-1;

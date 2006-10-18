@@ -1433,7 +1433,11 @@ struct rgb default_link = { 255, 255, 255, 0 };
 struct rgb default_vlink = { 255, 255, 0, 0 };
 
 struct rgb default_fg_g = { 0, 0, 0, 0 };
+#ifdef PSP
+struct rgb default_bg_g = { 255, 255, 255, 0 };
+#else
 struct rgb default_bg_g = { 192, 192, 192, 0 };
+#endif
 struct rgb default_link_g = { 0, 0, 255, 0 };
 struct rgb default_vlink_g = { 0, 0, 128, 0 };
 

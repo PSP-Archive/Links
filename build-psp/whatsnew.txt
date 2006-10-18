@@ -1,6 +1,13 @@
  What's New for Links2 PSP Port
 ================================
 
+links-2.1pre23 PSP rxxxx (2006-08-xx)
+NEW FEATURES
+(raf) Changed default background color from gray to white (for html).
+(raf) UP/DOWN in html now scroll up/down (without R+)
+(raf) UP/DOWN at the top/bottom of a menu list will wrap (user request).
+BUG FIXES
+
 links-2.1pre23 PSP r1231 (2006-08-09)
 NEW FEATURES
 (raf) Using a new mouse cursor (Edited off of the freely available theme http://www.kde-look.org/content/show.php?content=13524)
