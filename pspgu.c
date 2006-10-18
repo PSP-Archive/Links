@@ -533,6 +533,16 @@ static void pspgu_switch_signal(void *data)
 {
 }
 
+void pspSetMouse(int x, int y)
+{
+	mouse_x = x;
+	mouse_y = y;
+
+	redraw_mouse();
+
+	s_bbDirty = truE;
+}
+
 void pspInputThread()
 {
 	static int oldButtonMask = 0;
@@ -572,7 +582,6 @@ void pspInputThread()
 					sf_danzeffOn = 0;
 					danzeff_free();
 					s_bbDirty = truE;
-					//cls_redraw_all_terminals();
 				}
 				else if (oldButtonMask & PSP_CTRL_SELECT)
 				{
@@ -581,7 +590,6 @@ void pspInputThread()
 					wait_for_triangle("");
 					g_PSPEnableRendering = truE;
 					s_bbDirty = truE;
-					//cls_redraw_all_terminals();
 				}
 				oldButtonMask = 0;
 			}
@@ -590,13 +598,11 @@ void pspInputThread()
 			{
 				danzeff_x-=5;
 				danzeff_moveTo(danzeff_x, danzeff_y);
-				//cls_redraw_all_terminals();
 			}
 			else if (pad.Buttons & PSP_CTRL_RIGHT)
 			{
 				danzeff_x+=5;
 				danzeff_moveTo(danzeff_x, danzeff_y);
-				//cls_redraw_all_terminals();
 			}
 			else
 			{
@@ -694,7 +700,6 @@ void pspInputThread()
 					{
 						pspDebugScreenInit();
 						wifiChooseConnect();
-						//cls_redraw_all_terminals();
 					}
 					if (oldButtonMask & PSP_CTRL_SQUARE)
 					{
@@ -1008,7 +1013,10 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	virtual_devices[0] = NULL;
 	global_mouse_hidden=1;
 
-	if (border_left | border_top | border_right | border_bottom) memset(pspgu_mem,0,pspgu_mem_size);
+	/*if (border_left | border_top | border_right | border_bottom) */
+	memset(pspgu_mem,0,pspgu_mem_size);
+	memset(psp_fb1, 0, FRAMESIZE);
+	memset(psp_fb2, 0, FRAMESIZE);
 
 	show_mouse();
 	s_bbDirty = truE;
