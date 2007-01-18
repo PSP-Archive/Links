@@ -43,7 +43,7 @@
 //	PSP_HEAP_SIZE_KB(20*1024);
 #else
 	PSP_MODULE_INFO("APP_Links2", 0, 1, 1);
-	PSP_HEAP_SIZE_KB(1024*6);
+	PSP_HEAP_SIZE_KB(1024*10);
 #endif
 
 #define printf pspDebugScreenPrintf
