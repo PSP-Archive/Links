@@ -1,19 +1,11 @@
 BASE_DIR = ../../../..
 include $(BASE_DIR)/include.mak
 
-#TARGET = APP_Links2
+#include ./Makefile
 
-#EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
-#COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
-PSP_OBJECTS = psp.o plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
+TARGET = APP_Links2
 
-OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
-
-#USE_PSPSDK_LIBC = 0
-# Define the name of our custom exports (minus the .exp extension)
-#PRX_EXPORTS=$(PLUGINS_DIR)/APP_Exports.exp
-
-INCLUDES = -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DIR)/ScreenHandler \
+INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DIR)/ScreenHandler \
 		 -I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
 		 -I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
 		 -I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
@@ -21,99 +13,72 @@ INCLUDES = -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DI
 		 -I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
 		 -I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
 
-CFLAGS = $(EXTRA_FLAGS) -G0 -mno-explicit-relocs -DDYNAMIC_BUILD -DPSP -g $(INCLUDES)
+links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmarks.o \
+../builtin.o ../cache.o ../charsets.o ../connect.o ../context.o ../cookies.o ../default.o \
+../dip.o ../directfb.o ../dither.o ../dns.o ../drivers.o ../error.o ../file.o ../finger.o \
+../font_include.o ../framebuffer.o ../ftp.o ../gif.o ../html.o ../html_gr.o ../html_r.o \
+../html_tbl.o ../http.o ../https.o ../img.o ../imgcache.o ../ipret.o ../javascr.o \
+../javascript.o ../jpeg.o ../jsint.o ../kbd.o ../language.o ../links_icon.o ../listedit.o \
+../lru.o ../mailto.o ../main.o ../md5.o ../md5hl.o ../menu.o ../memory.o ../ns.o ../objreq.o \
+../os_dep.o ../pmshell.o ../png.o ../pomocny.o ../regexp.o ../sched.o ../select.o ../session.o \
+../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
+../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
+COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
+EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
+PSP_OBJECTS = plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
+
+OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
+
+INCDIR =
+
+links_CFLAGS = -DHAVE_CONFIG_H
+
+CFLAGS = -O2 -G0 -Wall -DPSP $(links_CFLAGS) $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
+BUILD_PRX = 1
+
 LIBDIR =
-
+LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
+LIBS =   -ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
 
-LIBS =  -ldanzeffvram -lpspgu -lpspge -lpspaudio -lpng -ljpeg -lz -lm -lpthread -lpsphprm $(OPENSSL_LIBS)
-
-the_prx: $(OBJS) $(TARGET).prx
-
-the_pbp: $(OBJS) EBOOT.PBP
+all: $(TARGET).prx
+	rm $(COMMON_OBJS)
+	
+cleanprx: 
+	rm -f *.prx *.PRX *.elf *.ELF $(TARGET)
 
 prepare:
 	./update_svn_version.sh ..
 
-prx: $(SHAREDLIB_DIR)/lib/libpthread.a
-	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp $(EXPORTED_OBJS)
-	touch $(COMMON_OBJS) && rm $(COMMON_OBJS) && make -f Makefile.psp $(COMMON_OBJS)
-	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp  ../../../APP_Exports.o
-	make BUILD_PRX=1 TARGET="APP_Links2" the_prx
+#the_prx:  $(OBJS) all
 
-PSP_EBOOT_ICON = "$(BASE_DIR)/Resources/Links2_Icons_Sem/icone03.png"
-PSP_EBOOT_PIC1 = "$(BASE_DIR)/Resources/Links2_Icons_Sem/background_.png"
+#plugin:
+#	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp.plugin $(EXPORTED_OBJS)
+#	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp.plugin  #../../../APP_Exports.o
+#	make -f Makefile.psp.plugin the_prx
+#	touch $(COMMON_OBJS) && rm $(COMMON_OBJS) && make $(COMMON_OBJS)
 
-stand_alone:
-	make BUILD_PRX=1 EXTRA_FLAGS="-O2 -DNEW_STAND_ALONE_APP" TARGET="Links2" COMMON_OBJS="" the_pbp
-	rm -Rf "__SCE__Links2" "%__SCE__Links2"
-	mkdir -p "Links2"
-	mkdir -p "Links2/graphics/"
-	mkdir -p "Links2/.links/"
-	mkdir -p "Links2/Screenshots"
-	cp -vf EBOOT.PBP "Links2/"
-	cp -vf $(SHAREDLIB_DIR)/danzeff/graphics/*.png "Links2/graphics/"
-	cp -vf *.cfg "Links2/.links/"
-	cp -vf dithertable.bin "Links2"
-	cp -vf whatsnew.txt "Links2"
-	cp -vf ../ChangeLog Links2/ChangeLog.orig
-
-stand_alone15:
-	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" $(EXPORTED_OBJS)
-	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" ../../../APP_Exports.o
-	make EXTRA_FLAGS="-O2 -DSTAND_ALONE_APP" TARGET="Links2" COMMON_OBJS="" the_pbp kxploit
-	rm -Rf "__SCE__Links2" "%__SCE__Links2"
-	mv "Links2"  "__SCE__Links2"
-	mv "Links2%" "%__SCE__Links2"
-	mkdir -p "__SCE__Links2/graphics/"
-	mkdir -p "__SCE__Links2/.links/"
-	mkdir -p "__SCE__Links2/Screenshots"
-	cp -vf $(SHAREDLIB_DIR)/danzeff/graphics/*.png "__SCE__Links2/graphics/"
-	cp -vf *.cfg "__SCE__Links2/.links/"
-	cp -vf dithertable.bin "__SCE__Links2"
-	cp -vf whatsnew.txt "__SCE__Links2"
-	cp -vf ../ChangeLog __SCE__Links2/ChangeLog.orig
-
-debug:
-	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" $(EXPORTED_OBJS)
-	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" ../../../APP_Exports.o
-	make EXTRA_FLAGS="-DDEBUGMODE -DSTAND_ALONE_APP" TARGET="DebugLinks2" COMMON_OBJS="" the_pbp
-
-release_stand_alone:
-	make prepare
-	make stand_alone
-	./make_zip.sh stand_alone.zip __SCE__Links2 %__SCE__Links2
-
-release_plugin:
-	make prepare
-	make prx
+release:
+	make -f Makefile.psp.plugin prepare
+	make -f Makefile.psp.plugin prx
 	cp ../ChangeLog ChangeLog.orig
 	./make_zip.sh pspradio_plugin.zip whatsnew.txt ChangeLog.orig APP_Links2.prx
 
 release_sources:
 	rm -Rf *.o
 	rm -Rf *.zip *.prx *.elf *.SFO
-	rm -Rf __SCE__Links2 %__SCE__Links2
+	rm -Rf Links2/
 	./make_zip_non_recursive.sh sources.zip `find .. -name ".svn*" -prune -o -print`
 
-release:
-	rm -Rf *.zip
-	make prepare
-	make clean
-	make release_sources
-	make release_stand_alone
-	make clean
-	make release_plugin
-
-install_prx:
-	cp -vf APP_Links2.prx $(KXPLOIT_PRIMARY)
-	mkdir -p $(KXPLOIT_PRIMARY)/APP_Links2/links
-	cp -vf *.cfg $(KXPLOIT_PRIMARY)/APP_Links2/links
-	cp -vf dithertable.bin $(KXPLOIT_PRIMARY)
-	cp whatsnew.txt $(KXPLOIT_PRIMARY)/app_links2_whatsnew.txt
+install:
+	cp -vf APP_Links2.prx $(PSPRADIO_RELEASE_DIR)
+	mkdir -p $(PSPRADIO_RELEASE_DIR)/APP_Links2/links
+	cp -vf *.cfg $(PSPRADIO_RELEASE_DIR)/APP_Links2/links
+	cp -vf dithertable.bin $(PSPRADIO_RELEASE_DIR)
+	cp whatsnew.txt $(PSPRADIO_RELEASE_DIR)/app_links2_whatsnew.txt
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
