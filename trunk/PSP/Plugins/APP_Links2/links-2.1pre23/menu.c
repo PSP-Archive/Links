@@ -1535,7 +1535,7 @@ void cache_opt(struct terminal *term, void *xxx, void *yyy)
 
 void menu_shell(struct terminal *term, void *xxx, void *yyy)
 {
-#ifndef STAND_ALONE_APP
+#if !defined(STAND_ALONE_APP) && !defined(NEW_STAND_ALONE_APP)
 #ifdef PSP /** Switch to PSPRadio */
 	g_PSPEnableInput = falsE;
 	g_PSPEnableRendering = falsE;

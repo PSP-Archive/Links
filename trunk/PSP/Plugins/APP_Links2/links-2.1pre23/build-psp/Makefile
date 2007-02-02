@@ -78,7 +78,7 @@ bin_PROGRAMS = links
 
 #links_LDADD = atheos.o
 
-links_SOURCES = af_unix.c auth.c beos.c bfu.c block.c bookmarks.c builtin.c cache.c charsets.c connect.c context.c cookies.c default.c dip.c directfb.c directfb_cursors.h dither.c dns.c drivers.c error.c file.c finger.c font_include.c framebuffer.c ftp.c gif.c html.c html_gr.c html_r.c html_tbl.c http.c https.c img.c imgcache.c ipret.c javascr.c javascript.c jpeg.c jsint.c kbd.c language.c links_icon.c listedit.c lru.c mailto.c main.c md5.c md5hl.c menu.c memory.c ns.c objreq.c os_dep.c pmshell.c png.c pomocny.c regexp.c sched.c select.c session.c smb.c svgalib.c terminal.c tiff.c types.c url.c view.c view_gr.c win32.c x.c xbm.c links.h cfg.h os_dep.h os_depx.h setup.h codepage.h language.h codepage.inc entity.inc uni_7b.inc language.inc upcase.inc arrow.inc md5.h ns.h struct.h tree.h typy.h ipret.h javascript.h builtin.h builtin_keys.h bits.h psp.c plugin_main.c pspsdl.c pspgu.c
+links_SOURCES = af_unix.c auth.c beos.c bfu.c block.c bookmarks.c builtin.c cache.c charsets.c connect.c context.c cookies.c default.c dip.c directfb.c directfb_cursors.h dither.c dns.c drivers.c error.c file.c finger.c font_include.c framebuffer.c ftp.c gif.c html.c html_gr.c html_r.c html_tbl.c http.c https.c img.c imgcache.c ipret.c javascr.c javascript.c jpeg.c jsint.c kbd.c language.c links_icon.c listedit.c lru.c mailto.c main.c md5.c md5hl.c menu.c memory.c ns.c objreq.c os_dep.c pmshell.c png.c pomocny.c regexp.c sched.c select.c session.c smb.c svgalib.c terminal.c tiff.c types.c url.c view.c view_gr.c win32.c x.c xbm.c links.h cfg.h os_dep.h os_depx.h setup.h codepage.h language.h codepage.inc entity.inc uni_7b.inc language.inc upcase.inc arrow.inc md5.h ns.h struct.h tree.h typy.h ipret.h javascript.h builtin.h builtin_keys.h bits.h psp.c pspsdl.c pspgu.c
 
 CXXFLAGS = 
 
@@ -103,7 +103,7 @@ javascript.o jpeg.o jsint.o kbd.o language.o links_icon.o listedit.o \
 lru.o mailto.o main.o md5.o md5hl.o menu.o memory.o ns.o objreq.o \
 os_dep.o pmshell.o png.o pomocny.o regexp.o sched.o select.o session.o \
 smb.o svgalib.o terminal.o tiff.o types.o url.o view.o view_gr.o \
-win32.o x.o xbm.o psp.o plugin_main.o pspsdl.o pspgu.o
+win32.o x.o xbm.o psp.o pspsdl.o pspgu.o
 #links_DEPENDENCIES =  atheos.o
 links_LDFLAGS = 
 CFLAGS = -I/usr/local/pspdev/psp/sdk/include/ -I/usr/local/pspdev/psp/include/machine/ -I../../../../SharedLib/Tools
@@ -136,7 +136,7 @@ DEP_FILES =  .deps/af_unix.P .deps/auth.P .deps/beos.P .deps/bfu.P \
 .deps/kbd.P .deps/language.P .deps/links_icon.P .deps/listedit.P \
 .deps/lru.P .deps/mailto.P .deps/main.P .deps/md5.P .deps/md5hl.P \
 .deps/memory.P .deps/menu.P .deps/ns.P .deps/objreq.P .deps/os_dep.P \
-.deps/plugin_main.P .deps/pmshell.P .deps/png.P .deps/pomocny.P \
+.deps/pmshell.P .deps/png.P .deps/pomocny.P \
 .deps/psp.P .deps/pspgu.P .deps/pspsdl.P .deps/regexp.P .deps/sched.P \
 .deps/select.P .deps/session.P .deps/smb.P .deps/svgalib.P \
 .deps/terminal.P .deps/tiff.P .deps/types.P .deps/url.P .deps/view.P \
@@ -499,4 +499,4 @@ atheos.o: atheos.cpp
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-include Makefile.psp
+include Makefile.psp.standalone

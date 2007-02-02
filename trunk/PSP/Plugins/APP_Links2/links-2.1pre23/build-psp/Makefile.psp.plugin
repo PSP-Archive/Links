@@ -3,15 +3,15 @@ include $(BASE_DIR)/include.mak
 
 #TARGET = APP_Links2
 
-EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
-COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
+#EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
+#COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
 PSP_OBJECTS = psp.o plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
 
 OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
 
-USE_PSPSDK_LIBC = 0
+#USE_PSPSDK_LIBC = 0
 # Define the name of our custom exports (minus the .exp extension)
-PRX_EXPORTS=$(PLUGINS_DIR)/APP_Exports.exp
+#PRX_EXPORTS=$(PLUGINS_DIR)/APP_Exports.exp
 
 INCLUDES = -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DIR)/ScreenHandler \
 		 -I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
@@ -48,6 +48,20 @@ PSP_EBOOT_ICON = "$(BASE_DIR)/Resources/Links2_Icons_Sem/icone03.png"
 PSP_EBOOT_PIC1 = "$(BASE_DIR)/Resources/Links2_Icons_Sem/background_.png"
 
 stand_alone:
+	make BUILD_PRX=1 EXTRA_FLAGS="-O2 -DNEW_STAND_ALONE_APP" TARGET="Links2" COMMON_OBJS="" the_pbp
+	rm -Rf "__SCE__Links2" "%__SCE__Links2"
+	mkdir -p "Links2"
+	mkdir -p "Links2/graphics/"
+	mkdir -p "Links2/.links/"
+	mkdir -p "Links2/Screenshots"
+	cp -vf EBOOT.PBP "Links2/"
+	cp -vf $(SHAREDLIB_DIR)/danzeff/graphics/*.png "Links2/graphics/"
+	cp -vf *.cfg "Links2/.links/"
+	cp -vf dithertable.bin "Links2"
+	cp -vf whatsnew.txt "Links2"
+	cp -vf ../ChangeLog Links2/ChangeLog.orig
+
+stand_alone15:
 	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" $(EXPORTED_OBJS)
 	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp EXTRA_FLAGS="-DSTAND_ALONE_APP" ../../../APP_Exports.o
 	make EXTRA_FLAGS="-O2 -DSTAND_ALONE_APP" TARGET="Links2" COMMON_OBJS="" the_pbp kxploit

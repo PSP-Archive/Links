@@ -47,5 +47,8 @@
 		char other[MAXPATHLEN+1];
 	} extension_download_dirs;
 	extern extension_download_dirs ext_dl_dir;
+	
+	/** Functions */
+	void wait_for_triangle(char *str);
 
 #endif
