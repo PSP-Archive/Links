@@ -499,4 +499,4 @@ atheos.o: atheos.cpp
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-include Makefile.psp.standalone
+#include Makefile.psp.standalone

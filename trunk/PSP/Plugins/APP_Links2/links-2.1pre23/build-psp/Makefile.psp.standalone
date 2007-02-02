@@ -1,3 +1,5 @@
+include ./Makefile
+
 TARGET = Links2PSPStandAlone
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = Links2PSPStandAlone
@@ -16,11 +18,10 @@ INCLUDES = -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DI
 PSP_OBJECTS = psp.o Main_standalone.o $(COMMON_OBJS) $(EXPORTED_OBJS)
 
 OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
-#OBJS = Main_standalone.o
 
 INCDIR =
 
-CFLAGS = -O2 -G0 -Wall -DSTAND_ALONE_APP $(INCLUDES)
+CFLAGS = -O2 -G0 -Wall $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
@@ -28,17 +29,20 @@ BUILD_PRX = 1
 
 LIBDIR =
 LDFLAGS =
-#LIBS= -lpsputility -lpspgum -lpspgu -lpspnet -lm
-#LIBS =  -ldanzeffvram -lpspgu -lpspge -lpspaudio -lpng -ljpeg -lz -lm -lpthread -lpsphprm $(OPENSSL_LIBS)
 OPENSSL_LIBS= -lssl -lcrypto
 LIBS =   -ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
-
 
 cleanpbp: 
 	rm -f EBOOT.PBP *.SFO *.elf
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
+
+PSP_EBOOT_ICON = "$(BASE_DIR)/Resources/Links2_Icons_Argandona/icon0.png"
+PSP_EBOOT_PIC1 = "$(BASE_DIR)/Resources/Links2_Icons_Argandona/pic1.png"
+
+prepare:
+	./update_svn_version.sh ..
 
 stand_alone: cleanpbp EBOOT.PBP
 	mkdir -p "Links2"
@@ -52,5 +56,14 @@ stand_alone: cleanpbp EBOOT.PBP
 	cp -vf whatsnew.txt "Links2"
 	cp -vf ../ChangeLog Links2/ChangeLog.orig
 	
+release_stand_alone:
+	make -f Makefile.psp.standalone prepare
+	make -f Makefile.psp.standalone stand_alone
+	./make_zip.sh stand_alone.zip Links2/
 	
+release_sources:
+	rm -Rf *.o
+	rm -Rf *.zip *.prx *.elf *.SFO
+	rm -Rf Links2/
+	./make_zip_non_recursive.sh sources.zip `find .. -name ".svn*" -prune -o -print`
 	

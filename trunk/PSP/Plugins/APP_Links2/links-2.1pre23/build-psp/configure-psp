@@ -19,7 +19,7 @@ touch $SHAREDLIB_DIR/lib/libdl.a
 echo "Calling configure..."
 ../configure --prefix=$(psp-config --psp-prefix) --srcdir=../ --target=psp --includedir=$PSPDEV/psp/sdk/include/ --enable-javascript --enable-graphics --without-svgalib --without-x --without-fb --without-directfb --without-pmshell --without-atheos --without-sdl --without-pspsdl --with-pspgu --with-ssl || (echo "Error configuring links2" ; exit 0);
 
-echo "include Makefile.psp" >> Makefile
+#echo "include Makefile.psp" >> Makefile
 echo "Done."
 
 
