@@ -700,6 +700,7 @@ void pspInputThread()
 					{
 						pspDebugScreenInit();
 						wifiChooseConnect();
+						s_bbDirty = truE;
 					}
 					if (oldButtonMask & PSP_CTRL_SQUARE)
 					{

@@ -1,0 +1,56 @@
+TARGET = Links2PSPStandAlone
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = Links2PSPStandAlone
+
+BASE_DIR = ../../../..
+include $(BASE_DIR)/include.mak
+
+INCLUDES = -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DIR)/ScreenHandler \
+		 -I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
+		 -I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
+		 -I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
+		 -I$(SHAREDLIB_DIR)/libpthread \
+		 -I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
+		 -I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
+
+PSP_OBJECTS = psp.o Main_standalone.o $(COMMON_OBJS) $(EXPORTED_OBJS)
+
+OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
+#OBJS = Main_standalone.o
+
+INCDIR =
+
+CFLAGS = -O2 -G0 -Wall -DSTAND_ALONE_APP $(INCLUDES)
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+BUILD_PRX = 1
+
+LIBDIR =
+LDFLAGS =
+#LIBS= -lpsputility -lpspgum -lpspgu -lpspnet -lm
+#LIBS =  -ldanzeffvram -lpspgu -lpspge -lpspaudio -lpng -ljpeg -lz -lm -lpthread -lpsphprm $(OPENSSL_LIBS)
+OPENSSL_LIBS= -lssl -lcrypto
+LIBS =   -ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
+
+
+cleanpbp: 
+	rm -f EBOOT.PBP *.SFO *.elf
+
+PSPSDK=$(shell psp-config --pspsdk-path)
+include $(PSPSDK)/lib/build.mak
+
+stand_alone: cleanpbp EBOOT.PBP
+	mkdir -p "Links2"
+	mkdir -p "Links2/graphics/"
+	mkdir -p "Links2/.links/"
+	mkdir -p "Links2/Screenshots"
+	cp -vf EBOOT.PBP "Links2/"
+	cp -vf $(SHAREDLIB_DIR)/danzeff/graphics/*.png "Links2/graphics/"
+	cp -vf *.cfg "Links2/.links/"
+	cp -vf dithertable.bin "Links2"
+	cp -vf whatsnew.txt "Links2"
+	cp -vf ../ChangeLog Links2/ChangeLog.orig
+	
+	
+	

@@ -1047,7 +1047,7 @@ void init_dither(int depth)
 		fprintf(stderr,"init_dither: unsupported depth %d\n",depth);
 		internal("Graphics driver returned unsupported \
 pixel memory organisation");
-		wait_for_triangle("Unsupported color depth %dbpp\n", depth);
+		wait_for_triangle("Unsupported color depth");
 	}
 
 	make_round_tables();
