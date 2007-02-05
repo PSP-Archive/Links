@@ -1,17 +1,15 @@
 BASE_DIR = ../../../..
 include $(BASE_DIR)/include.mak
 
-#include ./Makefile
-
 TARGET = APP_Links2
 
-INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) -I$(PSPRADIO_DIR)/ScreenHandler \
-		 -I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
-		 -I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
-		 -I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
-		 -I$(SHAREDLIB_DIR)/libpthread \
-		 -I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
-		 -I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
+INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
+			-I$(PSPRADIO_DIR)/ScreenHandler \
+			-I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
+			-I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
+			-I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
+			-I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
+			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
 
 links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmarks.o \
 ../builtin.o ../cache.o ../charsets.o ../connect.o ../context.o ../cookies.o ../default.o \
@@ -23,6 +21,7 @@ links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmar
 ../os_dep.o ../pmshell.o ../png.o ../pomocny.o ../regexp.o ../sched.o ../select.o ../session.o \
 ../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
 ../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
+
 COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
 EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
 PSP_OBJECTS = plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
@@ -45,30 +44,28 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =   -ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
+LIBS =	-ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm \
+				-lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
 
 all: $(TARGET).prx
+	mkdir -p PSPRadio
+	cp -vf APP_Links2.prx PSPRadio
+	mkdir -p PSPRadio/APP_Links2/links
+	cp -vf *.cfg PSPRadio/APP_Links2/links
+	cp -vf dithertable.bin PSPRadio
+	cp whatsnew.txt PSPRadio/app_links2_whatsnew.txt
+	cp ../ChangeLog PSPRadio/app_links2_originalchangelog.txt
 	rm $(COMMON_OBJS)
 	
-cleanprx: 
-	rm -f *.prx *.PRX *.elf *.ELF $(TARGET)
+clean_plugin: 
+	rm -Rf *.o ../*.o *.prx *.PRX *.elf *.ELF *.SFO *.PBP $(TARGET) $(TARGET).prx
 
 prepare:
 	./update_svn_version.sh ..
 
-#the_prx:  $(OBJS) all
-
-#plugin:
-#	touch $(EXPORTED_OBJS) && rm $(EXPORTED_OBJS) && make -f Makefile.psp.plugin $(EXPORTED_OBJS)
-#	touch ../../../APP_Exports.o && rm ../../../APP_Exports.o && make -f Makefile.psp.plugin  #../../../APP_Exports.o
-#	make -f Makefile.psp.plugin the_prx
-#	touch $(COMMON_OBJS) && rm $(COMMON_OBJS) && make $(COMMON_OBJS)
-
-release:
-	make -f Makefile.psp.plugin prepare
-	make -f Makefile.psp.plugin prx
-	cp ../ChangeLog ChangeLog.orig
-	./make_zip.sh pspradio_plugin.zip whatsnew.txt ChangeLog.orig APP_Links2.prx
+release: $(TARGET).prx
+	./make_zip.sh pspradio_plugin.zip PSPRadio
+	mv *.zip $(RELEASE_DIR)
 
 release_sources:
 	rm -Rf *.o
@@ -76,12 +73,8 @@ release_sources:
 	rm -Rf Links2/
 	./make_zip_non_recursive.sh sources.zip `find .. -name ".svn*" -prune -o -print`
 
-install:
-	cp -vf APP_Links2.prx $(PSPRADIO_RELEASE_DIR)
-	mkdir -p $(PSPRADIO_RELEASE_DIR)/APP_Links2/links
-	cp -vf *.cfg $(PSPRADIO_RELEASE_DIR)/APP_Links2/links
-	cp -vf dithertable.bin $(PSPRADIO_RELEASE_DIR)
-	cp whatsnew.txt $(PSPRADIO_RELEASE_DIR)/app_links2_whatsnew.txt
+install: $(TARGET).prx
+	cp -Rvf PSPRadio $(RELEASE_DIR)
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
