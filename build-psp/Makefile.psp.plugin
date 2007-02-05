@@ -36,7 +36,7 @@ INCDIR =
 
 links_CFLAGS = -DHAVE_CONFIG_H
 
-CFLAGS = -O2 -G0 -Wall -DPSP $(links_CFLAGS) $(INCLUDES)
+CFLAGS = -O2 -G0 -Wall -DPSP $(GLOBAL_CFLAGS) $(links_CFLAGS) $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
