@@ -14,7 +14,7 @@
 #include <psputility_netparam.h> 
 
 #include "psp.h"
-#include <PSPRadio_Exports.h>
+//#include <PSPRadio_Exports.h>
 
 #include <links.h>
 
