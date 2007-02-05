@@ -30,7 +30,7 @@
 #include <links.h>
 
 PSP_MODULE_INFO("APP_Links2", 0, 1, 1);
-PSP_HEAP_SIZE_KB(1024*10);
+PSP_HEAP_SIZE_KB(1024*5);
 
 #define printf pspDebugScreenPrintf
 void app_plugin_main();
@@ -138,11 +138,11 @@ void app_plugin_main()
 	g_PSPEnableInput = truE;
 	g_PSPEnableRendering = truE;
 
-	pspDebugScreenPrintf("- Seeding SSL random generator...\n");
+	pspDebugScreenPrintf("- NOT Seeding SSL random generator...\n");
 	sceDisplayWaitVblankStart();
 	
-	sceRtcGetCurrentClockLocalTime(&time);
-	RAND_seed(&time, sizeof(pspTime));
+	//sceRtcGetCurrentClockLocalTime(&time);
+	//RAND_seed(&time, sizeof(pspTime));
 		
 	ret = main_loop(argc, (char **)&argv);
 

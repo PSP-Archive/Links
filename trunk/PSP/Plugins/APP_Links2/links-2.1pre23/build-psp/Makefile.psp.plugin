@@ -29,6 +29,9 @@ PSP_OBJECTS = plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
 
 OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
 
+# Define the name of our custom exports (minus the .exp extension)
+PRX_EXPORTS=$(PLUGINS_DIR)/APP_Exports.exp
+
 INCDIR =
 
 links_CFLAGS = -DHAVE_CONFIG_H
