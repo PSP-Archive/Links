@@ -138,11 +138,11 @@ void app_plugin_main()
 	g_PSPEnableInput = truE;
 	g_PSPEnableRendering = truE;
 
-	pspDebugScreenPrintf("- NOT Seeding SSL random generator...\n");
+	pspDebugScreenPrintf("- Seeding SSL random generator...\n");
 	sceDisplayWaitVblankStart();
 	
-	//sceRtcGetCurrentClockLocalTime(&time);
-	//RAND_seed(&time, sizeof(pspTime));
+	sceRtcGetCurrentClockLocalTime(&time);
+	RAND_seed(&time, sizeof(pspTime));
 		
 	ret = main_loop(argc, (char **)&argv);
 
