@@ -7,7 +7,6 @@
 #define VERSION_STRING			VERSION " ["__DATE__ " " __TIME__"]"
 #else
 #ifdef PSP
-	#include "svn_version.h"
 	#define VERSION_STRING	VERSION " PSP SVN r" SVN_VERSION
 #else
 	#define VERSION_STRING			VERSION
