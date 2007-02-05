@@ -2,6 +2,7 @@ BASE_DIR = ../../../..
 include $(BASE_DIR)/include.mak
 
 TARGET = APP_Links2
+SVNVERSION = $(shell ./get_svn_version.sh ..)
 
 INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
 			-I$(PSPRADIO_DIR)/ScreenHandler \
@@ -35,7 +36,7 @@ INCDIR =
 
 links_CFLAGS = -DHAVE_CONFIG_H
 
-CFLAGS = -O2 -G0 -Wall -DPSP $(GLOBAL_CFLAGS) $(links_CFLAGS) $(INCLUDES)
+CFLAGS = -O2 -G0 -Wall -DPSP -DSVN_VERSION='"$(SVNVERSION)"' $(GLOBAL_CFLAGS) $(links_CFLAGS) $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 

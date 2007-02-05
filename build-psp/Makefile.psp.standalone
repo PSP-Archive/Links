@@ -5,6 +5,8 @@ PSP_EBOOT_TITLE = Links2PSPStandAlone
 BASE_DIR = ../../../..
 include $(BASE_DIR)/include.mak
 
+SVNVERSION = $(shell ./get_svn_version.sh ..)
+
 INCLUDES = -I./ -I../ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
 			-I$(PSPRADIO_DIR)/ScreenHandler \
 			-I$(SHAREDLIB_DIR)/PSPApp -L$(SHAREDLIB_DIR)/lib \
@@ -33,7 +35,7 @@ INCDIR =
 
 links_CFLAGS = -DHAVE_CONFIG_H
 
-CFLAGS = -O2 -G0 -Wall -DPSP $(GLOBAL_CFLAGS) $(links_CFLAGS) $(INCLUDES)
+CFLAGS = -O2 -G0 -Wall -DPSP -DSVN_VERSION='"$(SVNVERSION)"' $(GLOBAL_CFLAGS) $(links_CFLAGS) $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
@@ -49,9 +51,6 @@ include $(PSPSDK)/lib/build.mak
 
 PSP_EBOOT_ICON = "$(BASE_DIR)/Resources/Links2_Icons_Argandona/icon0.png"
 PSP_EBOOT_PIC1 = "$(BASE_DIR)/Resources/Links2_Icons_Argandona/pic1.png"
-
-prepare:
-	./update_svn_version.sh ..
 
 all: EBOOT.PBP
 	mkdir -p "Links2"
