@@ -1,5 +1,5 @@
 #!/bin/sh
-export FILENAME=links-2.1pre22_psp_r`cat ../svn_version.h|awk -F'"' '{print $2}'`_$1
+export FILENAME=links-2.1pre23_psp_r`./get_svn_version.sh ..`_$1
 
 echo filename: $FILENAME
 
