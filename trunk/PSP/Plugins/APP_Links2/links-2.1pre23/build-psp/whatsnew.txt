@@ -1,11 +1,28 @@
- What's New for Links2 PSP Port
-================================
+Links2 PSP Port
+http://pspradio.sourceforge.net/phpBB/viewforum.php?f=24
+=========================================================
+
+Quick Installation Guide:
+-------------------------
+-If you have your OE configured to run the new firmware on the GAME directory, then just
+copy the folder "PSPRadio" to your PSP under "/PSP/GAME/".
+-If you have your OE configured to run F/W 1.5 apps in your GAME directory, then copy the
+"PSPRadio" folder to the appropriate game folder for your f/w (like GAME303 or GAME310).
+ 
+Change Log:
+-------------------------
+
+links-2.1pre23 PSP rxxxx (2007-02-xx)
+NEW FEATURES
+BUG FIXES
+KNOWN PROBLEMS
 
 links-2.1pre23 PSP r1261 (2007-02-06)
 NEW FEATURES
 (raf) Changed default background color from gray to white (for html).
 (raf) UP/DOWN in html now scroll up/down (without R+)
 (raf) UP/DOWN at the top/bottom of a menu list will wrap (user request).
+(raf) Change iconset to Argandona's. Thanks, Argandona!!.
 BUG FIXES
 (raf) Plugin: Fixed openssl compile options (-mno-explicit-relocs), this fixes the problem where the Links2 plugin wasn't working. (You will need to upgrade openssl from the pspdev svn to rev.2169 or greater).
 KNOWN PROBLEMS
