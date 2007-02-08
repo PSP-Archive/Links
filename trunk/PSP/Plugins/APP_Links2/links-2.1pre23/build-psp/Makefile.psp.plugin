@@ -10,7 +10,8 @@ INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
 			-I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
 			-I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
 			-I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
-			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
+			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff \
+			-I$(PLUGINS_DIR)/Common -L$(PLUGINS_DIR)/Common
 
 links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmarks.o \
 ../builtin.o ../cache.o ../charsets.o ../connect.o ../context.o ../cookies.o ../default.o \
@@ -23,9 +24,8 @@ links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmar
 ../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
 ../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
 
-COMMON_OBJS   = $(PLUGINS_DIR)/Common.o
 EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
-PSP_OBJECTS = plugin_main.o $(COMMON_OBJS) $(EXPORTED_OBJS)
+PSP_OBJECTS = plugin_main.o $(EXPORTED_OBJS)
 
 OBJS = $(PSP_OBJECTS) $(links_OBJECTS)
 
@@ -46,7 +46,7 @@ LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
 LIBS =	-ldanzeffvram -lpspgu -lpspge -lpng -ljpeg -lz -lm \
-				-lpspwlan -lpsphprm -lpsprtc -lpthread $(OPENSSL_LIBS)
+				-lpspwlan -lpsphprm -lpsprtc -lpthread -lPluginCommon $(OPENSSL_LIBS)
 
 all: $(TARGET).prx
 	mkdir -p PSPRadio
@@ -56,7 +56,6 @@ all: $(TARGET).prx
 	cp -vf dithertable.bin PSPRadio
 	cp whatsnew.txt PSPRadio/app_links2_whatsnew.txt
 	cp ../ChangeLog PSPRadio/app_links2_originalchangelog.txt
-	rm $(COMMON_OBJS)
 	
 clean_plugin: 
 	rm -Rf *.o ../*.o *.prx *.PRX *.elf *.ELF *.SFO *.PBP $(TARGET) $(TARGET).prx
