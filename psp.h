@@ -50,5 +50,8 @@
 	
 	/** Functions */
 	void wait_for_triangle(char *str);
+	/** Reconnect to selected wifi */
+	void wifiReconnect();
+
 
 #endif

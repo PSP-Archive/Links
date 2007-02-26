@@ -23,6 +23,8 @@
 volatile tBoolean g_PSPEnableRendering = truE;
 volatile tBoolean g_PSPEnableInput = truE;
 
+static iSelectedWiFiProfile = -1;
+
 /* PSP Specific config items */
 _psp_config_items  g_PSPConfig = {
 	1, 				/* screen_zoom_factor */
@@ -237,8 +239,18 @@ void wifiChooseConnect()
 	if (iAP > 0)
 	{
 		connect_to_apctl(iAP);
+		iSelectedWiFiProfile = iAP;
 	}
 	g_PSPEnableRendering = truE;
 //	sceDisplaySetMode(0, PSP_SCREEN_WIDTH, PSP_SCREEN_HEIGHT);
 //	sceDisplaySetFrameBuf((u32 *) (0x40000000 | (u32) sceGeEdramGetAddr()), PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
 }
+
+void wifiReconnect()
+{
+	if (iSelectedWiFiProfile > 0)
+	{
+		connect_to_apctl(iSelectedWiFiProfile);
+	}
+}
+

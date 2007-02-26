@@ -14,6 +14,7 @@ Change Log:
 
 links-2.1pre23 PSP rxxxx (2007-02-xx)
 NEW FEATURES
+(raf) After resuming from syuspend, now wifi reconnects.
 BUG FIXES
 KNOWN PROBLEMS
 
