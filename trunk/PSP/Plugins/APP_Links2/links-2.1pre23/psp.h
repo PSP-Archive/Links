@@ -1,6 +1,7 @@
 #ifndef psp_h
 	#define psp_h
 
+	#include <psptypes.h>
 	#include <unistd.h>
 
 	#ifndef tBoolean
@@ -20,10 +21,16 @@
 
 	#ifdef PSP_16BPP
 		#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_565
-		#define FRAMESIZE (2 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+		#define PSP_GU_PIXEL_FORMAT GU_PSM_5650
+		#define PSP_PIXELSIZE	2
+		#define FBFRAMESIZE (PSP_PIXELSIZE * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+		typedef u16 pixel_type;
 	#else
 		#define PSP_PIXEL_FORMAT PSP_DISPLAY_PIXEL_FORMAT_8888
-		#define FRAMESIZE (4 * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+		#define PSP_GU_PIXEL_FORMAT GU_PSM_8888
+		#define PSP_PIXELSIZE	4
+		#define FBFRAMESIZE (PSP_PIXELSIZE * PSP_SCREEN_HEIGHT * PSP_LINE_SIZE)
+		typedef u32 pixel_type;
 	#endif
 
 	extern volatile tBoolean g_PSPEnableRendering;

@@ -1,4 +1,4 @@
-/* PSP GU
+/* framebuffer.c
  * Linux framebuffer code
  * (c) 2002 Petr 'Brain' Kulhavy
  * This file is a part of the Links program, released under GPL.
@@ -6,29 +6,19 @@
 
 #include "cfg.h"
 
-#ifdef GRDRV_PSPGU
+#ifdef GRDRV_PSPFB
 
 #ifdef TEXT
 #undef TEXT
 #endif
 
-#include <stdio.h>
-
-#include <pspsdk.h>
-#include <pspkernel.h>
-#include <pspdisplay.h>
-
 #include "links.h"
 #include <pthread.h>
 #include <pspctrl.h>
-#include <pspgu.h>
+#include <pspfb.h>
 #include <signal.h>
 #include "newarrow.inc"
-
-#include <danzeff.h>
-
-#include <psp.h>
-#include <valloc.h>
+#include <pspdisplay.h>
 
 #define printf pspDebugScreenPrintf
 
@@ -37,40 +27,23 @@ static volatile int s_BbRowOffset = 0, s_BbColOffset = 0;
 static volatile int s_bbDirty = falsE;
 static volatile int s_Zoom = falsE;
 
-int pspgu_console;
+int pspfb_console;
 
-struct itrm *pspgu_kbd;
+struct itrm *pspfb_kbd;
 
-struct graphics_device *pspgu_old_vd;
+struct graphics_device *pspfb_old_vd;
 
-//char *pspgu_mem, *gu_data.virtbuffer, *psp_fb, *psp_fb1, *psp_fb2;
-
-typedef struct gu_param_
-{
-	int virt_width, virt_height, virt_sl_pixelpitch, virt_sl_bytepitch;
-	int display_width, display_height, display_sl_pixelpitch, display_sl_bytepitch;
-	int pixel_mode;
-	int pixel_size;
-	int guinitialized;
-
-	int framesize, virtframesize;
-
-	char *drawbuffer, *displaybuffer, *zbuffer, *virtbuffer;
-
-	unsigned int __attribute__((aligned(16))) list[262144];
-
-} gu_param;
-
-gu_param gu_data;
-
+char *pspfb_mem, *pspfb_vmem, *psp_fb, *psp_fb1, *psp_fb2;
+int pspfb_mem_size,pspfb_linesize,pspfb_bits_pp,pspfb_pixelsize;
+int pspfb_xsize,pspfb_ysize;
 int border_left, border_right, border_top, border_bottom;
-int pspgu_colors;
+int pspfb_colors;
 
-void pspgu_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, int y);
+void pspfb_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, int y);
 
-static unsigned char *pspgu_driver_param;
-struct graphics_driver pspgu_driver;
-volatile int pspgu_active=1;
+static unsigned char *pspfb_driver_param;
+struct graphics_driver pspfb_driver;
+volatile int pspfb_active=1;
 
 static volatile int in_gr_operation;
 
@@ -105,9 +78,9 @@ static int global_mouse_hidden;
 
 
 
-#define TEST_INACTIVITY if (!pspgu_active||dev!=current_virtual_device) return;
+#define TEST_INACTIVITY if (!pspfb_active||dev!=current_virtual_device) return;
 
-#define TEST_INACTIVITY_0 if (!pspgu_active||dev!=current_virtual_device) return 0;
+#define TEST_INACTIVITY_0 if (!pspfb_active||dev!=current_virtual_device) return 0;
 
 #define RECTANGLES_INTERSECT(xl0, xh0, xl1, xh1, yl0, yh0, yl1, yh1) (\
 				   (xl0)<(xh1)\
@@ -131,7 +104,7 @@ static int global_mouse_hidden;
         if (y+ys>dev->clip.y2) ys=dev->clip.y2-y;\
         if (dev->clip.x1-x>0){\
                 xs-=(dev->clip.x1-x);\
-                data+=gu_data.pixel_size*(dev->clip.x1-x);\
+                data+=pspfb_pixelsize*(dev->clip.x1-x);\
                 x=dev->clip.x1;\
         }\
         if (dev->clip.y1-y>0){\
@@ -202,21 +175,6 @@ static int global_mouse_hidden;
 	TEST_MOUSE (dev->clip.x1, dev->clip.x2, dev->clip.y1, dev->clip.y2)\
 
 
-#define IS_BUTTON_PRESSED(i,b) (((i) & 0xFFFF) == (b)) /* i = read button mask b = expected match */
-
-
-void StartList()
-{
-	sceGuStart(GU_DIRECT, gu_data.list);
-}
-
-void EndList()
-{
-	sceGuFinish();
-	sceGuSync(0,0);
-}
-
-
 /* n is in bytes. dest must begin on pixel boundary. If n is not a whole number of pixels, rounding is
  * performed downwards.
  */
@@ -258,14 +216,14 @@ static inline void pixel_set(unsigned char *dest, int n,void * pattern)
 
 static void redraw_mouse(void);
 
-static void pspgu_mouse_move(int dx, int dy, int fl)
+static void pspfb_mouse_move(int dx, int dy, int fl)
 {
 	struct event ev;
 	mouse_x += dx;
 	mouse_y += dy;
 	ev.ev = EV_MOUSE;
-	if (mouse_x >= gu_data.virt_width) mouse_x = gu_data.virt_width - 1;
-	if (mouse_y >= gu_data.virt_height) mouse_y = gu_data.virt_height - 1;
+	if (mouse_x >= pspfb_xsize) mouse_x = pspfb_xsize - 1;
+	if (mouse_y >= pspfb_ysize) mouse_y = pspfb_ysize - 1;
 	if (mouse_x < 0) mouse_x = 0;
 	if (mouse_y < 0) mouse_y = 0;
 	ev.x = mouse_x;
@@ -276,8 +234,8 @@ static void pspgu_mouse_move(int dx, int dy, int fl)
 	redraw_mouse();
 }
 
-#define mouse_getscansegment(buf,x,y,w) memcpy(buf,gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size,w)
-#define mouse_drawscansegment(ptr,x,y,w) memcpy(gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size,ptr,w);
+#define mouse_getscansegment(buf,x,y,w) memcpy(buf,pspfb_vmem+y*pspfb_linesize+x*pspfb_pixelsize,w)
+#define mouse_drawscansegment(ptr,x,y,w) memcpy(pspfb_vmem+y*pspfb_linesize+x*pspfb_pixelsize,ptr,w);
 
 /* Flushes the background_buffer onscreen where it was originally taken from. */
 static void place_mouse_background(void)
@@ -286,7 +244,7 @@ static void place_mouse_background(void)
 
 	bmp.x=arrow_width;
 	bmp.y=arrow_height;
-	bmp.skip=arrow_width*gu_data.pixel_size;
+	bmp.skip=arrow_width*pspfb_pixelsize;
 	bmp.data=background_buffer;
 
 	{
@@ -294,7 +252,7 @@ static void place_mouse_background(void)
 
 		current_virtual_device_backup=current_virtual_device;
 		current_virtual_device=mouse_graphics_device;
-		pspgu_draw_bitmap(mouse_graphics_device, &bmp, background_x,
+		pspfb_draw_bitmap(mouse_graphics_device, &bmp, background_x,
 			background_y);
 		current_virtual_device=current_virtual_device_backup;
 	}
@@ -318,13 +276,13 @@ static void get_mouse_background(unsigned char *buffer_ptr)
 {
 	int width,height,skip,x,y;
 
-	skip=arrow_width*gu_data.pixel_size;
+	skip=arrow_width*pspfb_pixelsize;
 
 	x=mouse_x;
 	y=mouse_y;
 
-	width=gu_data.pixel_size*(arrow_width+x>gu_data.virt_width?gu_data.virt_width-x:arrow_width);
-	height=arrow_height+y>gu_data.virt_height?gu_data.virt_height-y:arrow_height;
+	width=pspfb_pixelsize*(arrow_width+x>pspfb_xsize?pspfb_xsize-x:arrow_width);
+	height=arrow_height+y>pspfb_ysize?pspfb_ysize-y:arrow_height;
 
 	for (;height;height--){
 		mouse_getscansegment(buffer_ptr,x,y,width);
@@ -351,10 +309,10 @@ static void render_mouse_arrow(void)
 			int mask=1<<(--x);
 
 			if (reg0&mask)
-				memcpy (mouse_ptr, &mouse_black, gu_data.pixel_size);
+				memcpy (mouse_ptr, &mouse_black, pspfb_pixelsize);
 			else if (reg1&mask)
-				memcpy (mouse_ptr, &mouse_white, gu_data.pixel_size);
-			mouse_ptr+=gu_data.pixel_size;
+				memcpy (mouse_ptr, &mouse_white, pspfb_pixelsize);
+			mouse_ptr+=pspfb_pixelsize;
 		}
 	}
 	s_bbDirty = truE;
@@ -366,13 +324,13 @@ static void place_mouse(void)
 
 	bmp.x=arrow_width;
 	bmp.y=arrow_height;
-	bmp.skip=arrow_width*gu_data.pixel_size;
+	bmp.skip=arrow_width*pspfb_pixelsize;
 	bmp.data=mouse_buffer;
 	{
 		struct graphics_device * current_graphics_device_backup;
 		current_graphics_device_backup=current_virtual_device;
 		current_virtual_device=mouse_graphics_device;
-		pspgu_draw_bitmap(mouse_graphics_device, &bmp, mouse_x, mouse_y);
+		pspfb_draw_bitmap(mouse_graphics_device, &bmp, mouse_x, mouse_y);
 		current_virtual_device=current_graphics_device_backup;
 	}
 	global_mouse_hidden=0;
@@ -387,7 +345,7 @@ static void show_mouse(void)
 	get_mouse_background(background_buffer);
 	background_x=mouse_x;
 	background_y=mouse_y;
-	memcpy(mouse_buffer,background_buffer,gu_data.pixel_size*arrow_area);
+	memcpy(mouse_buffer,background_buffer,pspfb_pixelsize*arrow_area);
 	render_mouse_arrow();
 	place_mouse();
 }
@@ -400,7 +358,7 @@ static void put_and_clip_background_buffer_over_mouse_buffer(void)
 	int left=background_x-mouse_x;
 	int top=background_y-mouse_y;
 	int right,bottom;
-	int bmpixelsizeL=gu_data.pixel_size;
+	int bmpixelsizeL=pspfb_pixelsize;
 	int number_of_bytes;
 	int byte_skip;
 
@@ -440,31 +398,31 @@ static inline void place_mouse_composite(void)
 	int mouse_bottom=mouse_top+arrow_height;
 	int background_right=background_left+arrow_width;
 	int background_bottom=background_top+arrow_height;
-	int skip=arrow_width*gu_data.pixel_size;
+	int skip=arrow_width*pspfb_pixelsize;
 	int background_length,mouse_length;
 	unsigned char *mouse_ptr=mouse_buffer,*background_ptr=background_buffer;
 	int yend;
 
-	if (mouse_bottom>gu_data.virt_height) mouse_bottom=gu_data.virt_height;
-	if (background_bottom>gu_data.virt_height) background_bottom=gu_data.virt_height;
+	if (mouse_bottom>pspfb_ysize) mouse_bottom=pspfb_ysize;
+	if (background_bottom>pspfb_ysize) background_bottom=pspfb_ysize;
 
 	/* Let's do the top part */
 	if (background_top<mouse_top){
 		/* Draw the background */
-		background_length=background_right>gu_data.virt_width?gu_data.virt_width-background_left
+		background_length=background_right>pspfb_xsize?pspfb_xsize-background_left
 			:arrow_width;
 		for (;background_top<mouse_top;background_top++){
 			mouse_drawscansegment(background_ptr,background_left
-				,background_top,background_length*gu_data.pixel_size);
+				,background_top,background_length*pspfb_pixelsize);
 			background_ptr+=skip;
 		}
 
 	}else if (background_top>mouse_top){
 		/* Draw the mouse */
-		mouse_length=mouse_right>gu_data.virt_width
-			?gu_data.virt_width-mouse_left:arrow_width;
+		mouse_length=mouse_right>pspfb_xsize
+			?pspfb_xsize-mouse_left:arrow_width;
 		for (;mouse_top<background_top;mouse_top++){
-			mouse_drawscansegment(mouse_ptr,mouse_left,mouse_top,mouse_length*gu_data.pixel_size);
+			mouse_drawscansegment(mouse_ptr,mouse_left,mouse_top,mouse_length*pspfb_pixelsize);
 			mouse_ptr+=skip;
 		}
 	}
@@ -473,11 +431,11 @@ static inline void place_mouse_composite(void)
 	yend=mouse_bottom<background_bottom?mouse_bottom:background_bottom;
 	if (background_left<mouse_left){
 		/* Draw background, mouse */
-		mouse_length=mouse_right>gu_data.virt_width?gu_data.virt_width-mouse_left:arrow_width;
+		mouse_length=mouse_right>pspfb_xsize?pspfb_xsize-mouse_left:arrow_width;
 		for (;mouse_top<yend;mouse_top++){
 			mouse_drawscansegment(background_ptr,background_left,mouse_top
-				,(mouse_left-background_left)*gu_data.pixel_size);
-			mouse_drawscansegment(mouse_ptr,mouse_left,mouse_top,mouse_length*gu_data.pixel_size);
+				,(mouse_left-background_left)*pspfb_pixelsize);
+			mouse_drawscansegment(mouse_ptr,mouse_left,mouse_top,mouse_length*pspfb_pixelsize);
 			mouse_ptr+=skip;
 			background_ptr+=skip;
 		}
@@ -486,13 +444,13 @@ static inline void place_mouse_composite(void)
 		int l1, l2, l3;
 
 		/* Draw mouse, background */
-		mouse_length=mouse_right>gu_data.virt_width?gu_data.virt_width-mouse_left:arrow_width;
+		mouse_length=mouse_right>pspfb_xsize?pspfb_xsize-mouse_left:arrow_width;
 		background_length=background_right-mouse_right;
-		if (background_length+mouse_right>gu_data.virt_width)
-			background_length=gu_data.virt_width-mouse_right;
-		l1=mouse_length*gu_data.pixel_size;
-		l2=(mouse_right-background_left)*gu_data.pixel_size;
-		l3=background_length*gu_data.pixel_size;
+		if (background_length+mouse_right>pspfb_xsize)
+			background_length=pspfb_xsize-mouse_right;
+		l1=mouse_length*pspfb_pixelsize;
+		l2=(mouse_right-background_left)*pspfb_pixelsize;
+		l3=background_length*pspfb_pixelsize;
 		for (;mouse_top<yend;mouse_top++){
 			mouse_drawscansegment(mouse_ptr,mouse_left,mouse_top,l1);
 			if (background_length>0)
@@ -507,20 +465,20 @@ static inline void place_mouse_composite(void)
 	if (background_bottom<mouse_bottom){
 		/* Count over bottoms! tops will be invalid! */
 		/* Draw mouse */
-		mouse_length=mouse_right>gu_data.virt_width?gu_data.virt_width-mouse_left
+		mouse_length=mouse_right>pspfb_xsize?pspfb_xsize-mouse_left
 			:arrow_width;
 		for (;background_bottom<mouse_bottom;background_bottom++){
 			mouse_drawscansegment(mouse_ptr,mouse_left,background_bottom
-				,mouse_length*gu_data.pixel_size);
+				,mouse_length*pspfb_pixelsize);
 			mouse_ptr+=skip;
 		}
 	}else{
 		/* Draw background */
-		background_length=background_right>gu_data.virt_width?gu_data.virt_width-background_left
+		background_length=background_right>pspfb_xsize?pspfb_xsize-background_left
 			:arrow_width;
 		for (;mouse_bottom<background_bottom;mouse_bottom++){
 			mouse_drawscansegment(background_ptr,background_left,mouse_bottom
-				,background_length*gu_data.pixel_size);
+				,background_length*pspfb_pixelsize);
 			background_ptr+=skip;
 		}
 	}
@@ -535,19 +493,19 @@ static inline void redraw_mouse_sophisticated(void)
 
 	get_mouse_background(mouse_buffer);
 	put_and_clip_background_buffer_over_mouse_buffer();
-	memcpy(new_background_buffer,mouse_buffer,gu_data.pixel_size*arrow_area);
+	memcpy(new_background_buffer,mouse_buffer,pspfb_pixelsize*arrow_area);
 	new_background_x=mouse_x;
 	new_background_y=mouse_y;
 	render_mouse_arrow();
 	place_mouse_composite();
-	memcpy(background_buffer,new_background_buffer,gu_data.pixel_size*arrow_area);
+	memcpy(background_buffer,new_background_buffer,pspfb_pixelsize*arrow_area);
 	background_x=new_background_x;
 	background_y=new_background_y;
 }
 
 static void redraw_mouse(void){
 
-	if (!pspgu_active) return; /* We are not drawing */
+	if (!pspfb_active) return; /* We are not drawing */
 	if (mouse_x!=background_x||mouse_y!=background_y){
 		if (RECTANGLES_INTERSECT(
 			background_x, background_x+arrow_width,
@@ -559,19 +517,19 @@ static void redraw_mouse(void){
 			/* Do a normal hide/show */
 			get_mouse_background(mouse_buffer);
 			memcpy(new_background_buffer,
-				mouse_buffer,arrow_area*gu_data.pixel_size);
+				mouse_buffer,arrow_area*pspfb_pixelsize);
 			render_mouse_arrow();
 			hide_mouse();
 			place_mouse();
 			memcpy(background_buffer,new_background_buffer
-				,arrow_area*gu_data.pixel_size);
+				,arrow_area*pspfb_pixelsize);
 			background_x=mouse_x;
 			background_y=mouse_y;
 		}
 	}
 }
 
-static void pspgu_switch_signal(void *data)
+static void pspfb_switch_signal(void *data)
 {
 }
 
@@ -696,10 +654,10 @@ void pspInputThread()
 
 				if (s_BbRowOffset < 0) s_BbRowOffset = 0;
 				if (s_BbColOffset < 0) s_BbColOffset = 0;
-				if (s_BbColOffset > (gu_data.virt_width - gu_data.display_width))  
-					s_BbColOffset = gu_data.virt_width - gu_data.display_width;
-				if (s_BbRowOffset > (gu_data.virt_height - gu_data.display_height)) 
-					s_BbRowOffset = gu_data.virt_height - gu_data.display_height;
+				if (s_BbColOffset > (g_PSPConfig.screen_zoom_factor*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH))  
+					s_BbColOffset = (g_PSPConfig.screen_zoom_factor*PSP_SCREEN_WIDTH - PSP_SCREEN_WIDTH);
+				if (s_BbRowOffset > (g_PSPConfig.screen_zoom_factor*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT)) 
+					s_BbRowOffset = (g_PSPConfig.screen_zoom_factor*PSP_SCREEN_HEIGHT - PSP_SCREEN_HEIGHT);
 
 				s_bbDirty = truE;
 			}
@@ -715,7 +673,7 @@ void pspInputThread()
 					fl = B_DRAG | B_RIGHT;
 				}
 				/* calls handler */
-				pspgu_mouse_move(deltax, deltay, fl);
+				pspfb_mouse_move(deltax, deltay, fl);
 			}
 
 
@@ -736,52 +694,67 @@ void pspInputThread()
 			}
 			else if (latch.uiBreak) /** Button Released */
 			{
-				if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT | PSP_CTRL_CROSS))
+				if (oldButtonMask & PSP_CTRL_SELECT)
 				{
-					pspDebugScreenInit();
-					wifiChooseConnect();
-					s_bbDirty = truE;
+					if (oldButtonMask & PSP_CTRL_CROSS)
+					{
+						pspDebugScreenInit();
+						wifiChooseConnect();
+						s_bbDirty = truE;
+					}
+					if (oldButtonMask & PSP_CTRL_SQUARE)
+					{
+						pspDebugScreenInit();
+						cleanup_cookies();
+						init_cookies();
+						wait_for_triangle("Cookies saved to disk");
+					}
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT | PSP_CTRL_SQUARE))
+				else if (oldButtonMask & PSP_CTRL_DOWN)
 				{
-					pspDebugScreenInit();
-					cleanup_cookies();
-					init_cookies();
-					wait_for_triangle("Cookies saved to disk");
+					if (oldButtonMask & PSP_CTRL_RTRIGGER)
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_PAGE_DOWN, fl);
+					}
+					else
+					{
+						//if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_DEL, fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_DOWN, fl);
+					}
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_DOWN))
+				else if (oldButtonMask & PSP_CTRL_UP)
 				{
-					//if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_DEL, fl);
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_DOWN, fl);
+					if (oldButtonMask & PSP_CTRL_RTRIGGER)
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_PAGE_UP, fl);
+					}
+					else
+					{
+						//if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_INS, fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_UP, fl);
+					}
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_DOWN | PSP_CTRL_RTRIGGER))
+				else if (oldButtonMask & PSP_CTRL_LEFT)
 				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_PAGE_DOWN, fl);
+					if (oldButtonMask & PSP_CTRL_RTRIGGER)
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, '[', fl);
+					}
+					else
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_LEFT, fl);
+					}
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_UP))
+				else if (oldButtonMask & PSP_CTRL_RIGHT)
 				{
-					//if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_INS, fl);
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_UP, fl);
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_UP | PSP_CTRL_RTRIGGER))
-				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_PAGE_UP, fl);
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_LEFT))
-				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_LEFT, fl);
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_LEFT | PSP_CTRL_RTRIGGER))
-				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, '[', fl);
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_RIGHT))
-				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_RIGHT, fl);
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_RIGHT | PSP_CTRL_RTRIGGER))
-				{
-					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, ']', fl);
+					if (oldButtonMask & PSP_CTRL_RTRIGGER)
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, ']', fl);
+					}
+					else
+					{
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_RIGHT, fl);
+					}
 				}
 				//else if (oldButtonMask & PSP_CTRL_LTRIGGER)
 				//{
@@ -789,25 +762,25 @@ void pspInputThread()
 				//else if (oldButtonMask & PSP_CTRL_RTRIGGER)
 				//{
 				//}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_CROSS))
+				else if (oldButtonMask & PSP_CTRL_CROSS)
 				{
 					fl	= B_UP | B_LEFT;
 					if (current_virtual_device) current_virtual_device->mouse_handler(current_virtual_device, mouse_x, mouse_y, fl);
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SQUARE))
+				else if (oldButtonMask & PSP_CTRL_SQUARE)
 				{
 					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_ESC, fl);
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_TRIANGLE))
+				else if (oldButtonMask & PSP_CTRL_TRIANGLE)
 				{
 					fl	= B_UP | B_RIGHT;
 					if (current_virtual_device) current_virtual_device->mouse_handler(current_virtual_device, mouse_x, mouse_y, fl);
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_CIRCLE))
+				else if (oldButtonMask & PSP_CTRL_CIRCLE)
 				{
 					if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_ENTER, fl);
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_START))
+				else if (oldButtonMask & PSP_CTRL_START)
 				{
 					if (!danzeff_isinitialized())
 						{
@@ -826,7 +799,7 @@ void pspInputThread()
 						wait_for_triangle("Error loading danzeff OSK");
 					}
 				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT))
+				else if (oldButtonMask & PSP_CTRL_SELECT)
 				{
 					g_PSPEnableRendering = falsE;
 					TakeScreenShot();
@@ -834,17 +807,6 @@ void pspInputThread()
 					g_PSPEnableRendering = truE;
 					s_bbDirty = truE;
 					//cls_redraw_all_terminals();
-				}
-				else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_START | PSP_CTRL_TRIANGLE))
-				{
-					//kaka1
-					//test screen size change
-					int newwidth = 300, newhight= 100;
-					current_virtual_device->size.x2=newwidth;
-					current_virtual_device->size.y2=newhight;
-					//pspgu_update_driver_param(newwidth, newhight);
-					current_virtual_device->resize_handler(current_virtual_device);
-
 				}
 
 				if (s_Zoom == falsE)
@@ -869,6 +831,7 @@ void pspInputThread()
 						s_bbDirty = truE;
 					}
 				}
+
 				oldButtonMask = 0;
 			}
 		}
@@ -883,8 +846,14 @@ void pspInputThread()
 
 void render_thread()
 {
-	//pixel_type *pBb, *pFb;
-	//pBb = (pixel_type*)gu_data.virtbuffer; /* Back buffer */
+#ifdef PSP_16BPP
+	short *pBb; /* Back buffer */
+	short *pFb;/* Front/Frame buffer */
+#else /* 32bpp */
+	int *pBb; /* Back buffer */
+	int *pFb; /* Front/Frame buffer */
+#endif
+	pBb = pspfb_mem; /* Back buffer */
 	SceCtrlData pad;
 	int fbRow, fbCol;
 	int bbRow, bbCol;
@@ -897,17 +866,19 @@ void render_thread()
 
 	for(;;)
 	{
+		sceDisplayWaitVblankStart();
+
 		if (g_PSPEnableRendering && s_bbDirty)
 		{
 			if (one++%2)
 			{
-				//pFb = psp_fb1;    /* Front/Frame buffer */
-				//psp_fb = psp_fb2;
+				pFb = psp_fb1;    /* Front/Frame buffer */
+				psp_fb = psp_fb2;
 			}
 			else
 			{
-				//pFb = psp_fb2;
-				//psp_fb = psp_fb1;
+				pFb = psp_fb2;
+				psp_fb = psp_fb1;
 			}
 
 			sceCtrlPeekBufferPositive(&pad, 1);
@@ -926,23 +897,6 @@ void render_thread()
 				bb_col_offset = 0;
 			}
 
-			#if 1
-			StartList();
-
-			//sceKernelDcacheWritebackInvalidateAll();
-			sceGuCopyImage(gu_data.pixel_mode, 
-						bb_col_offset, bb_row_offset, gu_data.display_width, gu_data.display_height, gu_data.virt_sl_pixelpitch, gu_data.virtbuffer, 
-						0,0, gu_data.display_sl_pixelpitch, gu_data.drawbuffer);
-			sceGuTexSync(); /* This will stall the rendering pipeline until the current image upload initiated by sceGuCopyImage() has completed.  */
-			//sceKernelDcacheWritebackInvalidateAll();
-
-			EndList();
-			#else
-sceKernelDcacheWritebackInvalidateAll();
-			memcpy(gu_data.drawbuffer, gu_data.virtbuffer, gu_data.framesize);
-sceKernelDcacheWritebackInvalidateAll();
-			#endif
-			/*
 			for (fbRow = 0, bbRow = bb_row_offset; fbRow < PSP_SCREEN_HEIGHT; fbRow++, bbRow+=bb_to_fb_factor)
 			{
 				fbMult = fbRow*fbLineSize;
@@ -952,20 +906,17 @@ sceKernelDcacheWritebackInvalidateAll();
 				   pFb[fbMult+fbCol] = pBb[bbMult+bbCol];
 				}
 			}
-			*/
-
+	
 			if (sf_danzeffOn)
 			{
 				/* Pass VRAM info to Danzeff */
-				danzeff_set_screen((unsigned int)gu_data.drawbuffer, gu_data.display_sl_pixelpitch, gu_data.virt_height, gu_data.pixel_size);
+				danzeff_set_screen(pFb, PSP_LINE_SIZE, pspfb_ysize, pspfb_pixelsize);
 				danzeff_render();
 			}
 
 			/* flipping */
-			//sceDisplaySetFrameBuf((void *) pFb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
-			sceDisplayWaitVblankStart();
-			gu_data.displaybuffer = gu_data.drawbuffer;
-			gu_data.drawbuffer = (char*)((unsigned int)vabsptr(sceGuSwapBuffers()) | 0x44000000);
+			sceDisplaySetFrameBuf((void *) pFb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
+
 
 			s_bbDirty = falsE;
 		}
@@ -978,133 +929,96 @@ sceKernelDcacheWritebackInvalidateAll();
 void psp_reset_graphic_mode()
 {
 	/* (Re)set graphic mode */
-	//sceDisplaySetMode(0, PSP_SCREEN_WIDTH, PSP_SCREEN_HEIGHT);
-	//sceDisplaySetFrameBuf((void *) psp_fb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
-
-	static int is_first_time = 1;
-	unsigned int CacheMask = 0x440000000;//x40000000; /* uncached access */
-
-	if (gu_data.guinitialized)
-		sceGuTerm();
-
-	gu_data.framesize = 
-		gu_data.display_height * gu_data.display_sl_pixelpitch * gu_data.pixel_size;
-	gu_data.virtframesize = 
-		gu_data.virt_height * gu_data.virt_sl_pixelpitch * gu_data.pixel_size;
-
-	if (is_first_time)
-	{
-		gu_data.drawbuffer    = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
-		gu_data.displaybuffer = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
-		gu_data.zbuffer		  = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize/2));
-		gu_data.virtbuffer    = (char*)(CacheMask | (unsigned int)valloc(gu_data.virtframesize));
-		//gu_data.virtbuffer    = (char*)(memalign(16,gu_data.virtframesize));
-		is_first_time = 0;
-	}
-
-	/* GU Set up code: */
-	sceGuInit();
-	sceGuStart(GU_DIRECT, gu_data.list);
-	sceGuDrawBuffer(gu_data.pixel_mode, vrelptr(gu_data.drawbuffer), gu_data.display_sl_pixelpitch);
-	sceGuDispBuffer(gu_data.display_width, gu_data.display_height, 	
-					vrelptr(gu_data.displaybuffer), gu_data.display_sl_pixelpitch);
-	sceGuDepthBuffer(vrelptr(gu_data.zbuffer), gu_data.display_sl_pixelpitch);
-	sceGuOffset(2048 - (gu_data.display_width / 2), 2048 - (gu_data.display_height / 2));
-	sceGuViewport(2048, 2048, gu_data.display_width, gu_data.display_height);
-
-	/* Set up Scissor test (don't render outside of the display) */
-	sceGuScissor(0, 0, gu_data.display_width, gu_data.display_height);
-	sceGuEnable(GU_SCISSOR_TEST);
-
-	sceGuDepthRange(65535,0);
-	sceGuClear(GU_COLOR_BUFFER_BIT);
-	sceGuFinish();
-	sceGuSync(0,0);
-
-	sceDisplayWaitVblankStart();
-	sceGuDisplay(GU_TRUE);
-
-	gu_data.guinitialized = 1;
+	sceDisplaySetMode(0, PSP_SCREEN_WIDTH, PSP_SCREEN_HEIGHT);
+	sceDisplaySetFrameBuf((void *) psp_fb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
 }
 
-static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ignore)
+static unsigned char *pspfb_init_driver(unsigned char *param, unsigned char *ignore)
 {
 	unsigned char *e;
 	struct stat st;
-	pspgu_old_vd = NULL;
+	pspfb_old_vd = NULL;
 	ignore=ignore;
-	pspgu_driver_param=NULL;
+	pspfb_driver_param=NULL;
 	if(param != NULL)
-		pspgu_driver_param=stracpy(param);
-
-	gu_data.pixel_mode = PSP_GU_PIXEL_FORMAT;
-	gu_data.pixel_size = PSP_PIXELSIZE;
-
-	gu_data.virt_width  = 480*2;
-	gu_data.virt_height = 272*2;
-	gu_data.virt_sl_pixelpitch  = 512*2;
-	gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.pixel_size;
-
-	gu_data.display_width  = 480;
-	gu_data.display_height = 272;
-	gu_data.display_sl_pixelpitch  = 512;
-	gu_data.display_sl_bytepitch   = gu_data.display_sl_pixelpitch * gu_data.pixel_size;
-
-
-	gu_data.guinitialized = 0;
+		pspfb_driver_param=stracpy(param);
 
 	border_left = border_right = border_top = border_bottom = 0;
 
-	pspgu_console = st.st_rdev & 0xff;
+	pspfb_console = st.st_rdev & 0xff;
 
-	pspgu_driver.x=gu_data.virt_width;
-	pspgu_driver.y=gu_data.virt_height;
-	pspgu_colors=1<<(gu_data.pixel_size*8);
+	pspfb_xsize=PSP_SCREEN_WIDTH*g_PSPConfig.screen_zoom_factor;
+	pspfb_ysize=PSP_SCREEN_HEIGHT*g_PSPConfig.screen_zoom_factor;
 
-	if (init_virtual_devices(&pspgu_driver, NUMBER_OF_DEVICES))
+#ifdef PSP_16BPP
+	pspfb_bits_pp=16;
+	pspfb_pixelsize=2;
+#else /* 32bpp */
+	pspfb_bits_pp=32;
+	pspfb_pixelsize=4;
+#endif
+	pspfb_driver.x=pspfb_xsize;
+	pspfb_driver.y=pspfb_ysize;
+	pspfb_colors=1<<pspfb_bits_pp;
+
+	pspfb_linesize=PSP_SCREEN_WIDTH*pspfb_pixelsize*g_PSPConfig.screen_zoom_factor;
+	pspfb_mem_size=pspfb_linesize * pspfb_ysize;
+
+	if (init_virtual_devices(&pspfb_driver, NUMBER_OF_DEVICES))
 	{
-		if(pspgu_driver_param) { mem_free(pspgu_driver_param); pspgu_driver_param=NULL; }
+		if(pspfb_driver_param) { mem_free(pspfb_driver_param); pspfb_driver_param=NULL; }
 		return stracpy("Allocation of virtual devices failed.\n");
 	}
 
 	/* Mikulas: nechodi to na sparcu */
-	if (0)//pspgu_mem_size < gu_data.virt_sl_bytepitch * gu_data.virt_height)
+	if (pspfb_mem_size < pspfb_linesize * pspfb_ysize)
 	{
 		shutdown_virtual_devices();
-		if(pspgu_driver_param) { mem_free(pspgu_driver_param); pspgu_driver_param=NULL; }
+		if(pspfb_driver_param) { mem_free(pspfb_driver_param); pspfb_driver_param=NULL; }
 		return stracpy("Nonlinear mapping of graphics memory not supported.\n");
 	}
 
-	/* Initialize GU */
+	/* Place vram in uncached memory */
+	psp_fb1 = (u32 *) (0x40000000 | (u32) sceGeEdramGetAddr());
+	psp_fb2 = (u32 *)((char*)psp_fb1 + FRAMESIZE);
+	psp_fb = psp_fb1;
+
 	psp_reset_graphic_mode();
 
+	pspfb_mem = (char *) malloc(pspfb_mem_size);
+
+	pspfb_vmem = pspfb_mem + border_left * pspfb_pixelsize + border_top * pspfb_linesize;
 
 #ifdef PSP_16BPP
-	pspgu_driver.depth = 131;
+	pspfb_driver.depth = 131;
 #else /* 32bpp */
-	pspgu_driver.depth=gu_data.pixel_size&7;
-	pspgu_driver.depth|=(24/*pspgu_bits_pp*/&31)<<3;
-	if (htons (0x1234) == 0x1234) pspgu_driver.depth |= 0x100;
+	pspfb_driver.depth=pspfb_pixelsize&7;
+	pspfb_driver.depth|=(24/*pspfb_bits_pp*/&31)<<3;
+	if (htons (0x1234) == 0x1234) pspfb_driver.depth |= 0x100;
 #endif
 
-	pspgu_driver.get_color=get_color_fn(pspgu_driver.depth);
+	pspfb_driver.get_color=get_color_fn(pspfb_driver.depth);
 
 	/* Pass VRAM info to Danzeff */
-	danzeff_set_screen(gu_data.drawbuffer, PSP_LINE_SIZE, gu_data.virt_height, gu_data.pixel_size);
+	danzeff_set_screen(psp_fb, PSP_LINE_SIZE, pspfb_ysize, pspfb_pixelsize);
 
 	/* mouse */
-	mouse_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
-	background_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
-	new_background_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
-	background_x=mouse_x=gu_data.virt_width>>1;
-	background_y=mouse_y=gu_data.virt_height>>1;
-	mouse_black=pspgu_driver.get_color(0);
-	mouse_white=pspgu_driver.get_color(0xffffff);
-	mouse_graphics_device=pspgu_driver.init_device();
+	mouse_buffer=mem_alloc(pspfb_pixelsize*arrow_area);
+	background_buffer=mem_alloc(pspfb_pixelsize*arrow_area);
+	new_background_buffer=mem_alloc(pspfb_pixelsize*arrow_area);
+	background_x=mouse_x=pspfb_xsize>>1;
+	background_y=mouse_y=pspfb_ysize>>1;
+	mouse_black=pspfb_driver.get_color(0);
+	mouse_white=pspfb_driver.get_color(0xffffff);
+	mouse_graphics_device=pspfb_driver.init_device();
 	virtual_devices[0] = NULL;
 	global_mouse_hidden=1;
 
 	/*if (border_left | border_top | border_right | border_bottom) */
+	memset(pspfb_mem,0,pspfb_mem_size);
+	memset(psp_fb1, 0, FRAMESIZE);
+	memset(psp_fb2, 0, FRAMESIZE);
+
 	show_mouse();
 	s_bbDirty = truE;
 
@@ -1115,7 +1029,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 		struct sched_param shdparam;
 		pthread_attr_init(&pthattr);
 		shdparam.sched_policy = SCHED_OTHER;
-		shdparam.sched_priority = 45; /* It has to be 45 so the PSPRadio plugin version works correctly */
+		shdparam.sched_priority = 35;
 		pthread_attr_setschedparam(&pthattr, &shdparam);
 		pthread_create(&pthid, &pthattr, render_thread, NULL);
 	}
@@ -1126,21 +1040,22 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	return NULL;
 }
 
-static void pspgu_shutdown_driver(void)
+static void pspfb_shutdown_driver(void)
 {
 	mem_free(mouse_buffer);
 	mem_free(background_buffer);
 	mem_free(new_background_buffer);
-	pspgu_driver.shutdown_device(mouse_graphics_device);
+	pspfb_driver.shutdown_device(mouse_graphics_device);
 
+	memset(pspfb_mem,0,pspfb_mem_size);
 	shutdown_virtual_devices();
-	if(pspgu_driver_param) mem_free(pspgu_driver_param);
+	if(pspfb_driver_param) mem_free(pspfb_driver_param);
 }
 
 
-static unsigned char *pspgu_get_driver_param(void)
+static unsigned char *pspfb_get_driver_param(void)
 {
-    return pspgu_driver_param;
+    return pspfb_driver_param;
 }
 
 
@@ -1148,114 +1063,114 @@ static unsigned char *pspgu_get_driver_param(void)
  *                      1 alloced in vidram
  *                      2 alloced in X server shm
  */
-static int pspgu_get_empty_bitmap(struct bitmap *dest)
+static int pspfb_get_empty_bitmap(struct bitmap *dest)
 {
 	if (dest->x && (unsigned)dest->x * (unsigned)dest->y / (unsigned)dest->x != (unsigned)dest->y) overalloc();
-	if ((unsigned)dest->x * (unsigned)dest->y > (unsigned)MAXINT / gu_data.pixel_size) overalloc();
-	dest->data=mem_alloc(dest->x*dest->y*gu_data.pixel_size);
-	dest->skip=dest->x*gu_data.pixel_size;
+	if ((unsigned)dest->x * (unsigned)dest->y > (unsigned)MAXINT / pspfb_pixelsize) overalloc();
+	dest->data=mem_alloc(dest->x*dest->y*pspfb_pixelsize);
+	dest->skip=dest->x*pspfb_pixelsize;
 	dest->flags=0;
 	return 0;
 }
 
-static void pspgu_register_bitmap(struct bitmap *bmp)
+static void pspfb_register_bitmap(struct bitmap *bmp)
 {
 	s_bbDirty = truE;
 }
 
-static void pspgu_unregister_bitmap(struct bitmap *bmp)
+static void pspfb_unregister_bitmap(struct bitmap *bmp)
 {
 	mem_free(bmp->data);
 }
 
-static void *pspgu_prepare_strip(struct bitmap *bmp, int top, int lines)
+static void *pspfb_prepare_strip(struct bitmap *bmp, int top, int lines)
 {
 	return ((char *)bmp->data)+bmp->skip*top;
 }
 
-static void pspgu_commit_strip(struct bitmap *bmp, int top, int lines)
+static void pspfb_commit_strip(struct bitmap *bmp, int top, int lines)
 {
 	s_bbDirty = truE;
 	return;
 }
 
-void pspgu_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, int y)
+void pspfb_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, int y)
 {
 	unsigned char *scr_start;
 
 	CLIP_PREFACE
 
-	scr_start=gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size;
+	scr_start=pspfb_vmem+y*pspfb_linesize+x*pspfb_pixelsize;
 	for(;ys;ys--){
-		memcpy(scr_start,data,xs*gu_data.pixel_size);
+		memcpy(scr_start,data,xs*pspfb_pixelsize);
 		data+=hndl->skip;
-		scr_start+=gu_data.virt_sl_bytepitch;
+		scr_start+=pspfb_linesize;
 	}
 	END_GR
 	s_bbDirty = truE;
 }
 
-static void pspgu_draw_bitmaps(struct graphics_device *dev, struct bitmap **hndls, int n, int x, int y)
+static void pspfb_draw_bitmaps(struct graphics_device *dev, struct bitmap **hndls, int n, int x, int y)
 {
 	TEST_INACTIVITY
 
-	if (x>=gu_data.virt_width||y>gu_data.virt_height) return;
+	if (x>=pspfb_xsize||y>pspfb_ysize) return;
 	while(x+(*hndls)->x<=0&&n){
 		x+=(*hndls)->x;
 		n--;
 		hndls++;
 	}
-	while(n&&x<=gu_data.virt_width){
-		pspgu_draw_bitmap(dev, *hndls, x, y);
+	while(n&&x<=pspfb_xsize){
+		pspfb_draw_bitmap(dev, *hndls, x, y);
 		x+=(*hndls)->x;
 		n--;
 		hndls++;
 	}
 }
 
-static void pspgu_fill_area(struct graphics_device *dev, int left, int top, int right, int bottom, long color)
+static void pspfb_fill_area(struct graphics_device *dev, int left, int top, int right, int bottom, long color)
 {
 	unsigned char *dest;
 	int y;
 
 	FILL_CLIP_PREFACE
 
-	dest=gu_data.virtbuffer+top*gu_data.virt_sl_bytepitch+left*gu_data.pixel_size;
+	dest=pspfb_vmem+top*pspfb_linesize+left*pspfb_pixelsize;
 	for (y=bottom-top;y;y--){
-		pixel_set(dest,(right-left)*gu_data.pixel_size,&color);
-		dest+=gu_data.virt_sl_bytepitch;
+		pixel_set(dest,(right-left)*pspfb_pixelsize,&color);
+		dest+=pspfb_linesize;
 	}
 	END_GR
 	s_bbDirty = truE;
 }
 
-static void pspgu_draw_hline(struct graphics_device *dev, int left, int y, int right, long color)
+static void pspfb_draw_hline(struct graphics_device *dev, int left, int y, int right, long color)
 {
 	unsigned char *dest;
 	HLINE_CLIP_PREFACE
 
-	dest=gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+left*gu_data.pixel_size;
-	pixel_set(dest,(right-left)*gu_data.pixel_size,&color);
+	dest=pspfb_vmem+y*pspfb_linesize+left*pspfb_pixelsize;
+	pixel_set(dest,(right-left)*pspfb_pixelsize,&color);
 	END_GR
 	s_bbDirty = truE;
 }
 
-static void pspgu_draw_vline(struct graphics_device *dev, int x, int top, int bottom, long color)
+static void pspfb_draw_vline(struct graphics_device *dev, int x, int top, int bottom, long color)
 {
 	unsigned char *dest;
 	int y;
 	VLINE_CLIP_PREFACE
 
-	dest=gu_data.virtbuffer+top*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size;
+	dest=pspfb_vmem+top*pspfb_linesize+x*pspfb_pixelsize;
 	for (y=(bottom-top);y;y--){
-		memcpy(dest,&color,gu_data.pixel_size);
-		dest+=gu_data.virt_sl_bytepitch;
+		memcpy(dest,&color,pspfb_pixelsize);
+		dest+=pspfb_linesize;
 	}
 	END_GR
 	s_bbDirty = truE;
 }
 
-static int pspgu_hscroll(struct graphics_device *dev, struct rect_set **ignore, int sc)
+static int pspfb_hscroll(struct graphics_device *dev, struct rect_set **ignore, int sc)
 {
 	unsigned char *dest, *src;
 	int y;
@@ -1264,22 +1179,22 @@ static int pspgu_hscroll(struct graphics_device *dev, struct rect_set **ignore, 
 
 	ignore=NULL;
 	if (sc>0){
-		len=(dev->clip.x2-dev->clip.x1-sc)*gu_data.pixel_size;
-		src=gu_data.virtbuffer+gu_data.virt_sl_bytepitch*dev->clip.y1+dev->clip.x1*gu_data.pixel_size;
-		dest=src+sc*gu_data.pixel_size;
+		len=(dev->clip.x2-dev->clip.x1-sc)*pspfb_pixelsize;
+		src=pspfb_vmem+pspfb_linesize*dev->clip.y1+dev->clip.x1*pspfb_pixelsize;
+		dest=src+sc*pspfb_pixelsize;
 		for (y=dev->clip.y2-dev->clip.y1;y;y--){
 			memmove(dest,src,len);
-			dest+=gu_data.virt_sl_bytepitch;
-			src+=gu_data.virt_sl_bytepitch;
+			dest+=pspfb_linesize;
+			src+=pspfb_linesize;
 		}
 	}else{
-		len=(dev->clip.x2-dev->clip.x1+sc)*gu_data.pixel_size;
-		dest=gu_data.virtbuffer+gu_data.virt_sl_bytepitch*dev->clip.y1+dev->clip.x1*gu_data.pixel_size;
-		src=dest-sc*gu_data.pixel_size;
+		len=(dev->clip.x2-dev->clip.x1+sc)*pspfb_pixelsize;
+		dest=pspfb_vmem+pspfb_linesize*dev->clip.y1+dev->clip.x1*pspfb_pixelsize;
+		src=dest-sc*pspfb_pixelsize;
 		for (y=dev->clip.y2-dev->clip.y1;y;y--){
 			memmove(dest,src,len);
-			dest+=gu_data.virt_sl_bytepitch;
-			src+=gu_data.virt_sl_bytepitch;
+			dest+=pspfb_linesize;
+			src+=pspfb_linesize;
 		}
 	}
 	END_GR
@@ -1287,7 +1202,7 @@ static int pspgu_hscroll(struct graphics_device *dev, struct rect_set **ignore, 
 	return 1;
 }
 
-static int pspgu_vscroll(struct graphics_device *dev, struct rect_set **ignore, int sc)
+static int pspfb_vscroll(struct graphics_device *dev, struct rect_set **ignore, int sc)
 {
 	unsigned char *dest, *src;
 	int y;
@@ -1296,24 +1211,24 @@ static int pspgu_vscroll(struct graphics_device *dev, struct rect_set **ignore, 
 	VSCROLL_CLIP_PREFACE
 
 	ignore=NULL;
-	len=(dev->clip.x2-dev->clip.x1)*gu_data.pixel_size;
+	len=(dev->clip.x2-dev->clip.x1)*pspfb_pixelsize;
 	if (sc>0){
 		/* Down */
-		dest=gu_data.virtbuffer+(dev->clip.y2-1)*gu_data.virt_sl_bytepitch+dev->clip.x1*gu_data.pixel_size;
-		src=dest-gu_data.virt_sl_bytepitch*sc;
+		dest=pspfb_vmem+(dev->clip.y2-1)*pspfb_linesize+dev->clip.x1*pspfb_pixelsize;
+		src=dest-pspfb_linesize*sc;
 		for (y=dev->clip.y2-dev->clip.y1-sc;y;y--){
 			memcpy(dest,src,len);
-			dest-=gu_data.virt_sl_bytepitch;
-			src-=gu_data.virt_sl_bytepitch;
+			dest-=pspfb_linesize;
+			src-=pspfb_linesize;
 		}
 	}else{
 		/* Up */
-		dest=gu_data.virtbuffer+dev->clip.y1*gu_data.virt_sl_bytepitch+dev->clip.x1*gu_data.pixel_size;
-		src=dest-gu_data.virt_sl_bytepitch*sc;
+		dest=pspfb_vmem+dev->clip.y1*pspfb_linesize+dev->clip.x1*pspfb_pixelsize;
+		src=dest-pspfb_linesize*sc;
 		for (y=dev->clip.y2-dev->clip.y1+sc;y;y--){
 			memcpy(dest,src,len);
-			dest+=gu_data.virt_sl_bytepitch;
-			src+=gu_data.virt_sl_bytepitch;
+			dest+=pspfb_linesize;
+			src+=pspfb_linesize;
 		}
 	}
 	END_GR
@@ -1321,67 +1236,66 @@ static int pspgu_vscroll(struct graphics_device *dev, struct rect_set **ignore, 
 	return 1;
 }
 
-static void pspgu_set_clip_area(struct graphics_device *dev, struct rect *r)
+static void pspfb_set_clip_area(struct graphics_device *dev, struct rect *r)
 {
 	memcpy(&dev->clip, r, sizeof(struct rect));
-	if (dev->clip.x1>=dev->clip.x2||dev->clip.y2<=dev->clip.y1||dev->clip.y2<=0||dev->clip.x2<=0||dev->clip.x1>=gu_data.virt_width
-			||dev->clip.y1>=gu_data.virt_height){
+	if (dev->clip.x1>=dev->clip.x2||dev->clip.y2<=dev->clip.y1||dev->clip.y2<=0||dev->clip.x2<=0||dev->clip.x1>=pspfb_xsize
+			||dev->clip.y1>=pspfb_ysize){
 		/* Empty region */
 		dev->clip.x1=dev->clip.x2=dev->clip.y1=dev->clip.y2=0;
 	}else{
 		if (dev->clip.x1<0) dev->clip.x1=0;
-		if (dev->clip.x2>gu_data.virt_width) dev->clip.x2=gu_data.virt_width;
+		if (dev->clip.x2>pspfb_xsize) dev->clip.x2=pspfb_xsize;
 		if (dev->clip.y1<0) dev->clip.y1=0;
-		if (dev->clip.y2>gu_data.virt_height) dev->clip.y2=gu_data.virt_height;
+		if (dev->clip.y2>pspfb_ysize) dev->clip.y2=pspfb_ysize;
 	}
 }
 
-static int pspgu_block(struct graphics_device *dev)
+static int pspfb_block(struct graphics_device *dev)
 {
-	if (pspgu_old_vd) return 1;
-	pspgu_old_vd = current_virtual_device;
+	if (pspfb_old_vd) return 1;
+	pspfb_old_vd = current_virtual_device;
 	current_virtual_device=NULL;
 	return 0;
 }
 
-static void pspgu_unblock(struct graphics_device *dev)
+static void pspfb_unblock(struct graphics_device *dev)
 {
-	current_virtual_device = pspgu_old_vd;
-	pspgu_old_vd = NULL;
-	//if (border_left | border_top | border_right | border_bottom) 
-	//	memset(pspgu_mem,0,pspgu_mem_size);
+	current_virtual_device = pspfb_old_vd;
+	pspfb_old_vd = NULL;
+	if (border_left | border_top | border_right | border_bottom) memset(pspfb_mem,0,pspfb_mem_size);
 	if (current_virtual_device) current_virtual_device->redraw_handler(current_virtual_device
 			,&current_virtual_device->size);
 }
 
 
-struct graphics_driver pspgu_driver={
+struct graphics_driver pspfb_driver={
 	"pspgu",
-	pspgu_init_driver,
+	pspfb_init_driver,
 	init_virtual_device,
 	shutdown_virtual_device,
-	pspgu_shutdown_driver,
-	pspgu_get_driver_param,
-	pspgu_get_empty_bitmap,
-	/*pspgu_get_filled_bitmap,*/
-	pspgu_register_bitmap,
-	pspgu_prepare_strip,
-	pspgu_commit_strip,
-	pspgu_unregister_bitmap,
-	pspgu_draw_bitmap,
-	pspgu_draw_bitmaps,
-	NULL,	/* pspgu_get_color */
-	pspgu_fill_area,
-	pspgu_draw_hline,
-	pspgu_draw_vline,
-	pspgu_hscroll,
-	pspgu_vscroll,
-	pspgu_set_clip_area,
-	pspgu_block,
-	pspgu_unblock,
+	pspfb_shutdown_driver,
+	pspfb_get_driver_param,
+	pspfb_get_empty_bitmap,
+	/*pspfb_get_filled_bitmap,*/
+	pspfb_register_bitmap,
+	pspfb_prepare_strip,
+	pspfb_commit_strip,
+	pspfb_unregister_bitmap,
+	pspfb_draw_bitmap,
+	pspfb_draw_bitmaps,
+	NULL,	/* pspfb_get_color */
+	pspfb_fill_area,
+	pspfb_draw_hline,
+	pspfb_draw_vline,
+	pspfb_hscroll,
+	pspfb_vscroll,
+	pspfb_set_clip_area,
+	pspfb_block,
+	pspfb_unblock,
 	NULL,	/* set_title */
 	NULL, /* exec */
-	0,				/* depth (filled in pspgu_init_driver function) */
+	0,				/* depth (filled in pspfb_init_driver function) */
 	0, 0,				/* size (in X is empty) */
 	GD_DONT_USE_SCROLL|GD_NEED_CODEPAGE,		/* flags */
 	0,				/* codepage */
