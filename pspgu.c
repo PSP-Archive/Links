@@ -880,6 +880,11 @@ void pspInputThread()
 	install_timer(10, pspInputThread, NULL);
 }
 
+typedef struct {
+	float s, t;
+	unsigned int c;
+	float x, y, z;
+} VERT;
 
 void render_thread()
 {
@@ -926,7 +931,7 @@ void render_thread()
 				bb_col_offset = 0;
 			}
 
-			#if 1
+			#if 0
 			StartList();
 
 			//sceKernelDcacheWritebackInvalidateAll();
@@ -938,9 +943,72 @@ void render_thread()
 
 			EndList();
 			#else
-sceKernelDcacheWritebackInvalidateAll();
-			memcpy(gu_data.drawbuffer, gu_data.virtbuffer, gu_data.framesize);
-sceKernelDcacheWritebackInvalidateAll();
+			{
+				VERT* v = sceGuGetMemory(sizeof(VERT) * 2 * 2);
+				
+				StartList();
+
+				//q2
+				//topleft
+				v[2].s = 0;//tex x
+				v[2].t = 0;//tex y
+				v[2].c = 0xFFFFFFFF;
+				v[2].x = 0; //scr x
+				v[2].y = 0; //scr y
+				v[2].z = 0.0f;
+				//bottom right
+				v[3].s = 480;
+				v[3].t = 272;
+				v[3].c = 0xFFFFFFFF;
+				v[3].x = 480;
+				v[3].y = 272;
+				v[3].z = 0.0f;
+
+
+				sceGumDrawArray(GU_SPRITES, 
+					GU_TEXTURE_32BITF | GU_COLOR_5650 | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
+					2 * 2, 0, v);
+#if 0
+				//q1
+				//topleft
+				v[0].s = 0;//tex x
+				v[0].t = 0;//tex y
+				v[0].c = 0xFFFFFFFF;
+				v[0].x = 0; //scr x
+				v[0].y = 0; //scr y
+				v[0].z = 0.0f;
+				//bottom right
+				v[1].s = 480/2;
+				v[1].t = 272/2;
+				v[1].c = 0xFFFFFFFF;
+				v[1].x = 480/2;
+				v[1].y = 272/2;
+				v[1].z = 0.0f;
+
+				//q2
+				//topleft
+				v[2].s = 480/2+1;//tex x
+				v[2].t = 0;//tex y
+				v[2].c = 0xFFFFFFFF;
+				v[2].x = 480/2+1; //scr x
+				v[2].y = 0; //scr y
+				v[2].z = 0.0f;
+				//bottom right
+				v[3].s = 480;
+				v[3].t = 272/2;
+				v[3].c = 0xFFFFFFFF;
+				v[3].x = 480;
+				v[3].y = 272/2;
+				v[3].z = 0.0f;
+
+
+				sceGumDrawArray(GU_SPRITES, 
+					GU_TEXTURE_32BITF | GU_COLOR_5650 | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
+					2 * 2, 0, v);
+#endif
+				EndList();
+				
+			}
 			#endif
 			/*
 			for (fbRow = 0, bbRow = bb_row_offset; fbRow < PSP_SCREEN_HEIGHT; fbRow++, bbRow+=bb_to_fb_factor)
@@ -1016,7 +1084,29 @@ void psp_reset_graphic_mode()
 	sceGuScissor(0, 0, gu_data.display_width, gu_data.display_height);
 	sceGuEnable(GU_SCISSOR_TEST);
 
-	sceGuDepthRange(65535,0);
+//	sceGuDepthRange(65535,0);
+
+//sprites
+	sceGuDepthRange(0xc350,0x2710);
+	sceGuDisable(GU_DEPTH_TEST);
+	sceGuShadeModel(GU_SMOOTH);
+	sceGuEnable(GU_BLEND);
+	sceGuBlendFunc(GU_ADD, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, 0, 0);
+	sceGuEnable(GU_TEXTURE_2D);
+	sceGuTexMode(gu_data.pixel_mode, 0, 0, 0);
+	sceGuTexImage(0,  //mipmaplevel
+				 512, 512,  //width, height
+				 gu_data.virt_sl_pixelpitch, //buffer width
+				 gu_data.virtbuffer);
+	sceGuTexFunc(GU_TFX_MODULATE, GU_TCC_RGBA);
+	sceGuTexEnvColor(0x0);
+	sceGuTexOffset(0.0f, 0.0f);
+	sceGuTexScale(1.0f / 480.0f, 1.0f / 272.0f);
+	sceGuTexWrap(GU_CLAMP, GU_CLAMP);
+	sceGuTexFilter(GU_NEAREST, GU_NEAREST);
+//
+
+
 	sceGuClear(GU_COLOR_BUFFER_BIT);
 	sceGuFinish();
 	sceGuSync(0,0);
@@ -1040,16 +1130,15 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	gu_data.pixel_mode = PSP_GU_PIXEL_FORMAT;
 	gu_data.pixel_size = PSP_PIXELSIZE;
 
-	gu_data.virt_width  = 480*2;
-	gu_data.virt_height = 272*2;
-	gu_data.virt_sl_pixelpitch  = 512*2;
+	gu_data.virt_width  = 480;
+	gu_data.virt_height = 272;
+	gu_data.virt_sl_pixelpitch  = 512;
 	gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.pixel_size;
 
 	gu_data.display_width  = 480;
 	gu_data.display_height = 272;
 	gu_data.display_sl_pixelpitch  = 512;
 	gu_data.display_sl_bytepitch   = gu_data.display_sl_pixelpitch * gu_data.pixel_size;
-
 
 	gu_data.guinitialized = 0;
 
