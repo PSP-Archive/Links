@@ -941,10 +941,10 @@ void render_thread()
 				v[0].z = 0.0f;
 				//bottom right
 				v[1].s = (gu_data.virt_width/2);
-				v[1].t = gu_data.virt_height;
+				v[1].t = (gu_data.virt_height/2);
 				v[1].c = 0xFFFFFFFF;
 				v[1].x = 480/2;
-				v[1].y = 272;
+				v[1].y = 272/2;
 				v[1].z = 0.0f;
 				sceGumDrawArray(GU_SPRITES, 
 					GU_TEXTURE_32BITF | PSP_GU_TEXTURE_FORMAT | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
@@ -967,7 +967,59 @@ void render_thread()
 				v[0].z = 0.0f;
 				//bottom right
 				v[1].s = (gu_data.virt_width/2);
-				v[1].t = 272;
+				v[1].t = (gu_data.virt_height/2);
+				v[1].c = 0xFFFFFFFF;
+				v[1].x = 480;
+				v[1].y = 272/2;
+				v[1].z = 0.0f;
+				sceGumDrawArray(GU_SPRITES, 
+					GU_TEXTURE_32BITF | PSP_GU_TEXTURE_FORMAT | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
+					1 * 2, 0, v);
+				EndList();
+				
+				//q3
+				v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				StartList();
+				sceGuTexImage(0,  //mipmaplevel
+					512, 512,  //width, height
+					gu_data.virt_sl_pixelpitch, //buffer width
+					(pixel_type *)gu_data.virtbuffer + (gu_data.virt_sl_pixelpitch * (gu_data.virt_height/2)));
+				//topleft
+				v[0].s = 0;//tex x
+				v[0].t = 0;//tex y
+				v[0].c = 0xFFFFFFFF;
+				v[0].x = 0; //scr x
+				v[0].y = 272/2; //scr y
+				v[0].z = 0.0f;
+				//bottom right
+				v[1].s = (gu_data.virt_width/2);
+				v[1].t = (gu_data.virt_height/2);
+				v[1].c = 0xFFFFFFFF;
+				v[1].x = 480/2;
+				v[1].y = 272;
+				v[1].z = 0.0f;
+				sceGumDrawArray(GU_SPRITES, 
+					GU_TEXTURE_32BITF | PSP_GU_TEXTURE_FORMAT | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
+					1 * 2, 0, v);
+				EndList();
+
+				//q4
+				v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				StartList();
+				sceGuTexImage(0,  //mipmaplevel
+					512, 512,  //width, height
+					gu_data.virt_sl_pixelpitch, //buffer width
+					(pixel_type *)gu_data.virtbuffer + (gu_data.virt_sl_pixelpitch * (gu_data.virt_height/2)) + (gu_data.virt_width/2));
+				//topleft
+				v[0].s = 0;//tex x
+				v[0].t = 0;//tex y
+				v[0].c = 0xFFFFFFFF;
+				v[0].x = 480/2; //scr x
+				v[0].y = 272/2; //scr y
+				v[0].z = 0.0f;
+				//bottom right
+				v[1].s = (gu_data.virt_width/2);
+				v[1].t = (gu_data.virt_height/2);
 				v[1].c = 0xFFFFFFFF;
 				v[1].x = 480;
 				v[1].y = 272;
@@ -976,7 +1028,7 @@ void render_thread()
 					GU_TEXTURE_32BITF | PSP_GU_TEXTURE_FORMAT | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
 					1 * 2, 0, v);
 				EndList();
-				
+
 			}
 
 			if (sf_danzeffOn)
