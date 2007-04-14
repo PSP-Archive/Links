@@ -840,15 +840,31 @@ void pspInputThread()
 					//kaka1
 					//test screen size change
 					//int newwidth = 300, newhight= 100;
-					int factor = 1;
-					if (gu_data.virt_width == 480)
-						factor = 2;
-					else
-						factor = 1;
+					float factor = 1;
+					static int mode = 0;
+					switch(mode)
+					{
+					case 0:
+						factor = 0.5; break;
+					case 1:
+						factor = 0.75; break;
+					case 2:
+						factor = 1.0; break;
+					case 3:
+						factor = 1.25; break;
+					case 4:
+						factor = 1.5; break;
+					case 5:
+						factor = 1.75; break;
+					case 6:
+						factor = 2.0; break;
+					}
 
-					gu_data.virt_width  = 480*factor;
-					gu_data.virt_height = 272*factor;
-					gu_data.virt_sl_pixelpitch  = 512*factor;
+					mode = (mode+1)%7;
+					
+					gu_data.virt_width  = 480.0*factor;
+					gu_data.virt_height = 272.0*factor;
+					gu_data.virt_sl_pixelpitch  = 512.0*factor;
 					gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.pixel_size;
 
 					current_virtual_device->size.x2 = gu_data.virt_width;
@@ -1105,7 +1121,8 @@ void psp_reset_graphic_mode()
 	sceGuTexOffset(0.0f, 0.0f);
 	sceGuTexScale(1.0f / 480.0f, 1.0f / 272.0f);
 	sceGuTexWrap(GU_CLAMP, GU_CLAMP);
-	sceGuTexFilter(GU_NEAREST, GU_NEAREST);
+	//sceGuTexFilter(GU_NEAREST, GU_NEAREST);
+	sceGuTexFilter( GU_LINEAR, GU_LINEAR );
 
 	sceGuClear(GU_COLOR_BUFFER_BIT);
 	sceGuFinish();
