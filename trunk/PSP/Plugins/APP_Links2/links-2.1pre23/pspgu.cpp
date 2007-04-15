@@ -18,13 +18,17 @@
 #include <pspkernel.h>
 #include <pspdisplay.h>
 
+extern "C" {
 #include "links.h"
+};
 #include <pthread.h>
 #include <pspctrl.h>
 #include <pspgu.h>
+#include <pspgum.h>
 #include <signal.h>
 #include "newarrow.inc"
 
+#define DANZEFF_VRAM
 #include <danzeff.h>
 
 #include <psp.h>
@@ -55,7 +59,7 @@ typedef struct gu_param_
 
 	int framesize, virtframesize;
 
-	char *drawbuffer, *displaybuffer, *zbuffer, *virtbuffer;
+	unsigned char *drawbuffer, *displaybuffer, *zbuffer, *virtbuffer;
 
 	unsigned int __attribute__((aligned(16))) list[262144];
 
@@ -69,7 +73,7 @@ int pspgu_colors;
 void pspgu_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, int y);
 
 static unsigned char *pspgu_driver_param;
-struct graphics_driver pspgu_driver;
+extern struct graphics_driver pspgu_driver;
 volatile int pspgu_active=1;
 
 static volatile int in_gr_operation;
@@ -82,7 +86,11 @@ static unsigned char *mouse_buffer, *background_buffer, *new_background_buffer;
 static struct graphics_device *mouse_graphics_device;
 static int global_mouse_hidden;
 
-
+/* external functions */
+extern "C" {
+void TakeScreenShot();
+void wifiChooseConnect();
+};
 #define TEST_MOUSE(xl,xh,yl,yh) if (RECTANGLES_INTERSECT(\
 					(xl),(xh),\
 					background_x,background_x+arrow_width,\
@@ -122,7 +130,7 @@ static int global_mouse_hidden;
 #define	CLIP_PREFACE \
 	int mouse_hidden;\
 	int xs=hndl->x,ys=hndl->y;\
-        char *data=hndl->data;\
+        char *data=(char*)hndl->data;\
 \
  	TEST_INACTIVITY\
         if (x>=dev->clip.x2||x+xs<=dev->clip.x1) return;\
@@ -571,10 +579,6 @@ static void redraw_mouse(void){
 	}
 }
 
-static void pspgu_switch_signal(void *data)
-{
-}
-
 void pspSetMouse(int x, int y)
 {
 	mouse_x = x;
@@ -585,7 +589,7 @@ void pspSetMouse(int x, int y)
 	s_bbDirty = truE;
 }
 
-void pspInputThread()
+void pspInputThread(void *)
 {
 	static int oldButtonMask = 0;
 	int deltax = 0, deltay = 0;
@@ -862,9 +866,9 @@ void pspInputThread()
 
 					mode = (mode+1)%7;
 					
-					gu_data.virt_width  = 480.0*factor;
-					gu_data.virt_height = 272.0*factor;
-					gu_data.virt_sl_pixelpitch  = 512.0*factor;
+					gu_data.virt_width  = 480.0f*factor;
+					gu_data.virt_height = 272.0f*factor;
+					gu_data.virt_sl_pixelpitch  = 512.0f*factor;
 					gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.pixel_size;
 
 					current_virtual_device->size.x2 = gu_data.virt_width;
@@ -912,11 +916,9 @@ typedef struct {
 	float x, y, z;
 } VERT;
 
-void render_thread()
+void render_thread(void *)
 {
 	SceCtrlData pad;
-	int fbRow, fbCol;
-	int bbRow, bbCol;
 	int bb_to_fb_factor = 1;
 	int bb_row_offset = 0, bb_col_offset = 0;
 
@@ -942,7 +944,7 @@ void render_thread()
 
 			{
 				//q1
-				VERT* v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				VERT* v = (VERT*)sceGuGetMemory(sizeof(VERT) * 2 * 1);
 				StartList();
 				sceGuTexImage(0,  //mipmaplevel
 					512, 512,  //width, height
@@ -968,7 +970,7 @@ void render_thread()
 				EndList();
 
 				//q2
-				v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				v = (VERT *)sceGuGetMemory(sizeof(VERT) * 2 * 1);
 				StartList();
 				sceGuTexImage(0,  //mipmaplevel
 					512, 512,  //width, height
@@ -994,7 +996,7 @@ void render_thread()
 				EndList();
 				
 				//q3
-				v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				v = (VERT *)sceGuGetMemory(sizeof(VERT) * 2 * 1);
 				StartList();
 				sceGuTexImage(0,  //mipmaplevel
 					512, 512,  //width, height
@@ -1020,7 +1022,7 @@ void render_thread()
 				EndList();
 
 				//q4
-				v = sceGuGetMemory(sizeof(VERT) * 2 * 1);
+				v = (VERT *)sceGuGetMemory(sizeof(VERT) * 2 * 1);
 				StartList();
 				sceGuTexImage(0,  //mipmaplevel
 					512, 512,  //width, height
@@ -1050,7 +1052,7 @@ void render_thread()
 			if (sf_danzeffOn)
 			{
 				/* Pass VRAM info to Danzeff */
-				danzeff_set_screen((unsigned int)gu_data.drawbuffer, gu_data.display_sl_pixelpitch, gu_data.virt_height, gu_data.pixel_size);
+				danzeff_set_screen(gu_data.drawbuffer, gu_data.display_sl_pixelpitch, gu_data.virt_height, gu_data.pixel_size);
 				danzeff_render();
 			}
 
@@ -1058,7 +1060,7 @@ void render_thread()
 			//sceDisplaySetFrameBuf((void *) pFb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
 			sceDisplayWaitVblankStart();
 			gu_data.displaybuffer = gu_data.drawbuffer;
-			gu_data.drawbuffer = (char*)((unsigned int)vabsptr(sceGuSwapBuffers()) | 0x44000000);
+			gu_data.drawbuffer = (unsigned char*)((unsigned int)vabsptr(sceGuSwapBuffers()) | 0x44000000);
 
 			s_bbDirty = falsE;
 		}
@@ -1068,11 +1070,11 @@ void render_thread()
 
 }
 
-void psp_reset_graphic_mode()
+extern "C" void psp_reset_graphic_mode()
 {
 	/* (Re)set graphic mode */
 	static int is_first_time = 1;
-	unsigned int CacheMask = 0x440000000; /* uncached access */
+	unsigned int CacheMask = 0x44000000; /* uncached access */
 
 	if (gu_data.guinitialized)
 		sceGuTerm();
@@ -1084,10 +1086,10 @@ void psp_reset_graphic_mode()
 
 	if (is_first_time)
 	{
-		gu_data.drawbuffer    = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
-		gu_data.displaybuffer = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
-		gu_data.zbuffer		  = (char*)(CacheMask | (unsigned int)valloc(gu_data.framesize/2));
-		gu_data.virtbuffer    = (char*)(CacheMask | (unsigned int)valloc(gu_data.virtframesize));
+		gu_data.drawbuffer    = (unsigned char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
+		gu_data.displaybuffer = (unsigned char*)(CacheMask | (unsigned int)valloc(gu_data.framesize));
+		gu_data.zbuffer		  = (unsigned char*)(CacheMask | (unsigned int)valloc(gu_data.framesize/2));
+		gu_data.virtbuffer    = (unsigned char*)(CacheMask | (unsigned int)valloc(gu_data.virtframesize));
 		is_first_time = 0;
 	}
 
@@ -1136,7 +1138,6 @@ void psp_reset_graphic_mode()
 
 static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ignore)
 {
-	unsigned char *e;
 	struct stat st;
 	pspgu_old_vd = NULL;
 	ignore=ignore;
@@ -1170,15 +1171,7 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	if (init_virtual_devices(&pspgu_driver, NUMBER_OF_DEVICES))
 	{
 		if(pspgu_driver_param) { mem_free(pspgu_driver_param); pspgu_driver_param=NULL; }
-		return stracpy("Allocation of virtual devices failed.\n");
-	}
-
-	/* Mikulas: nechodi to na sparcu */
-	if (0)//pspgu_mem_size < gu_data.virt_sl_bytepitch * gu_data.virt_height)
-	{
-		shutdown_virtual_devices();
-		if(pspgu_driver_param) { mem_free(pspgu_driver_param); pspgu_driver_param=NULL; }
-		return stracpy("Nonlinear mapping of graphics memory not supported.\n");
+		return stracpy((unsigned char*)"Allocation of virtual devices failed.\n");
 	}
 
 	/* Initialize GU */
@@ -1199,9 +1192,9 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 	danzeff_set_screen(gu_data.drawbuffer, PSP_LINE_SIZE, gu_data.virt_height, gu_data.pixel_size);
 
 	/* mouse */
-	mouse_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
-	background_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
-	new_background_buffer=mem_alloc(gu_data.pixel_size*arrow_area);
+	mouse_buffer=(unsigned char*)mem_alloc(gu_data.pixel_size*arrow_area);
+	background_buffer=(unsigned char*)mem_alloc(gu_data.pixel_size*arrow_area);
+	new_background_buffer=(unsigned char*)mem_alloc(gu_data.pixel_size*arrow_area);
 	background_x=mouse_x=gu_data.virt_width>>1;
 	background_y=mouse_y=gu_data.virt_height>>1;
 	mouse_black=pspgu_driver.get_color(0);
@@ -1291,7 +1284,7 @@ void pspgu_draw_bitmap(struct graphics_device *dev,struct bitmap* hndl, int x, i
 
 	CLIP_PREFACE
 
-	scr_start=gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size;
+	scr_start=(unsigned char*)(gu_data.virtbuffer+y*gu_data.virt_sl_bytepitch+x*gu_data.pixel_size);
 	for(;ys;ys--){
 		memcpy(scr_start,data,xs*gu_data.pixel_size);
 		data+=hndl->skip;
@@ -1462,7 +1455,7 @@ static void pspgu_unblock(struct graphics_device *dev)
 
 
 struct graphics_driver pspgu_driver={
-	"pspgu",
+	(unsigned char*)"pspgu",
 	pspgu_init_driver,
 	init_virtual_device,
 	shutdown_virtual_device,
