@@ -1244,8 +1244,11 @@ int start_thread(void (*fn)(void *, int), void *ptr, int l)
 }
 
 #elif defined(HAVE_PTHREADS)
-
+#ifdef PSP
+#include <pthreadlite.h>
+#else
 #include <pthread.h>
+#endif
 
 int start_thread(void (*fn)(void *, int), void *ptr, int l)
 {
