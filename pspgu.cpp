@@ -21,7 +21,7 @@
 extern "C" {
 #include "links.h"
 };
-#include <pthread.h>
+#include <pthreadlite.h>
 #include <pspctrl.h>
 #include <pspgu.h>
 #include <pspgum.h>

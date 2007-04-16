@@ -20,8 +20,7 @@
 
 #include <openssl/rand.h>
 
-#include <pthread.h>
-#include <Tools.h>
+#include <pthreadlite.h>
 #include <PSPRadio_Exports.h>
 #include <APP_Exports.h>
 #include <Common.h>

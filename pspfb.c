@@ -13,7 +13,7 @@
 #endif
 
 #include "links.h"
-#include <pthread.h>
+#include <pthreadlite.h>
 #include <pspctrl.h>
 #include <pspfb.h>
 #include <signal.h>
