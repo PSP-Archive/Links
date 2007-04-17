@@ -43,7 +43,7 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =   -ldanzeffvram -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
+LIBS =   -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
