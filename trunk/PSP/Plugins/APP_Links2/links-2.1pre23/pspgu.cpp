@@ -28,7 +28,7 @@ extern "C" {
 #include <signal.h>
 #include "newarrow.inc"
 
-#define DANZEFF_VRAM
+#define DANZEFF_SCEGU
 #include <danzeff.h>
 
 #include <psp.h>
@@ -946,6 +946,8 @@ void render_thread(void *)
 				//q1
 				VERT* v = (VERT*)sceGuGetMemory(sizeof(VERT) * 2 * 1);
 				StartList();
+				sceGuEnable(GU_TEXTURE_2D);
+
 				sceGuTexImage(0,  //mipmaplevel
 					512, 512,  //width, height
 					gu_data.virt_sl_pixelpitch, //buffer width
@@ -1045,16 +1047,18 @@ void render_thread(void *)
 				sceGumDrawArray(GU_SPRITES, 
 					GU_TEXTURE_32BITF | PSP_GU_TEXTURE_FORMAT | GU_VERTEX_32BITF | GU_TRANSFORM_2D,
 					1 * 2, 0, v);
-				EndList();
+				//EndList();
 
 			}
 
 			if (sf_danzeffOn)
 			{
-				/* Pass VRAM info to Danzeff */
-				danzeff_set_screen(gu_data.drawbuffer, gu_data.display_sl_pixelpitch, gu_data.virt_height, gu_data.pixel_size);
+				/* Pass info to Danzeff */
+				//danzeff_set_screen(PSP_PIXELSIZE, PSP_GU_PIXEL_FORMAT, PSP_GU_TEXTURE_FORMAT);
+				//StartList();
 				danzeff_render();
 			}
+			EndList();
 
 			/* flipping */
 			//sceDisplaySetFrameBuf((void *) pFb, PSP_LINE_SIZE, PSP_PIXEL_FORMAT, 1);
@@ -1188,8 +1192,8 @@ static unsigned char *pspgu_init_driver(unsigned char *param, unsigned char *ign
 
 	pspgu_driver.get_color=get_color_fn(pspgu_driver.depth);
 
-	/* Pass VRAM info to Danzeff */
-	danzeff_set_screen(gu_data.drawbuffer, PSP_LINE_SIZE, gu_data.virt_height, gu_data.pixel_size);
+	/* Pass info to Danzeff */
+	danzeff_set_screen(PSP_PIXELSIZE, PSP_GU_PIXEL_FORMAT, PSP_GU_TEXTURE_FORMAT);
 
 	/* mouse */
 	mouse_buffer=(unsigned char*)mem_alloc(gu_data.pixel_size*arrow_area);
