@@ -13,7 +13,8 @@ INCLUDES = -I./ -I../ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
 			-I$(SHAREDLIB_DIR)/libpspnet -I$(SHAREDLIB_DIR)/libiniparser \
 			-I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
 			-I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
-			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff
+			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff \
+			-I$(SHAREDLIB_DIR)/libscreen
 
 links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmarks.o \
 ../builtin.o ../cache.o ../charsets.o ../connect.o ../context.o ../cookies.o ../default.o \
@@ -24,7 +25,7 @@ links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmar
 ../lru.o ../mailto.o ../main.o ../md5.o ../md5hl.o ../menu.o ../memory.o ../ns.o ../objreq.o \
 ../os_dep.o ../pmshell.o ../png.o ../pomocny.o ../regexp.o ../sched.o ../select.o ../session.o \
 ../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
-../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o ../valloc.o
+../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
 
 PSP_OBJECTS = Main_standalone.o $(COMMON_OBJS)
 
@@ -43,7 +44,7 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =   -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
+LIBS =   -lguscreen -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
