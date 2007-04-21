@@ -44,7 +44,7 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =   -lguscreen -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
+LIBS =  -lstdc++ -lguscreen -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm -lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lpsppower $(OPENSSL_LIBS) 
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
@@ -67,7 +67,7 @@ all: EBOOT.PBP
 cleanpbp: 
 	rm -Rf EBOOT.PBP *.SFO *.elf Links2
 
-release: EBOOT.PBP
+release: all
 	./make_zip.sh stand_alone.zip Links2
 	mv *.zip $(RELEASE_DIR)
 	
@@ -77,5 +77,5 @@ release_sources:
 	rm -Rf Links2/
 	./make_zip_non_recursive.sh sources.zip `find .. -name ".svn*" -prune -o -print`
 	
-install: EBOOT.PBP
+install: all
 	cp -Rvf Links2 $(RELEASE_DIR)

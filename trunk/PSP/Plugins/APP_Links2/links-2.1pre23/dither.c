@@ -673,6 +673,42 @@ long color_565_bgr(int rgb)
 
 }
 
+long color_4444_bgr(int rgb)
+{
+	#define ARGB8888_TO_ABGR4444(x) \
+			(((x>>16)&0xFF)*15/255) | ((((x>>8)&0xFF)*15/255)<<4) | (((x&0xFF)*15/255)<<8)
+
+	//return ARGB8888_TO_ABGR4444(rgb);
+
+#if 1
+	int r,g,b;
+	long ret;
+	int i;
+
+	r=(rgb>>16)&255;
+	g=(rgb>>8)&255;
+	b=rgb&255;
+
+	r=(r*15+127)/255;
+	g=(g*15+127)/255;
+	b=(b*15+127)/255;
+	i=(b<<8)|(g<<4)|r;
+#ifdef C_LITTLE_ENDIAN
+#ifdef t2c
+	((t2c *)&ret)[0]=i;
+#else
+	((unsigned char *)&ret)[0]=i;
+	((unsigned char *)&ret)[1]=i>>8;
+#endif /* #ifdef t2c */
+#else
+	((unsigned char *)&ret)[0]=i;
+	((unsigned char *)&ret)[1]=i>>8;
+#endif /* #ifdef C_LITTLE_ENDIAN */
+
+	return ret;
+#endif
+}
+
 /* rgb = r*65536+g*256+b */
 /* The selected color_fn returns a long.
  * When we have for example 2 bytes per pixel, we make them in the memory,
@@ -705,6 +741,10 @@ long (*get_color_fn(int depth))(int rgb)
 
 		case 386:
 			return color_565be;
+			break;
+
+		case 387: /* PSP ABGR 4444 */
+			return color_4444_bgr;
 			break;
 
 		case 451:
@@ -975,6 +1015,15 @@ void init_dither(int depth)
 		make_red_table(5,11,1,1);
 		make_green_table(6,5,1,1);
 		make_blue_table(5,0,1,1);
+		dither_fn_internal=dither_2byte;
+		round_fn=round_2byte;
+		break;
+
+		case 387: /* PSP 4444 ABGR */
+		/* 16bpp, 2Bpp, disordered */
+		make_red_table(4,0,1,0);
+		make_green_table(4,4,1,0);
+		make_blue_table(4,8,1,0);
 		dither_fn_internal=dither_2byte;
 		round_fn=round_2byte;
 		break;
