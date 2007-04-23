@@ -22,7 +22,7 @@ links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmar
 ../lru.o ../mailto.o ../main.o ../md5.o ../md5hl.o ../menu.o ../memory.o ../ns.o ../objreq.o \
 ../os_dep.o ../pmshell.o ../png.o ../pomocny.o ../regexp.o ../sched.o ../select.o ../session.o \
 ../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
-../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o ../valloc.o
+../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
 
 EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
 PSP_OBJECTS = plugin_main.o $(EXPORTED_OBJS)
@@ -45,7 +45,7 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =	-ldanzeffvram -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm \
+LIBS =	-lstdc++ -lguscreen -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm \
 				-lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lPluginCommon $(OPENSSL_LIBS)
 
 all: $(TARGET).prx
