@@ -210,17 +210,20 @@ void psp_init();
 #define IS_BUTTON_PRESSED(i,b) (((i) & 0xFFFF) == (b)) /* i = read button mask b = expected match */
 
 #include <Screen.h>
+#include <ScFont_base.h>
 CScreen *gScreen  = NULL;
+CSFont  *gFontEngine = NULL;
 void psp_init()
 {
-	CScreen *temp = gScreen;
+	CScreen *tempsc = gScreen;
+	CSFont  *tempf  = gFontEngine;
 	
 	gScreen = new CScreen(false, 480, 272, 512, PSPSCR_PIXEL_FORMAT);
+	gFontEngine = new CSFont();
+	gFontEngine->SetSurface(gScreen->m_Buffer[0], 480, 272, 512, PSPSCR_PIXELSIZE);
 
-	if (temp)
-		delete temp;
-
-	
+	delete tempsc;
+	delete tempf;
 }
 
 /* n is in bytes. dest must begin on pixel boundary. If n is not a whole number of pixels, rounding is
