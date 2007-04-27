@@ -14,11 +14,13 @@
 #include <psputility_netparam.h> 
 
 #include "psp.h"
-//#include <PSPRadio_Exports.h>
+
 
 #include <links.h>
 
-#define printf pspDebugScreenPrintf
+
+extern void psp_init();
+extern void PrintMsg();
 
 volatile tBoolean g_PSPEnableRendering = truE;
 volatile tBoolean g_PSPEnableInput = truE;

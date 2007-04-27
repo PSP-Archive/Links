@@ -34,13 +34,10 @@
 #define LEAK_DEBUG
 #endif
 
-#ifdef PSP
-#define LINKS_HOMEPAGE_URL	"http://pspradio.sf.net/Links2/APP_Links2.html"
-#else
 #define LINKS_HOMEPAGE_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
 					"http://links.twibright.com/index_cz.php":\
 					"http://links.twibright.com/")
-#endif
+
 #define LINKS_MANUAL_URL		(!strcmp(language_name(current_language),"Czech") || !strcmp(language_name(current_language),"Slovak")?\
 					"http://links.twibright.com/user.html":\
 					"http://links.sourceforge.net/docs/manual-0.90-en/")

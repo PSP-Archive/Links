@@ -45,7 +45,7 @@ BUILD_PRX = 1
 LIBDIR =
 LDFLAGS =
 OPENSSL_LIBS= -lssl -lcrypto
-LIBS =	-lstdc++ -lguscreen -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm \
+LIBS =	-lstdc++ -lguscreen -lpspvalloc -ldanzeffgu -lpspgum -lpspgu -lpspge -lpng -ljpeg -lz -lm \
 				-lpspwlan -lpsphprm -lpsprtc -lpthreadlite -lPluginCommon $(OPENSSL_LIBS)
 
 all: $(TARGET).prx

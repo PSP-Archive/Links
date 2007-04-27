@@ -16,6 +16,9 @@
 	#define PSP_SCREEN_HEIGHT 272
 	#define PSP_LINE_SIZE 512
 
+	
+	#define HOMEPAGE_URL	"" //APP_Links2.html"
+
 	/** If commented out, then 32bpp are used. */
 	#define PSP_16BPP 0
 
