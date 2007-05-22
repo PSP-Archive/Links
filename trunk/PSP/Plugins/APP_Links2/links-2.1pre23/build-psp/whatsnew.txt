@@ -12,9 +12,15 @@ copy the folder "PSPRadio" to your PSP under "/PSP/GAME/".
 Change Log:
 -------------------------
 
-links-2.1pre23 PSP rxxxx (2007-02-xx)
+links-2.1pre23 PSP rxxxx (2007-0x-xx)
 NEW FEATURES
-(raf) After resuming from syuspend, now wifi reconnects.
+[not working yet](raf) After resuming from suspend, now wifi reconnects.
+(raf) Menu with select. Allows selection of virtual resolution, wifi profile,
+etc.
+(raf) Rewrote the rendering so that virtual resolutions are supported via
+hardware. This is done using textures.
+(raf) LEFT and RIGHT buttons now move the screen left and right. R+LEFT =
+BACK, R+RIGHT = FORWARD now.
 BUG FIXES
 KNOWN PROBLEMS
 
