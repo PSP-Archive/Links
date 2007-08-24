@@ -69,11 +69,7 @@ void pspmenu_init()
 	
 
 ///
-
-//void CTextUI::UpdateOptionsScreen(list<OptionsScreen::Options> &OptionsList, 
-//										 list<OptionsScreen::Options>::iterator &CurrentOptionIterator)
-void PrintOption(int x, int y, int c, char *strName, char *strStates[], int iNumberOfStates, int iSelectedState,
-						  int iActiveState);
+void PrintOption(int x, int y, int c, char *strName, char *strStates[], int iNumberOfStates, int iSelectedState, int iActiveState);
 void pspmenu_render_internals()
 {
 
@@ -181,7 +177,6 @@ void PrintOption(int x, int y, int c, char *strName, char *strStates[], int iNum
 			}
 		}
 	}	
-	//gScreen->ClearCharsAtYFromX1ToX2(y, COL_TO_PIXEL(iTextPos), x2);
 }
 ///
 
@@ -192,7 +187,7 @@ void pspmenu_render()
 
 	if (pspoptions /*&& pspoptions->m_Dirty */)
 	{
-		MenuPrint(0,0, COLOR_WHITE, "Links2 Menu");
+		MenuPrint(28,10, COLOR_WHITE, "PSP Options");
 
 		pspmenu_render_internals();
 
@@ -914,10 +909,8 @@ void pspInputThread(void *)
 			{
 				if (gu_data.bPSPMenuOn == false)
 				{
-					if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT))// | PSP_CTRL_CROSS))
+					if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT))
 					{
-						//pspDebugScreenInit();
-						//wifiChooseConnect();
 						gu_data.bPSPMenuOn = true;	
 						s_bbDirty = truE;
 					}
@@ -948,19 +941,19 @@ void pspInputThread(void *)
 					}
 					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_LEFT))
 					{
-						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_LEFT, fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, '[', fl);
 					}
 					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_LEFT | PSP_CTRL_RTRIGGER))
 					{
-						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, '[', fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_LEFT, fl);
 					}
 					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_RIGHT))
 					{
-						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_RIGHT, fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, ']', fl);
 					}
 					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_RIGHT | PSP_CTRL_RTRIGGER))
 					{
-						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, ']', fl);
+						if (current_virtual_device) current_virtual_device->keyboard_handler(current_virtual_device, KBD_RIGHT, fl);
 					}
 					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_CROSS))
 					{
@@ -999,52 +992,7 @@ void pspInputThread(void *)
 							//wait_for_triangle("Error loading danzeff OSK");
 						}
 					}
-					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_SELECT))
-					{
-						g_PSPEnableRendering = falsE;
-						TakeScreenShot();
-						//wait_for_triangle("");
-						g_PSPEnableRendering = truE;
-						s_bbDirty = truE;
-						//cls_redraw_all_terminals();
-					}
-					else if (IS_BUTTON_PRESSED(oldButtonMask, PSP_CTRL_START | PSP_CTRL_TRIANGLE))
-					{
-						static int mode = 2;
-						switch(mode)
-						{
-						case 0:
-							gu_data.virt_width  = 320;
-							gu_data.virt_height = 182;
-							break;
-							
-						case 1:
-							gu_data.virt_width  = 480;
-							gu_data.virt_height = 272;
-							break;
-	
-						case 2:
-							gu_data.virt_width  = 640;
-							gu_data.virt_height = 362;
-							break;
-	
-						case 3:
-							gu_data.virt_width  = 720;
-							gu_data.virt_height = 408;
-							break;
-						}
-	
-						mode = (mode+1)%4;
-						
-						gu_data.virt_sl_pixelpitch  = gu_data.virt_width;
-						gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.virt_pixel_size;
-	
-						current_virtual_device->size.x2 = gu_data.virt_width;
-						current_virtual_device->size.y2 = gu_data.virt_height;
-						//pspgu_update_driver_param(newwidth, newhight);
-						current_virtual_device->resize_handler(current_virtual_device);
-					}
-	
+
 					if (s_Zoom == falsE)
 					{
 						if (oldButtonMask & PSP_CTRL_LTRIGGER)
@@ -1098,6 +1046,29 @@ typedef struct {
 	float x, y, z;
 } VERT;
 
+
+int psp_resolution_set(int x, int y)
+{
+	gu_data.virt_width  = x;
+	gu_data.virt_height = y;
+
+	gu_data.virt_sl_pixelpitch  = gu_data.virt_width;
+	gu_data.virt_sl_bytepitch   = gu_data.virt_sl_pixelpitch * gu_data.virt_pixel_size;
+
+	current_virtual_device->size.x2 = gu_data.virt_width;
+	current_virtual_device->size.y2 = gu_data.virt_height;
+
+	current_virtual_device->resize_handler(current_virtual_device);
+	return 0;
+}
+
+int psp_resolution_get(int *x, int *y)
+{
+	*x = gu_data.virt_width;
+	*y = gu_data.virt_height;
+	return 0;
+}
+	
 void render_thread(void *)
 {
 	SceCtrlData pad;

@@ -56,6 +56,10 @@
 #define SCE_NET_APCTL_INFO_IP_ADDRESS		8
 #define apctl_state_IPObtained				4
 
+
+int psp_resolution_set(int  x, int  y);
+int psp_resolution_get(int *x, int *y);
+
 bool m_NetworkEnabled = false;
 char m_strMyIP[64];
 char m_ResolverBuffer[1024];
@@ -251,7 +255,7 @@ enum OptionIDs
 	OPTION_ID_NETWORK_PROFILES,
 	OPTION_ID_WIFI_AUTOSTART,
 	OPTION_ID_USB_ENABLE,
-	OPTION_ID_CPU_SPEED,
+	OPTION_ID_RESOLUTION,
 	OPTION_ID_LOG_LEVEL,
 	OPTION_ID_SAVE_CONFIG,
 	OPTION_ID_SWITCH,
@@ -265,7 +269,7 @@ OptionsScreen::Options OptionsScreenData[] =
 	{	OPTION_ID_WIFI_AUTOSTART,	"WiFi AutoStart",			{"No", "Yes"},					1,1,2		},
 	
 	{	OPTION_ID_USB_ENABLE,		"USB",						{"OFF","ON","AUTOSTART"},					1,1,3		},
-	{	OPTION_ID_CPU_SPEED,		"CPU Speed",				{"111","222","266","333"},		2,2,4		},
+	{	OPTION_ID_RESOLUTION,		"V-Res",				{"320x182","480x272","640x362","720x408"},		2,2,4		},
 	{	OPTION_ID_LOG_LEVEL,		"Log Level",				{"All","Verbose","Info","Errors","Off"},	1,1,5		},
 	{	OPTION_ID_SAVE_CONFIG,		"Save Options",				{""},							0,0,0		},
 	{	OPTION_ID_SWITCH,			"Switch to PSPRadio",		{""},							0,0,0		},
@@ -300,22 +304,21 @@ void OptionsScreen::LoadFromConfig()
 
 	if (pConfig)
 	{
-		/** CPU FREQ */
+		/** SCR RESO ("320x182","480x272","640x362","720x408") */
 		int iRet = 0;
-		switch(pConfig->GetInteger("SYSTEM:CPUFREQ"))
+		switch(pConfig->GetInteger("SYSTEM:RESOLUTION"))
 		{
-			case 111:
-				iRet = scePowerSetClockFrequency(111, 111, 55);
+			case 320:
+				iRet = psp_resolution_set(320,182);
 				break;
-			case 222:
-				iRet = scePowerSetClockFrequency(222, 222, 111);
+			case 480:
+				iRet = psp_resolution_set(480,272);
 				break;
-			case 265:
-			case 266:
-				iRet = scePowerSetClockFrequency(266, 266, 133);
+			case 640:
+				iRet = psp_resolution_set(640,362);
 				break;
-			case 333:
-				iRet = scePowerSetClockFrequency(333, 333, 166);
+			case 720:
+				iRet = psp_resolution_set(720,408);
 				break;
 			default:
 				iRet = -1;
@@ -323,10 +326,10 @@ void OptionsScreen::LoadFromConfig()
 		}
 		if (0 != iRet)
 		{
-			Log(LOG_ERROR, "LoadFromConfig(): Unable to change CPU/BUS Speed to selection %d",
-					pConfig->GetInteger("SYSTEM:CPUFREQ"));
+			Log(LOG_ERROR, "LoadFromConfig(): Unable to change resolution to selection %d",
+					pConfig->GetInteger("SYSTEM:RESOLUTION"));
 		}
-		/** CPU FREQ */
+		/** RESOLUTION */
 
 		/** LOGLEVEL */
 		//pLogging->SetLevel((loglevel_enum)pConfig->GetInteger("DEBUGGING:LOGLEVEL", 100));
@@ -374,11 +377,15 @@ void OptionsScreen::LoadFromConfig()
 void OptionsScreen::SaveToConfigFile()
 {
 	CIniParser *pConfig = NULL;
+	int x,y;
 
 	if (pConfig)
 	{
 		pConfig->SetInteger("DEBUGGING:LOGLEVEL", 0);//pLogging->GetLevel());
-		pConfig->SetInteger("SYSTEM:CPUFREQ", scePowerGetCpuClockFrequency());
+
+		psp_resolution_get(&x,&y); //"320x182","480x272","640x362","720x408"
+		pConfig->SetInteger("SYSTEM:RESOLUTION", x);
+
 		pConfig->SetInteger("WIFI:PROFILE", m_iNetworkProfile);
 		pConfig->SetInteger("WIFI:AUTOSTART", m_WifiAutoStart);
 		pConfig->SetInteger("SYSTEM:USB_AUTOSTART", m_USBAutoStart);
@@ -456,30 +463,30 @@ void OptionsScreen::UpdateOptionsData()
 				Option.iSelectedState = Option.iActiveState;
 				break;
 			
-			case OPTION_ID_CPU_SPEED:
-				switch(scePowerGetCpuClockFrequency())
+			case OPTION_ID_RESOLUTION:
+			{
+				int x,y;
+				psp_resolution_get(&x,&y); //"320x182","480x272","640x362","720x408"
+				switch(x)
 				{
-					case 111:
+					case 320:
 						Option.iActiveState = 1;
 						break;
-					case 222:
+					case 480:
 						Option.iActiveState = 2;
 						break;
-					case 265:
-					case 266:
+					case 640:
 						Option.iActiveState = 3;
 						break;
-					case 333:
+					case 720:
 						Option.iActiveState = 4;
 						break;
 					default:
-						Log(LOG_ERROR, "CPU speed unrecognized: %dMHz",
-							scePowerGetCpuClockFrequency());
 						break;
 				}
 				Option.iSelectedState = Option.iActiveState;
 				break;
-
+			}
 			case OPTION_ID_LOG_LEVEL:
 				#if 0
 				switch(pLogging->GetLevel())
@@ -588,31 +595,32 @@ void OptionsScreen::OnOptionActivation()
 			}
 			break;
 			
-		case OPTION_ID_CPU_SPEED:
+		case OPTION_ID_RESOLUTION:
 		{
 			int iRet = -1;
 			switch (iSelectionBase1)
 			{
-				case 1: /* 111 */
-					iRet = scePowerSetClockFrequency(111, 111, 55);
+				case 1:
+					iRet = psp_resolution_set(320,182);
 					break;
-				case 2: /* 222 */
-					iRet = scePowerSetClockFrequency(222, 222, 111);
+				case 2:
+					iRet = psp_resolution_set(480,272);
 					break;
-				case 3: /* 266 */
-					iRet = scePowerSetClockFrequency(266, 266, 133);
+				case 3:
+					iRet = psp_resolution_set(640,362);
 					break;
-				case 4: /* 333 */
-					iRet = scePowerSetClockFrequency(333, 333, 166);
+				case 4:
+					iRet = psp_resolution_set(720,408);
 					break;
 			}
+		
 		    if (0 == iRet)
 			{
 				fOptionActivated = true;
 			}
 			else
 			{
-				Log(LOG_ERROR, "Unable to change CPU/BUS Speed to selection %d",
+				Log(LOG_ERROR, "Unable to change Resolution to selection %d",
 						(*m_CurrentOptionIterator).iSelectedState);
 			}
 			break;
