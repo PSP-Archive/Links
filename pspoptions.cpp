@@ -189,9 +189,15 @@ void GetNetworkProfileName(int iProfile, char *buf, size_t size)
 	memset(&data, 0, sizeof(netData));
 	data.asUint = 0xBADF00D;
 	memset(&data.asString[4], 0, 124);
-	sceUtilityGetNetParam(iProfile, 0/** 0 = Profile Name*/, &data);
-	
-	strlcpy(buf, data.asString, size);
+	if (sceUtilityCheckNetParam(iProfile) == 0)
+	{
+		sceUtilityGetNetParam(iProfile, 0/** 0 = Profile Name*/, &data);
+		strlcpy(buf, data.asString, size);
+	}
+	else
+	{
+		buf[0] = 0;
+	}
 }
 
 bool IsNetworkEnabled()
@@ -440,11 +446,21 @@ void OptionsScreen::UpdateOptionsData()
 				Option.iNumberOfStates = GetNumberOfNetworkProfiles();
 				char *NetworkName = NULL;
 				Option.strStates[0] = strdup("Off");
-				for (int i = 1; i <= Option.iNumberOfStates; i++)
+				char szProfileName[128];
+				int iFoundProfiles = 0;
+				int i = 1;
+				for (int iProfileNumber = 1; (iFoundProfiles < Option.iNumberOfStates) && (iProfileNumber < 128); iProfileNumber++)
 				{
-					NetworkName = (char*)malloc(128);
-					GetNetworkProfileName(i, NetworkName, 128);
-					Option.strStates[i] = NetworkName;
+					GetNetworkProfileName(iProfileNumber, szProfileName, 127);
+					if (szProfileName[0] != 0)
+					{
+						NetworkName = (char*)malloc(strlen(szProfileName) + 1); /* 1 extra for the nul-term */
+						strcpy(NetworkName, szProfileName);
+						Option.strStates[i] = NetworkName;
+						iWifiProfileOptionMap[i] = iProfileNumber;
+						iFoundProfiles++;
+						i++;
+					}
 				}
 				Option.iActiveState = (IsNetworkEnabled()==true)?(m_iNetworkProfile+1):1;
 				Option.iSelectedState = Option.iActiveState;
@@ -538,7 +554,7 @@ void OptionsScreen::OnOptionActivation()
 	switch ((*m_CurrentOptionIterator).Id)
 	{
 		case OPTION_ID_NETWORK_PROFILES:
-			m_iNetworkProfile = iSelectionBase0;
+			m_iNetworkProfile = iWifiProfileOptionMap[iSelectionBase0];
 			if (m_iNetworkProfile > 0) /** Enable */
 			{
 				Start_Network();
@@ -661,6 +677,7 @@ void OptionsScreen::OnOptionActivation()
 
 		case OPTION_ID_EXIT:
 			Log(LOG_ALWAYS, "User selected to Exit.");
+			sceKernelExitGame();
 			//pPSPApp->SendEvent(EID_EXIT_SELECTED, NULL, SID_SCREENHANDLER);
 			break;
 
