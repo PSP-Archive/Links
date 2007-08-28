@@ -51,6 +51,7 @@
 			list<int> listints;
 			int m_iNetworkProfile;
 			bool m_WifiAutoStart, m_USBAutoStart;
+			int  iWifiProfileOptionMap[MAX_NUM_OF_OPTIONS];
 			//CPSPUSBStorage *m_USBStorage;
 
 	};

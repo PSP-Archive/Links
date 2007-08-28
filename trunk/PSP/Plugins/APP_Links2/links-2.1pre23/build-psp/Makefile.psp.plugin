@@ -11,7 +11,8 @@ INCLUDES = -I../ -I./ -I$(PLUGINS_DIR) -I$(BASE_DIR) -I$(PSPRADIO_DIR) \
 			-I$(SHAREDLIB_DIR)/Tools -I$(SHAREDLIB_DIR)/Logging \
 			-I/usr/local/pspdev/psp/sdk/include/  -I/usr/local/pspdev/psp/include/ \
 			-I/usr/local/pspdev/psp/include/SDL/ -I$(SHAREDLIB_DIR)/danzeff \
-			-I$(PLUGINS_DIR)/Common -L$(PLUGINS_DIR)/Common
+			-I$(PLUGINS_DIR)/Common -L$(PLUGINS_DIR)/Common \
+			-I$(SHAREDLIB_DIR)/libscreen -I$(SHAREDLIB_DIR)/logging
 
 links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmarks.o \
 ../builtin.o ../cache.o ../charsets.o ../connect.o ../context.o ../cookies.o ../default.o \
@@ -22,7 +23,7 @@ links_OBJECTS =  ../af_unix.o ../auth.o ../beos.o ../bfu.o ../block.o ../bookmar
 ../lru.o ../mailto.o ../main.o ../md5.o ../md5hl.o ../menu.o ../memory.o ../ns.o ../objreq.o \
 ../os_dep.o ../pmshell.o ../png.o ../pomocny.o ../regexp.o ../sched.o ../select.o ../session.o \
 ../smb.o ../svgalib.o ../terminal.o ../tiff.o ../types.o ../url.o ../view.o ../view_gr.o \
-../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o
+../win32.o ../x.o ../xbm.o ../psp.o ../pspsdl.o ../pspgu.o ../pspoptions.o
 
 EXPORTED_OBJS = $(PSPRADIO_DIR)/PSPRadioExports.o
 PSP_OBJECTS = plugin_main.o $(EXPORTED_OBJS)

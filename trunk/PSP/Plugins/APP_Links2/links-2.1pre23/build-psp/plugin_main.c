@@ -121,18 +121,17 @@ int CreateHomepage(char *file)
 	return -1;
 }
 
-//static char *argv[] = { "APP_Links2", "-g", "-driver", "pspsdl", "-mode", "480x272", LINKS_HOMEPAGE_URL, NULL };	
-static char *argv[] = { "APP_Links2", "-g", "-driver", "pspgu", "-mode", "480x272", LINKS_HOMEPAGE_URL, NULL };	
-
 void app_plugin_main()
 {
+	static char *argv[] = { "APP_Links2", "-g", "-driver", "pspgu", "-mode", "480x272", 
+							HOMEPAGE_URL, NULL };	
 	static int argc = sizeof(argv)/sizeof(char *)-1; 	/* idea from scummvm psp port */
 	char str[128];
 	int ret;
 	pspTime time;
 	
 	PSPRadioExport_RequestExclusiveAccess(PLUGIN_APP);
-//	pspDebugScreenInit();
+	//pspDebugScreenInit();
 
 	g_PSPEnableInput = truE;
 	g_PSPEnableRendering = truE;
@@ -143,6 +142,8 @@ void app_plugin_main()
 	sceRtcGetCurrentClockLocalTime(&time);
 	RAND_seed(&time, sizeof(pspTime));
 		
+	pspDebugScreenPrintf("- Starting Main Loop...\n");
+	sceDisplayWaitVblankStart();
 	ret = main_loop(argc, (char **)&argv);
 
 	if (ret != 0) 
